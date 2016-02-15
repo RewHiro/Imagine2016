@@ -4,7 +4,7 @@
 ---
 #### リンク
 
-- [**ImagineCup (2015)**][ImagineHP]
+- [**ImagineCup**][ImagineHP]
 - [**Googleドライブ チームフォルダ**][TeamDrive]
 
 ---
