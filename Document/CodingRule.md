@@ -42,8 +42,8 @@ Player       // フォルダ
 // プロパティ
 public int highScore { get; set; }
 
-// ローカル変数（を使用するメソッド内部）
-int GetScore() {
+// ローカル変数（を使用するメソッド => メソッドなのでパスカルケース）
+public int GetScore() {
   var resultScore = 0;   // ローカル変数
   return resultScore;
 }
