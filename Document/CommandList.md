@@ -17,7 +17,7 @@
 ~~~
 git clone https://github.com/XXX/YYY.git
 
-# XXX: 自分のアカウント名
+# XXX: アカウント名
 # YYY: リポジトリ名
 ~~~
 
