@@ -10,8 +10,8 @@
 ---
 #### リンク（メンバー用）
 
-- [`git` コマンドの一覧][DocsCR]
-- [コーディングルールまとめ][DocsCL]
+- [コーディングルールまとめ][DocsCR]
+- [`git` コマンドの一覧][DocsCL]
 
 ---
 [ImagineHP]: https://www.microsoft.com/ja-jp/education/imagine-cup.aspx
