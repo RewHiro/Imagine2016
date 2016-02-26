@@ -5,7 +5,32 @@ using System.Drawing.Printing;
 namespace Game.Utility {
 
   public static class PrintDevice {
+    public class DrawSize {
+      public DrawSize(float width, float height) {
+        this.width = width;
+        this.height = height;
+      }
+
+      public static readonly DrawSize one = new DrawSize(1f, 1f);
+      public float width { get; private set; }
+      public float height { get; private set; }
+
+      public static DrawSize operator *(DrawSize s, float mul) {
+        return new DrawSize(s.width * mul, s.height * mul);
+      }
+    }
+
+    public static bool PrintRequest(string path, DrawSize size) {
+      if (!BindImage(path)) { return false; }
+      _size = size;
+      PrintImage();
+      _image.Dispose();
+      _image = null;
+      return true;
+    }
+
     static Image _image = null;
+    static DrawSize _size;
 
     static bool BindImage(string path) {
       _image = Image.FromFile(path);
@@ -19,16 +44,10 @@ namespace Game.Utility {
       pd.Print();
     }
 
-    public static bool PrintRequest(string path) {
-      if (!BindImage(path)) { return false; }
-      PrintImage();
-      _image = null;
-      return true;
-    }
-
     static void PrintEventAction(object sender, PrintPageEventArgs args) {
       var image = _image;
-      args.Graphics.DrawImage(image, args.MarginBounds);
+      var margin = args.MarginBounds;
+      args.Graphics.DrawImage(image, margin.Left, margin.Top, _size.width, _size.height);
       args.HasMorePages = false;
       image.Dispose();
     }

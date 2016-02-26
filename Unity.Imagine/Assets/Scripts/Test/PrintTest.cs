@@ -6,6 +6,6 @@ public class PrintTest : MonoBehaviour {
 
   void Start() {
     var path = Application.dataPath + "/Resources/test.png";
-    PrintDevice.PrintRequest(path);
+    PrintDevice.PrintRequest(path, PrintDevice.DrawSize.one * 200f);
   }
 }
