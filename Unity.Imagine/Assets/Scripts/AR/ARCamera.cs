@@ -30,7 +30,7 @@ public class ARCamera : SingletonBehaviour<ARCamera> {
 
     _panel.GetComponent<Renderer>().material.mainTexture = wcTexture;
     _arSystem.setARBackgroundTransform(_panel.transform);
-    _arSystem.setARCameraProjection(GetComponent<Camera>());
+    _arSystem.setARCameraProjection(Camera.main);
 
     _models = new List<ARModel>();
   }
