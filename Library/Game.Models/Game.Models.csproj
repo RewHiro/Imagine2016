@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\hoge.cs" />
+    <Compile Include="Scripts\MarkerTag.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Game.Utility\Game.Utility.csproj">
@@ -50,7 +51,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)..\Imagine2016\Assets\Library\Game.Models.dll"
+    <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)..\Unity.Imagine\Assets\Library\Game.Models.dll"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
