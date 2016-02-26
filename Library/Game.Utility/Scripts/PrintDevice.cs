@@ -14,7 +14,7 @@ namespace Game.Utility {
 
     static void PrintImage() {
       var pd = new PrintDocument();
-      pd.DocumentName = "";
+      pd.DocumentName = "ar marker";
       pd.PrintPage += new PrintPageEventHandler(PrintEventAction);
       pd.Print();
     }
