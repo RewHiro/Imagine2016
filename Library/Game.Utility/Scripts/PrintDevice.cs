@@ -20,17 +20,21 @@ namespace Game.Utility {
       }
     }
 
-    public static bool PrintRequest(string path, DrawSize size) {
+    public static bool PrintRequest(string path) {
       if (!BindImage(path)) { return false; }
-      _size = size;
       PrintImage();
       _image.Dispose();
       _image = null;
       return true;
     }
 
+    public static bool PrintRequest(string path, DrawSize size) {
+      PrintDevice.size = size;
+      return PrintRequest(path);
+    }
+
     static Image _image = null;
-    static DrawSize _size;
+    public static DrawSize size { get; set; }
 
     static bool BindImage(string path) {
       _image = Image.FromFile(path);
@@ -47,7 +51,7 @@ namespace Game.Utility {
     static void PrintEventAction(object sender, PrintPageEventArgs args) {
       var image = _image;
       var margin = args.MarginBounds;
-      args.Graphics.DrawImage(image, margin.Left, margin.Top, _size.width, _size.height);
+      args.Graphics.DrawImage(image, margin.Left, margin.Top, size.width, size.height);
       args.HasMorePages = false;
       image.Dispose();
     }
