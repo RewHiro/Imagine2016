@@ -76,7 +76,7 @@ static class TouchController {
 
   /// <summary> スクリーンからの Raycast による、オブジェクトとの交差判定 </summary>
   public static bool IsRaycastHit(out RaycastHit hit) {
-    var ray = Camera.main.ViewportPointToRay(GetScreenPosition());
+    var ray = Camera.main.ScreenPointToRay(GetScreenPosition());
     return Physics.Raycast(ray, out hit, Camera.main.farClipPlane);
   }
 
@@ -88,7 +88,7 @@ static class TouchController {
 
   /// <summary> 指定したレイヤー上にあるオブジェクトとの交差判定を行う </summary>
   public static bool IsRaycastHitWithLayer(out RaycastHit hit, int layerMask) {
-    var ray = Camera.main.ViewportPointToRay(GetScreenPosition());
+    var ray = Camera.main.ScreenPointToRay(GetScreenPosition());
     return Physics.Raycast(ray, out hit, Camera.main.farClipPlane, layerMask);
   }
 
