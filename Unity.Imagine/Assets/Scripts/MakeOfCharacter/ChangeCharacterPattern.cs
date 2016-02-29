@@ -1,26 +1,45 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+using System.Collections.Generic;
+using System;
 
 /*
-2 / 26
-19 : 14 野本　変更開始
+2 / 29
+14 : 40 野本　変更
 
-    後で中身の処理をいろいろと追加すると
-    思ったので関数をButton１つにつき作りました
+    前回のをかえて、
+    Listに処理をいれ関数を一々作るのを辞めました
 
-    ただButtonが１０個などになると
-    汎用性が低いことが響くのでそこのところのアドバイスをお願いします
-
+    各ボタンごとに番号をしていてやっています
 */
 
 public class ChangeCharacterPattern : MonoBehaviour
 {
     [SerializeField]
-    Image image = null;
-    //image.color = new Color(1.0f, 0.0f, 0.0f);
+    public Image image = null;
     [SerializeField]
-    GameObject[] panels = null;
+    public GameObject[] panels = null;
+
+    public List<Action> _listOfPushButtonAction = new List<Action>();
+
+    void Start()
+    { 
+        Register();
+    }
+
+    //ラッピング
+    public void Register()
+    {
+        _listOfPushButtonAction.Add(() => { image.color = new Color(1.0f, 0.0f, 0.0f); });
+        _listOfPushButtonAction.Add(() => { image.color = new Color(0.0f, 1.0f, 0.0f); });
+        _listOfPushButtonAction.Add(() => { image.color = new Color(0.0f, 0.0f, 1.0f); });
+        _listOfPushButtonAction.Add(() => { image.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f); });
+        _listOfPushButtonAction.Add(() => { image.transform.localScale = new Vector3(0.5f, 0.5f, 1.0f); });
+        _listOfPushButtonAction.Add(() => { image.transform.localScale = new Vector3(0.25f, 0.25f, 1.0f); });
+        _listOfPushButtonAction.Add(() => { image.transform.localPosition = new Vector3(1.0f, 1.0f, 1.0f); });
+        _listOfPushButtonAction.Add(() => { image.transform.localPosition = new Vector3(5.0f, 5.0f, 5.0f); });
+        _listOfPushButtonAction.Add(() => { image.transform.localPosition = new Vector3(10.0f, 10.0f, 10.0f); });
+    }
 
 
     //TypeButtonを押したら
@@ -47,65 +66,14 @@ public class ChangeCharacterPattern : MonoBehaviour
         panels[2].SetActive(true);
     }
 
-    /*
-    ///////TypeSelect時の処理
-    */
+        public void  ActionOfPushButton(int buttonNum_)
+    {
+        //3 * 3なので 0~8まで
+        if (buttonNum_ >= 0 && buttonNum_ <= 8)
+            _listOfPushButtonAction[buttonNum_]();
 
-    //TypeButtonのButton1を押したら
-    public void PushTypeButtonOfButton1()
-    {
-        image.color = new Color(1.0f, 0.0f, 0.0f);
+        //もし踏み外したら
+        else if (buttonNum_ >= 9)
+            Debug.Log(buttonNum_);
     }
-    //TypeButtonのButton2を押したら
-    public void PushTypeButtonOfButton2()
-    {
-        image.color = new Color(0.0f, 1.0f, 0.0f);
-    }
-    //TypeButtonのButton3を押したら
-    public void PushTypeButtonOfButton3()
-    {
-        image.color = new Color(0.0f, 0.0f, 1.0f);
-    }
-
-    /*
-    ///////CostumeSelect時の処理//////
-    */
-
-    //CostumeButtonのButton1を押したら
-    public void PushCostumeButtonOfButton1()
-    {
-        image.transform.localScale = new Vector3(1.0f, 1.0f,1.0f);
-    }
-    //CostumeButtonのButton2を押したら
-    public void PushCostumeButtonOfButton2()
-    {
-        image.transform.localScale = new Vector3(0.5f, 0.5f, 1.0f);
-    }
-    //CostumeButtonのButton3を押したら
-    public void PushCostumeButtonOfButton3()
-    {
-        image.transform.localScale = new Vector3(0.25f, 0.25f, 1.0f);
-    }
-
-    /*
-    ///////DecorationSelect時の処理//////
-    */
-
-    //DecorationButtonのButton1を押したら
-    public void PushDecorationButtonOfButton1()
-    {
-        image.transform.localPosition = new Vector3(1.0f, 1.0f, 1.0f);
-    }
-    //DecorationButtonのButton2を押したら
-    public void PushDecorationButtonOfButton2()
-    {
-        image.transform.localPosition = new Vector3(0.5f, 0.5f, 1.0f);
-    }
-    //DecorationButtonのButton3を押したら
-    public void PushDecorationButtonOfButton3()
-    {
-        image.transform.localPosition = new Vector3(0.25f, 0.25f, 1.0f);
-    }
-
-
 }
