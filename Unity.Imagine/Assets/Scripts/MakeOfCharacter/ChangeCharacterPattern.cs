@@ -11,6 +11,7 @@ using System;
     Listに処理をいれ関数を一々作るのを辞めました
 
     各ボタンごとに番号をしていてやっています
+    Test
 */
 
 public class ChangeCharacterPattern : MonoBehaviour
@@ -23,7 +24,7 @@ public class ChangeCharacterPattern : MonoBehaviour
     public List<Action> _listOfPushButtonAction = new List<Action>();
 
     void Start()
-    { 
+    {
         Register();
     }
 
@@ -66,7 +67,7 @@ public class ChangeCharacterPattern : MonoBehaviour
         panels[2].SetActive(true);
     }
 
-        public void  ActionOfPushButton(int buttonNum_)
+    public void ActionOfPushButton(int buttonNum_)
     {
         //3 * 3なので 0~8まで
         if (buttonNum_ >= 0 && buttonNum_ <= 8)
@@ -76,4 +77,17 @@ public class ChangeCharacterPattern : MonoBehaviour
         else if (buttonNum_ >= 9)
             Debug.Log(buttonNum_);
     }
+
+    public void PushOfDecideButton()
+    {
+        //決定ボタンを押したら
+    }
+
+    //
+    public void PushOfBackTitle()
+    {
+        //右上のButtonを押したら
+    }
+
+
 }
