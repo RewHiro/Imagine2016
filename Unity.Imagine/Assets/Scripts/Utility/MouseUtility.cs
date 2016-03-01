@@ -1,9 +1,13 @@
 ﻿using UnityEngine;
-using System.Collections;
 
+/// <summary>
+/// マウス便利機能
+/// </summary>
 public class MouseUtility : MonoBehaviour
 {
-
+    /// <summary>
+    /// 1フレーム前のPosition座標の差を取得
+    /// </summary>
     public Vector3 getDeltaPos
     {
         get; private set;
