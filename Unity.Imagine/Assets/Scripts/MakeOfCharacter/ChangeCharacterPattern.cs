@@ -11,6 +11,7 @@ using System;
     Listに処理をいれ関数を一々作るのを辞めました
 
     各ボタンごとに番号をしていてやっています
+    Test
 */
 
 public class ChangeCharacterPattern : MonoBehaviour
