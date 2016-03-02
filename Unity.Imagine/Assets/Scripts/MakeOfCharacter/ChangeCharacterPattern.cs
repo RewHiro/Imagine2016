@@ -17,9 +17,7 @@ using System;
 public class ChangeCharacterPattern : MonoBehaviour
 {
     [SerializeField]
-    public GameObject _image = null;
-    [SerializeField]
-    public GameObject[] _panels = null;
+    GameObject[] _panels = null;
 
     //Characterの全体像
     [SerializeField]
@@ -181,5 +179,31 @@ public class ChangeCharacterPattern : MonoBehaviour
         //右上のButtonを押したら
     }
 
+    public void SetCostume(int index)
+    {
+        if (index > _costumePrefabs.Length) throw new IndexOutOfRangeException("out of range");
+        var _costume = GameObject.FindGameObjectWithTag("Costume");
+        if (_costume == null) throw new NullReferenceException("costume tag is nothing");
+        var _parent = _costume.transform.parent;
+        Destroy(_costume);
+        var model = Instantiate(_costumePrefabs[index]);
+        model.name = _costumePrefabs[index].name;
+        model.transform.SetParent(_parent);
+        model.transform.localPosition = Vector3.zero;
+        model.transform.localRotation = Quaternion.identity;
+    }
 
+    public void SetModel(int index)
+    {
+        if (index > _modelPrefabs.Length) throw new IndexOutOfRangeException("out of range");
+        var _character = GameObject.FindGameObjectWithTag("Character");
+        if (_character == null) throw new NullReferenceException("character tag is nothing");
+        var _parent = _character.transform.parent;
+        Destroy(_character);
+        var model = Instantiate(_modelPrefabs[index]);
+        model.name = _modelPrefabs[index].name;
+        model.transform.SetParent(_parent);
+        model.transform.localPosition = Vector3.zero;
+        model.transform.localRotation = Quaternion.identity;
+    }
 }
