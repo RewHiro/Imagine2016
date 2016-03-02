@@ -17,9 +17,25 @@ using System;
 public class ChangeCharacterPattern : MonoBehaviour
 {
     [SerializeField]
-    public Image image = null;
+    public GameObject _image = null;
     [SerializeField]
-    public GameObject[] panels = null;
+    public GameObject[] _panels = null;
+
+    //Characterの全体像
+    [SerializeField]
+    GameObject _characterPlace = null;
+
+    //Typeのモデル
+    [SerializeField]
+    GameObject[] _modelPrefabs = null;
+
+    //Costumeのモデル
+    [SerializeField]
+    GameObject[] _costumePrefabs = null;
+
+    //Decorationのモデル
+    [SerializeField]
+    GameObject[] _decorationPrefabs = null;
 
     public List<Action> _listOfPushButtonAction = new List<Action>();
 
@@ -31,40 +47,116 @@ public class ChangeCharacterPattern : MonoBehaviour
     //ラッピング
     public void Register()
     {
-        _listOfPushButtonAction.Add(() => { image.color = new Color(1.0f, 0.0f, 0.0f); });
-        _listOfPushButtonAction.Add(() => { image.color = new Color(0.0f, 1.0f, 0.0f); });
-        _listOfPushButtonAction.Add(() => { image.color = new Color(0.0f, 0.0f, 1.0f); });
-        _listOfPushButtonAction.Add(() => { image.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f); });
-        _listOfPushButtonAction.Add(() => { image.transform.localScale = new Vector3(0.5f, 0.5f, 1.0f); });
-        _listOfPushButtonAction.Add(() => { image.transform.localScale = new Vector3(0.25f, 0.25f, 1.0f); });
-        _listOfPushButtonAction.Add(() => { image.transform.localPosition = new Vector3(1.0f, 1.0f, 1.0f); });
-        _listOfPushButtonAction.Add(() => { image.transform.localPosition = new Vector3(5.0f, 5.0f, 5.0f); });
-        _listOfPushButtonAction.Add(() => { image.transform.localPosition = new Vector3(10.0f, 10.0f, 10.0f); });
+
+        ////Type///////////////////////////////////////////////////////
+        _listOfPushButtonAction.Add(() => 
+        {
+            var _character = GameObject.FindGameObjectWithTag("Character");
+            Destroy(_character);
+            var model = Instantiate(_modelPrefabs[0]);
+            model.transform.SetParent(_characterPlace.transform);
+            model.transform.localPosition = Vector3.zero;
+        });
+
+        _listOfPushButtonAction.Add(() => 
+        {
+            var _character = GameObject.FindGameObjectWithTag("Character");
+            Destroy(_character);
+            var model = Instantiate(_modelPrefabs[1]);
+            model.transform.SetParent(_characterPlace.transform);
+            model.transform.localPosition = Vector3.zero;
+        });
+
+        _listOfPushButtonAction.Add(() => 
+        {
+            var _character = GameObject.FindGameObjectWithTag("Character");
+            Destroy(_character);
+            var model = Instantiate(_modelPrefabs[2]);
+            model.transform.SetParent(_characterPlace.transform);
+            model.transform.localPosition = Vector3.zero;
+        });
+
+        ////Costume///////////////////////////////////////////////////////
+
+        _listOfPushButtonAction.Add(() => 
+        {
+            var _costume = GameObject.FindGameObjectWithTag("Costume");
+            Destroy(_costume);
+            var model = Instantiate(_costumePrefabs[0]);
+            model.transform.SetParent(_characterPlace.transform);
+            model.transform.localPosition = new Vector3(0,0.45f, 0);
+        });
+        _listOfPushButtonAction.Add(() => 
+        {
+            var _costume = GameObject.FindGameObjectWithTag("Costume");
+            Destroy(_costume);
+            var model = Instantiate(_costumePrefabs[1]);
+            model.transform.SetParent(_characterPlace.transform);
+            model.transform.localPosition = new Vector3(0,0.45f, 0);
+        });
+        _listOfPushButtonAction.Add(() => 
+        {
+            var _costume = GameObject.FindGameObjectWithTag("Costume");
+            Destroy(_costume);
+            var model = Instantiate(_costumePrefabs[2]);
+            model.transform.SetParent(_characterPlace.transform);
+            model.transform.localPosition = new Vector3(0,0.45f, 0);
+        });
+
+
+        ////Decoration///////////////////////////////////////////////////////
+
+        _listOfPushButtonAction.Add(() => 
+        {
+            var _decoration = GameObject.FindGameObjectWithTag("Decoration");
+            Destroy(_decoration);
+            var model = Instantiate(_decorationPrefabs[0]);
+            model.transform.SetParent(_characterPlace.transform);
+            model.transform.localPosition = new Vector3(0.35f, 0, 0);
+        });
+        _listOfPushButtonAction.Add(() => 
+        {
+            var _decoration = GameObject.FindGameObjectWithTag("Decoration");
+            Destroy(_decoration);
+            var model = Instantiate(_decorationPrefabs[1]);
+            model.transform.SetParent(_characterPlace.transform);
+            model.transform.localPosition = new Vector3(0.35f, 0, 0);
+        });
+        _listOfPushButtonAction.Add(() => 
+        {
+            var _decoration = GameObject.FindGameObjectWithTag("Decoration");
+            Destroy(_decoration);
+            var model = Instantiate(_decorationPrefabs[2]);
+            model.transform.SetParent(_characterPlace.transform);
+            model.transform.localPosition = new Vector3(0.35f, 0, 0);
+        });
+
+
     }
 
 
     //TypeButtonを押したら
     public void PushButtonOfType()
     {
-        panels[0].SetActive(true);
-        panels[1].SetActive(false);
-        panels[2].SetActive(false);
+        _panels[0].SetActive(true);
+        _panels[1].SetActive(false);
+        _panels[2].SetActive(false);
     }
 
     //CostumeButtonを押したら
     public void PushButtonOfCostume()
     {
-        panels[0].SetActive(false);
-        panels[1].SetActive(true);
-        panels[2].SetActive(false);
+        _panels[0].SetActive(false);
+        _panels[1].SetActive(true);
+        _panels[2].SetActive(false);
     }
 
     //DecorationButtonを押したら
     public void PushButtonOfDecoration()
     {
-        panels[0].SetActive(false);
-        panels[1].SetActive(false);
-        panels[2].SetActive(true);
+        _panels[0].SetActive(false);
+        _panels[1].SetActive(false);
+        _panels[2].SetActive(true);
     }
 
     public void ActionOfPushButton(int buttonNum_)
