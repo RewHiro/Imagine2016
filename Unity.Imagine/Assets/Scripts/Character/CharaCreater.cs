@@ -27,15 +27,15 @@ public class CharaCreater : MonoBehaviour
         _characterParamter.speed = value;
     }
 
-    public void SetType(uint value)
-    {
-        _characterParamter.type = value;
-    }
+    //public void SetType(uint value)
+    //{
+    //    _characterParamter.type = value;
+    //}
 
-    public void SetCostumeID(uint value)
-    {
-        _characterParamter.costumeID = value;
-    }
+    //public void SetCostumeID(uint value)
+    //{
+    //    _characterParamter.costumeID = value;
+    //}
 
     public void Decide()
     {

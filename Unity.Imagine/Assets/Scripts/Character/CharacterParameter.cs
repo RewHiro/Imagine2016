@@ -1,8 +1,26 @@
-﻿public struct CharacterParameter
+﻿
+[System.Serializable]
+public struct CharacterParameter
 {
-    public uint type { get; set; }
-    public uint costumeID { get; set; }
-    public uint attack { get; set; }
-    public uint defense { get; set; }
-    public uint speed { get; set; }
+    public enum ModelType
+    {
+        HUMAN,
+        ROBO,
+        BEAST,
+        NONE,
+    }
+
+    public enum CostumeType
+    {
+        A,
+        B,
+        C,
+        NONE,
+    }
+
+    public ModelType modelType;
+    public CostumeType costumeType;
+    public uint attack;
+    public uint defense;
+    public uint speed;
 }

@@ -2,6 +2,10 @@
 
 public class Character : MonoBehaviour
 {
+    /// <summary>
+    /// デバッグ用
+    /// </summary>
+    [SerializeField]
     CharacterParameter _characterParamter;
 
     public CharacterParameter getCharacterParamter
@@ -10,10 +14,5 @@ public class Character : MonoBehaviour
         {
             return _characterParamter;
         }
-    }
-
-    void Start()
-    {
-        //TODO：外部からパラメータを読み込む
     }
 }
