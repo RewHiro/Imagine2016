@@ -44,5 +44,16 @@ public class MultiTouch : MonoBehaviour
     {
         TouchAction a = A;
         TouchUpdate(a);
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit hit;
+            Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                Debug.Log(hit.transform.gameObject);
+            }
+        }
     }
 }
