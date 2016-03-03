@@ -1,9 +1,10 @@
 fileFormatVersion: 2
-guid: e4d4e5822c5dd2b4b94e634bde817aa8
-timeCreated: 1456910822
+guid: c33b08acfa7b0ae42a8d7cfc2dd94593
+timeCreated: 1457002816
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: Customize_katachi_C_0
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -30,26 +31,56 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     filterMode: -1
-    aniso: -1
+    aniso: 16
     mipBias: -1
-    wrapMode: -1
-  nPOTScale: 1
+    wrapMode: 1
+  nPOTScale: 0
   lightmap: 0
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 0
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
-  alphaIsTransparency: 0
-  textureType: -1
+  alphaIsTransparency: 1
+  textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: Customize_katachi_C_0
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 267
+        width: 253
+        height: 245
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 120.5, y: -121.5}
+        - {x: 123.5, y: -115.5}
+        - {x: 124.5, y: -87.5}
+        - {x: 124.5, y: 8.5}
+        - {x: 126.5, y: 8.5}
+        - {x: 126.5, y: 122.5}
+        - {x: 121.5, y: 122.5}
+        - {x: 118.5, y: 120.5}
+        - {x: 89.5, y: 122.5}
+        - {x: -119.5, y: 122.5}
+        - {x: -126.5, y: 108.5}
+        - {x: -126.5, y: -38.5}
+        - {x: -125.5, y: -46.5}
+        - {x: -126.5, y: -81.5}
+        - {x: -126.5, y: -106.5}
+        - {x: -120.5, y: -122.5}
+        - {x: 61.5, y: -122.5}
+        - {x: 69.5, y: -121.5}
+        - {x: 105.5, y: -122.5}
     outline: []
   spritePackingTag: 
   userData: 

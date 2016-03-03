@@ -1,9 +1,10 @@
 fileFormatVersion: 2
-guid: 209e1f9059cd64d4da68c8af553064e2
-timeCreated: 1456910814
+guid: 7539ac83a40dd1044a2c9b8fa42f590b
+timeCreated: 1457002799
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: Customize_katachi_A_0
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -30,26 +31,72 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     filterMode: -1
-    aniso: -1
+    aniso: 16
     mipBias: -1
-    wrapMode: -1
-  nPOTScale: 1
+    wrapMode: 1
+  nPOTScale: 0
   lightmap: 0
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 0
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
-  alphaIsTransparency: 0
-  textureType: -1
+  alphaIsTransparency: 1
+  textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: Customize_katachi_A_0
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 264
+        width: 253
+        height: 248
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 114.5, y: 124}
+        - {x: -111.5, y: 124}
+        - {x: -126.5, y: 117}
+        - {x: -126.5, y: -114}
+        - {x: -120.5, y: -124}
+        - {x: 121.5, y: -124}
+        - {x: 125.5, y: -116}
+        - {x: 126.5, y: -90}
+        - {x: 126.5, y: 112}
+      - - {x: -53.5, y: 79}
+        - {x: 79.5, y: 80}
+        - {x: 77.5, y: -71}
+        - {x: -79.5, y: -75}
+      - - {x: -22.5, y: 61}
+        - {x: -73.5, y: 43}
+        - {x: -73.5, y: -63}
+        - {x: -55.5, y: -68}
+        - {x: 52.5, y: -68}
+        - {x: 80.5, y: -43}
+        - {x: 80.5, y: 29}
+        - {x: 72.5, y: 49}
+        - {x: 41.5, y: 61}
+      - - {x: -8.5, y: -15}
+        - {x: -15.5, y: -22}
+        - {x: -13.5, y: -25}
+        - {x: -8.5, y: -25}
+        - {x: -4.5, y: -19}
+        - {x: -4.5, y: -16}
+        - {x: -6.5, y: -15}
+      - - {x: -33.5, y: -21}
+        - {x: -31.5, y: -23}
+        - {x: -28.5, y: -22}
+        - {x: -28.5, y: -19}
+        - {x: -30.5, y: -17}
+        - {x: -33.5, y: -18}
     outline: []
   spritePackingTag: 
   userData: 

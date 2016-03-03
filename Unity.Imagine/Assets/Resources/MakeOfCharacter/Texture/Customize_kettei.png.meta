@@ -1,9 +1,10 @@
 fileFormatVersion: 2
-guid: 3810be5ef2773724eaae5d45461e8ec9
-timeCreated: 1456910815
+guid: 9d7debd9bc28c7749bf961ef4b3ce083
+timeCreated: 1457002828
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: Customize_kettei_0
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -30,26 +31,109 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     filterMode: -1
-    aniso: -1
+    aniso: 16
     mipBias: -1
-    wrapMode: -1
-  nPOTScale: 1
+    wrapMode: 1
+  nPOTScale: 0
   lightmap: 0
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 0
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
-  alphaIsTransparency: 0
-  textureType: -1
+  alphaIsTransparency: 1
+  textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: Customize_kettei_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 855
+        width: 528
+        height: 169
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 241, y: 84.5}
+        - {x: -258, y: 84.5}
+        - {x: -264, y: 57.5}
+        - {x: -264, y: -71.5}
+        - {x: -258, y: -84.5}
+        - {x: 239, y: -84.5}
+        - {x: 262, y: -64.5}
+        - {x: 264, y: -59.5}
+        - {x: 264, y: 53.5}
+      - - {x: 106, y: -57.5}
+        - {x: -232, y: -28.5}
+        - {x: -180, y: 61.5}
+        - {x: 223, y: 46.5}
+      - - {x: -228, y: 60.5}
+        - {x: -228, y: -59.5}
+        - {x: 226, y: -59.5}
+        - {x: 226, y: 59.5}
+        - {x: 206, y: 60.5}
+      - - {x: -185, y: -35.5}
+        - {x: -132, y: 40.5}
+        - {x: 193, y: -20.5}
+        - {x: 158, y: -34.5}
+      - - {x: -51, y: 6.5}
+        - {x: -88, y: 6.5}
+        - {x: -88, y: -34.5}
+        - {x: -57, y: -34.5}
+        - {x: -45, y: -25.5}
+        - {x: -45, y: -1.5}
+      - - {x: 67, y: 32.5}
+        - {x: 67, y: -11.5}
+        - {x: 80, y: -33.5}
+        - {x: 98, y: -33.5}
+        - {x: 111, y: -27.5}
+        - {x: 111, y: 22.5}
+        - {x: 103, y: 32.5}
+      - - {x: -161, y: 31.5}
+        - {x: -168, y: 23.5}
+        - {x: -169, y: 5.5}
+        - {x: -169, y: -29.5}
+        - {x: -162, y: -32.5}
+        - {x: -140, y: -32.5}
+        - {x: -140, y: 5.5}
+        - {x: -147, y: 31.5}
+      - - {x: -103, y: 38.5}
+        - {x: -134, y: 38.5}
+        - {x: -149, y: 19.5}
+        - {x: -149, y: -4.5}
+        - {x: -127, y: -31.5}
+        - {x: -121, y: -32.5}
+        - {x: -108, y: -32.5}
+        - {x: -103, y: -26.5}
+        - {x: -95, y: -8.5}
+        - {x: -95, y: 26.5}
+      - - {x: -29, y: 29.5}
+        - {x: -34, y: 24.5}
+        - {x: -34, y: 13.5}
+        - {x: -19, y: 4.5}
+        - {x: -4, y: 5.5}
+        - {x: -2, y: -20.5}
+        - {x: 0, y: -32.5}
+        - {x: 47, y: -32.5}
+        - {x: 47, y: 5.5}
+        - {x: 35, y: 29.5}
+      - - {x: 132, y: 37.5}
+        - {x: 118, y: 37.5}
+        - {x: 113, y: 35.5}
+        - {x: 113, y: -27.5}
+        - {x: 121, y: -32.5}
+        - {x: 139, y: -32.5}
+        - {x: 143, y: -28.5}
+        - {x: 143, y: 11.5}
+        - {x: 138, y: 34.5}
     outline: []
   spritePackingTag: 
   userData: 

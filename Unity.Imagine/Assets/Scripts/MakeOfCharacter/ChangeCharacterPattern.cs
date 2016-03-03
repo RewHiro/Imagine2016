@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using System.Collections.Generic;
 using System;
 
 /*
@@ -19,13 +17,9 @@ public class ChangeCharacterPattern : MonoBehaviour
     [SerializeField]
     GameObject[] _panels = null;
 
-    //Characterの全体像
-    [SerializeField]
-    GameObject _characterPlace = null;
-
     //Typeのモデル
     [SerializeField]
-    GameObject[] _modelPrefabs = null;
+    GameObject[] _typePrefabs = null;
 
     //Costumeのモデル
     [SerializeField]
@@ -34,103 +28,6 @@ public class ChangeCharacterPattern : MonoBehaviour
     //Decorationのモデル
     [SerializeField]
     GameObject[] _decorationPrefabs = null;
-
-    public List<Action> _listOfPushButtonAction = new List<Action>();
-
-    void Start()
-    {
-        Register();
-    }
-
-    //ラッピング
-    public void Register()
-    {
-
-        ////Type///////////////////////////////////////////////////////
-        _listOfPushButtonAction.Add(() => 
-        {
-            var _character = GameObject.FindGameObjectWithTag("Character");
-            Destroy(_character);
-            var model = Instantiate(_modelPrefabs[0]);
-            model.transform.SetParent(_characterPlace.transform);
-            model.transform.localPosition = Vector3.zero;
-        });
-
-        _listOfPushButtonAction.Add(() => 
-        {
-            var _character = GameObject.FindGameObjectWithTag("Character");
-            Destroy(_character);
-            var model = Instantiate(_modelPrefabs[1]);
-            model.transform.SetParent(_characterPlace.transform);
-            model.transform.localPosition = Vector3.zero;
-        });
-
-        _listOfPushButtonAction.Add(() => 
-        {
-            var _character = GameObject.FindGameObjectWithTag("Character");
-            Destroy(_character);
-            var model = Instantiate(_modelPrefabs[2]);
-            model.transform.SetParent(_characterPlace.transform);
-            model.transform.localPosition = Vector3.zero;
-        });
-
-        ////Costume///////////////////////////////////////////////////////
-
-        _listOfPushButtonAction.Add(() => 
-        {
-            var _costume = GameObject.FindGameObjectWithTag("Costume");
-            Destroy(_costume);
-            var model = Instantiate(_costumePrefabs[0]);
-            model.transform.SetParent(_characterPlace.transform);
-            model.transform.localPosition = new Vector3(0,0.45f, 0);
-        });
-        _listOfPushButtonAction.Add(() => 
-        {
-            var _costume = GameObject.FindGameObjectWithTag("Costume");
-            Destroy(_costume);
-            var model = Instantiate(_costumePrefabs[1]);
-            model.transform.SetParent(_characterPlace.transform);
-            model.transform.localPosition = new Vector3(0,0.45f, 0);
-        });
-        _listOfPushButtonAction.Add(() => 
-        {
-            var _costume = GameObject.FindGameObjectWithTag("Costume");
-            Destroy(_costume);
-            var model = Instantiate(_costumePrefabs[2]);
-            model.transform.SetParent(_characterPlace.transform);
-            model.transform.localPosition = new Vector3(0,0.45f, 0);
-        });
-
-
-        ////Decoration///////////////////////////////////////////////////////
-
-        _listOfPushButtonAction.Add(() => 
-        {
-            var _decoration = GameObject.FindGameObjectWithTag("Decoration");
-            Destroy(_decoration);
-            var model = Instantiate(_decorationPrefabs[0]);
-            model.transform.SetParent(_characterPlace.transform);
-            model.transform.localPosition = new Vector3(0.35f, 0, 0);
-        });
-        _listOfPushButtonAction.Add(() => 
-        {
-            var _decoration = GameObject.FindGameObjectWithTag("Decoration");
-            Destroy(_decoration);
-            var model = Instantiate(_decorationPrefabs[1]);
-            model.transform.SetParent(_characterPlace.transform);
-            model.transform.localPosition = new Vector3(0.35f, 0, 0);
-        });
-        _listOfPushButtonAction.Add(() => 
-        {
-            var _decoration = GameObject.FindGameObjectWithTag("Decoration");
-            Destroy(_decoration);
-            var model = Instantiate(_decorationPrefabs[2]);
-            model.transform.SetParent(_characterPlace.transform);
-            model.transform.localPosition = new Vector3(0.35f, 0, 0);
-        });
-
-
-    }
 
 
     //TypeButtonを押したら
@@ -157,17 +54,6 @@ public class ChangeCharacterPattern : MonoBehaviour
         _panels[2].SetActive(true);
     }
 
-    public void ActionOfPushButton(int buttonNum_)
-    {
-        //3 * 3なので 0~8まで
-        if (buttonNum_ >= 0 && buttonNum_ <= 8)
-            _listOfPushButtonAction[buttonNum_]();
-
-        //もし踏み外したら
-        else if (buttonNum_ >= 9)
-            Debug.Log(buttonNum_);
-    }
-
     public void PushOfDecideButton()
     {
         //決定ボタンを押したら
@@ -179,29 +65,34 @@ public class ChangeCharacterPattern : MonoBehaviour
         //右上のButtonを押したら
     }
 
-    public void SetCostume(int index)
+    public void SetType(int index)
     {
-        if (index > _costumePrefabs.Length) throw new IndexOutOfRangeException("out of range");
-        var _costume = GameObject.FindGameObjectWithTag("Costume");
-        if (_costume == null) throw new NullReferenceException("costume tag is nothing");
-        var _parent = _costume.transform.parent;
-        Destroy(_costume);
-        var model = Instantiate(_costumePrefabs[index]);
-        model.name = _costumePrefabs[index].name;
-        model.transform.SetParent(_parent);
-        model.transform.localPosition = Vector3.zero;
-        model.transform.localRotation = Quaternion.identity;
+        InitModel((uint)index, _typePrefabs, "Character");
     }
 
-    public void SetModel(int index)
+    public void SetCostume(int index)
     {
-        if (index > _modelPrefabs.Length) throw new IndexOutOfRangeException("out of range");
-        var _character = GameObject.FindGameObjectWithTag("Character");
-        if (_character == null) throw new NullReferenceException("character tag is nothing");
-        var _parent = _character.transform.parent;
-        Destroy(_character);
-        var model = Instantiate(_modelPrefabs[index]);
-        model.name = _modelPrefabs[index].name;
+        InitModel((uint)index, _costumePrefabs, "Costume");
+    }
+
+    public void SetDecoration(int index)
+    {
+        InitModel((uint)index, _decorationPrefabs, "Decoration");
+    }
+
+    void InitModel(uint index, GameObject[] prefabs, string tag)
+    {
+        if (index > prefabs.Length) throw new IndexOutOfRangeException("out of range");
+
+        var gameObjectWithTag = GameObject.FindGameObjectWithTag(tag);
+        if (gameObjectWithTag == null) throw new NullReferenceException(tag + " tag is nothing");
+
+        var _parent = gameObjectWithTag.transform.parent;
+
+        Destroy(gameObjectWithTag);
+
+        var model = Instantiate(prefabs[index]);
+        model.name = prefabs[index].name;
         model.transform.SetParent(_parent);
         model.transform.localPosition = Vector3.zero;
         model.transform.localRotation = Quaternion.identity;
