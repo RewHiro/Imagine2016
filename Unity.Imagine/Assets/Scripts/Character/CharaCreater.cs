@@ -115,6 +115,12 @@ public class CharaCreater : MonoBehaviour
             _characterParamter.defense += parameter.defence;
             _characterParamter.speed += parameter.speed;
         }
+        Debug.Log(_characterParamter.attack);
+        Debug.Log(_characterParamter.defense);
+        Debug.Log(_characterParamter.speed);
+        Debug.Log(_characterParamter.modelType);
+        Debug.Log(_characterParamter.costumeType);
+        Debug.Log(_characterParamter.decorationType);
     }
 
     void Start()
