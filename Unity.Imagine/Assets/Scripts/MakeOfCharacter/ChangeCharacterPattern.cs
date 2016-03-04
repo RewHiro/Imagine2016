@@ -29,6 +29,8 @@ public class ChangeCharacterPattern : MonoBehaviour
     [SerializeField]
     GameObject[] _decorationPrefabs = null;
 
+    CharaCreater _charaCreater = null;
+
 
     //TypeButtonを押したら
     public void PushButtonOfType()
@@ -67,7 +69,18 @@ public class ChangeCharacterPattern : MonoBehaviour
 
     public void SetType(int index)
     {
-        InitModel((uint)index, _typePrefabs, "Character");
+        var character = InitModel((uint)index, _typePrefabs, "Character");
+
+        // FIXME:SetCostumeで実行するとできない
+        var parent = character.transform.GetChild(0);
+        Destroy(parent.GetChild(0).gameObject);
+
+        var costumeIndex = (int)_charaCreater.getCharacterParamter.costumeType;
+        var model = Instantiate(_costumePrefabs[costumeIndex]);
+        model.name = _costumePrefabs[costumeIndex].name;
+        model.transform.SetParent(parent);
+        model.transform.localPosition = Vector3.zero;
+        model.transform.localRotation = Quaternion.identity;
     }
 
     public void SetCostume(int index)
@@ -80,7 +93,7 @@ public class ChangeCharacterPattern : MonoBehaviour
         InitModel((uint)index, _decorationPrefabs, "Decoration");
     }
 
-    void InitModel(uint index, GameObject[] prefabs, string tag)
+    GameObject InitModel(uint index, GameObject[] prefabs, string tag)
     {
         if (index > prefabs.Length) throw new IndexOutOfRangeException("out of range");
 
@@ -96,5 +109,12 @@ public class ChangeCharacterPattern : MonoBehaviour
         model.transform.SetParent(_parent);
         model.transform.localPosition = Vector3.zero;
         model.transform.localRotation = Quaternion.identity;
+
+        return model;
+    }
+
+    void Start()
+    {
+        _charaCreater = FindObjectOfType<CharaCreater>();
     }
 }
