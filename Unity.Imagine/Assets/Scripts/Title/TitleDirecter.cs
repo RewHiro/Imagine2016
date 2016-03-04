@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class NewBehaviourScript : MonoBehaviour
-{
+public class TitleDirecter : MonoBehaviour {
+
     [SerializeField]
     GameObject _logo = null;
     //Easingで掛ける距離
@@ -55,11 +55,11 @@ public class NewBehaviourScript : MonoBehaviour
     //こけている最大時間
     private int[] _totalFallCount = new int[2];
 
-    void Start ()
+    void Start()
     {
         SetupOfCharacterView();
     }
-	
+
     void SetupOfCharacterView()
     {
         for (int i = 0; i < _characterView.Length; ++i)
@@ -79,7 +79,7 @@ public class NewBehaviourScript : MonoBehaviour
         _waitTime[1] = 0;
     }
 
-	void Update ()
+    void Update()
     {
         //NameLogoのUpdate
         UpdateOfNameLogo();
@@ -87,9 +87,9 @@ public class NewBehaviourScript : MonoBehaviour
         UpdateOfClouds();
         //CharacterのUpdate
         UpdateOfCharacterView();
-	}
+    }
 
-    
+
     private void UpdateOfNameLogo()
     {
         //Easingを40Countで行う
@@ -111,7 +111,7 @@ public class NewBehaviourScript : MonoBehaviour
                             _cloud[i].transform.localPosition.z);
 
             //範囲の外に出たら左側に戻す
-            if(_cloud[i].transform.localPosition.x > 1100)
+            if (_cloud[i].transform.localPosition.x > 1100)
             {
                 _cloud[i].transform.localPosition =
                 new Vector3(_cloud[i].transform.localPosition.x - 2400,
@@ -126,22 +126,22 @@ public class NewBehaviourScript : MonoBehaviour
     {
         for (int i = 0; i < _characterView.Length; ++i)
         {
-            if(_isJump[i] == false)
-            ++_waitTime[i];
-            if(_waitTime[i] >= _totalWaitTime[i])
+            if (_isJump[i] == false)
+                ++_waitTime[i];
+            if (_waitTime[i] >= _totalWaitTime[i])
             {
                 //Randomで飛ぶタイミングを変更
-                _totalWaitTime[i] = UnityEngine.Random.Range(60,90);
+                _totalWaitTime[i] = UnityEngine.Random.Range(60, 90);
                 _isJump[i] = true;
                 ++_kickCount;
                 //Trueならこかす
-                if(_kickCount % _totalKickCount == 0)
+                if (_kickCount % _totalKickCount == 0)
                     _isFall[i] = true;
 
                 _waitTime[i] = 0;
             }
 
-            if(_isJump[i] == true)
+            if (_isJump[i] == true)
             {
                 ++_jumpCount[i];
 
@@ -150,11 +150,11 @@ public class NewBehaviourScript : MonoBehaviour
                                   _characterView[i].transform.localPosition.y
                                 + _jumpPower - _gravity * _jumpCount[i] * _jumpCount[i],
                                   _characterView[i].transform.localPosition.z);
-                
+
                 //こけていないときに回転させる
-                if(_isFall[i] == false)
+                if (_isFall[i] == false)
                 {
-                    _characterView[i].transform.Rotate(new Vector3(0, 24, 0));
+                    _characterView[i].transform.Rotate(new Vector3(0, _fallSpeed[i] * 4, 0));
                 }
 
                 //初期位置より下にいったら元の位置に戻し、ジャンプ処理の終了
@@ -184,7 +184,7 @@ public class NewBehaviourScript : MonoBehaviour
             {
                 ++_fallCount[i];
                 //Rotateをいじりこかす
-                _characterView[i].transform.Rotate(new Vector3(0,0,_fallSpeed[i]));
+                _characterView[i].transform.Rotate(new Vector3(0, 0, _fallSpeed[i]));
                 //Count 90 / fallSpeed = 15なので　15基準です
                 if (_fallCount[i] == 15)
                 {
