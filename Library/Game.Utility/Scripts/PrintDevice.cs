@@ -26,19 +26,19 @@ namespace Game.Utility
             }
         }
 
-        public static bool PrintRequest(string path)
+        public static bool PrintRequest(string path, string printerName)
         {
             if (!BindImage(path)) { return false; }
-            PrintImage();
+            PrintImage(printerName);
             _image.Dispose();
             _image = null;
             return true;
         }
 
-        public static bool PrintRequest(string path, DrawSize size)
+        public static bool PrintRequest(string path, DrawSize size, string printerName)
         {
             PrintDevice.size = size;
-            return PrintRequest(path);
+            return PrintRequest(path, printerName);
         }
 
         static Image _image = null;
@@ -50,10 +50,11 @@ namespace Game.Utility
             return _image != null;
         }
 
-        static void PrintImage()
+        static void PrintImage(string printerName)
         {
             var pd = new PrintDocument();
             pd.DocumentName = "ar marker";
+            pd.PrinterSettings.PrinterName = printerName;
             pd.PrintPage += new PrintPageEventHandler(PrintEventAction);
             pd.Print();
         }
