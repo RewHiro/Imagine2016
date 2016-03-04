@@ -17,8 +17,11 @@ public class CharacterViewController : MonoBehaviour
     [SerializeField, Range(1.0f, 100.0f), TooltipAttribute("カメラとターゲットの距離")]
     float DISTANCE = 5.0f;
 
-    [SerializeField, Range(0.0f, 10.0f), TooltipAttribute("加速度する時間(秒)")]
+    [SerializeField, Range(0.0f, 10.0f), TooltipAttribute("止まる時間(秒)")]
     float ACCELERATION_TIME = 5.0f;
+
+    [SerializeField, TooltipAttribute("回転速度の倍率")]
+    float SPEED_MAGNIFICATION = 0.5f;
 
     Vector3 POINT = Vector3.zero;
 
@@ -73,8 +76,10 @@ public class CharacterViewController : MonoBehaviour
             Input.touches[0].deltaPosition :
             new Vector2(_mouseUtility.getDeltaPos.x, _mouseUtility.getDeltaPos.y);
 
+        _deltaPosition *= SPEED_MAGNIFICATION;
+
         gameObject.transform.RotateAround(POINT, gameObject.transform.up, _deltaPosition.x);
-        gameObject.transform.RotateAround(POINT, -gameObject.transform.right, _deltaPosition.y);
+        //gameObject.transform.RotateAround(POINT, -gameObject.transform.right, _deltaPosition.y);
     }
 
     IEnumerator AccelerationRotate()
@@ -84,7 +89,6 @@ public class CharacterViewController : MonoBehaviour
         _count += -Time.deltaTime;
         var acceleration = _deltaPosition * _count / ACCELERATION_TIME;
         gameObject.transform.RotateAround(POINT, gameObject.transform.up, acceleration.x);
-        gameObject.transform.RotateAround(POINT, -gameObject.transform.right, acceleration.y);
-
+        //gameObject.transform.RotateAround(POINT, -gameObject.transform.right, acceleration.y);
     }
 }

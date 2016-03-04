@@ -1,0 +1,144 @@
+fileFormatVersion: 2
+guid: aa1b2da6f29fc884fa64b9c72add4308
+timeCreated: 1457002937
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Customize_setumei_2_B_0
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Customize_setumei_2_B_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 340
+        width: 325
+        height: 168
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 155.5, y: 84}
+        - {x: 27.5, y: 84}
+        - {x: -63.5, y: 67}
+        - {x: -162.5, y: 40}
+        - {x: -162.5, y: -67}
+        - {x: -140.5, y: -84}
+        - {x: 9.5, y: -84}
+        - {x: 159.5, y: -28}
+        - {x: 162.5, y: -24}
+        - {x: 162.5, y: 63}
+      - - {x: -112.5, y: -59}
+        - {x: -107.5, y: -50}
+        - {x: -118.5, y: 3}
+        - {x: 101.5, y: 66}
+        - {x: -108.5, y: -58}
+        - {x: -115.5, y: -62}
+        - {x: -114.5, y: -63}
+      - - {x: -87.5, y: -33}
+        - {x: -76.5, y: -33}
+        - {x: -48.5, y: -22}
+        - {x: -20.5, y: -20}
+        - {x: -11.5, y: -10}
+        - {x: -11.5, y: 14}
+        - {x: -23.5, y: 34}
+        - {x: -30.5, y: 36}
+        - {x: -49.5, y: 36}
+        - {x: -49.5, y: 27}
+        - {x: -50.5, y: 36}
+        - {x: -59.5, y: 36}
+        - {x: -112.5, y: 29}
+        - {x: -112.5, y: -33}
+        - {x: -92.5, y: -33}
+        - {x: -91.5, y: -29}
+        - {x: -91.5, y: -14}
+        - {x: -91.5, y: -18}
+      - - {x: 12.5, y: -19}
+        - {x: 13.5, y: -22}
+        - {x: 17.5, y: -22}
+        - {x: 19.5, y: -20}
+        - {x: 18.5, y: -17}
+        - {x: 14.5, y: -17}
+      - - {x: 31.5, y: -7}
+        - {x: 29.5, y: -10}
+        - {x: 29.5, y: -11}
+        - {x: 31.5, y: -14}
+        - {x: 34.5, y: -14}
+        - {x: 39.5, y: -12}
+        - {x: 39.5, y: -7}
+      - - {x: 12.5, y: 33}
+        - {x: -8.5, y: 33}
+        - {x: -8.5, y: 4}
+        - {x: -2.5, y: -10}
+        - {x: 22.5, y: -10}
+        - {x: 34.5, y: 0}
+        - {x: 34.5, y: 12}
+        - {x: 32.5, y: 19}
+      - - {x: 41.5, y: 52}
+        - {x: 41.5, y: 0}
+        - {x: 44.5, y: -10}
+        - {x: 93.5, y: -10}
+        - {x: 93.5, y: 51}
+        - {x: 88.5, y: 52}
+      - - {x: 40.5, y: 14}
+        - {x: 37.5, y: 13}
+        - {x: 37.5, y: 0}
+        - {x: 41.5, y: -2}
+        - {x: 45.5, y: -2}
+        - {x: 45.5, y: 5}
+        - {x: 43.5, y: 9}
+      - - {x: -74.5, y: 34}
+        - {x: -72.5, y: 32}
+        - {x: -67.5, y: 35}
+        - {x: -68.5, y: 38}
+        - {x: -71.5, y: 38}
+        - {x: -74.5, y: 35}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
