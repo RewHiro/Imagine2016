@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 /*
 2 / 29
@@ -29,8 +32,29 @@ public class ChangeCharacterPattern : MonoBehaviour
     [SerializeField]
     GameObject[] _decorationPrefabs = null;
 
-    CharaCreater _charaCreater = null;
+    [SerializeField]
+    GameObject _character = null;
 
+    [SerializeField]
+    Image _description = null;
+
+    List<Sprite> _sprites = new List<Sprite>();
+
+    CharacterParameter _characterParamter = new CharacterParameter();
+    ParameterBar _parameterBar = null;
+
+    public CharacterParameter getCharacterParamter
+    {
+        get
+        {
+            return _characterParamter;
+        }
+    }
+
+    public void Decide()
+    {
+        StartCoroutine(DecideCorutine());
+    }
 
     //TypeButtonを押したら
     public void PushButtonOfType()
@@ -69,44 +93,50 @@ public class ChangeCharacterPattern : MonoBehaviour
 
     public void SetType(int index)
     {
-        var character = InitModel((uint)index, _typePrefabs, "Character");
+        if ((uint)index > (int)CharacterParameter.ModelType.NONE) throw new ArgumentException("type is error");
 
-        // FIXME:SetCostumeで実行するとできない
-        var parent = character.transform.GetChild(0);
-        Destroy(parent.GetChild(0).gameObject);
+        _character = CreateModel((uint)index, _typePrefabs, _character.transform.parent);
+        SetCostume((int)getCharacterParamter.costumeType);
 
-        var costumeIndex = (int)_charaCreater.getCharacterParamter.costumeType;
-        var model = Instantiate(_costumePrefabs[costumeIndex]);
-        model.name = _costumePrefabs[costumeIndex].name;
-        model.transform.SetParent(parent);
-        model.transform.localPosition = Vector3.zero;
-        model.transform.localRotation = Quaternion.identity;
+        _characterParamter.modelType = (CharacterParameter.ModelType)index;
+        _description.sprite = _sprites[index];
+        Decide();
     }
 
     public void SetCostume(int index)
     {
-        InitModel((uint)index, _costumePrefabs, "Costume");
+        if ((uint)index > (int)CharacterParameter.CostumeType.NONE) throw new ArgumentException("costume is error");
+
+        var place = _character.transform.GetChild(0);
+        CreateModel((uint)index, _costumePrefabs, place);
+
+        _characterParamter.costumeType = (CharacterParameter.CostumeType)index;
+        _description.sprite = _sprites[index + 3];
+        Decide();
     }
 
     public void SetDecoration(int index)
     {
-        InitModel((uint)index, _decorationPrefabs, "Decoration");
+        if ((uint)index > (int)CharacterParameter.DecorationType.NONE) throw new ArgumentException("type is error");
+
+        //CreateModel((uint)index, _decorationPrefabs, "Decoration");
+
+        _characterParamter.decorationType = (CharacterParameter.DecorationType)index;
+        _description.sprite = _sprites[index + 6];
+        Decide();
     }
 
-    GameObject InitModel(uint index, GameObject[] prefabs, string tag)
+    GameObject CreateModel(uint index, GameObject[] prefabs, Transform parent)
     {
         if (index > prefabs.Length) throw new IndexOutOfRangeException("out of range");
 
-        var gameObjectWithTag = GameObject.FindGameObjectWithTag(tag);
-        if (gameObjectWithTag == null) throw new NullReferenceException(tag + " tag is nothing");
-
-        var _parent = gameObjectWithTag.transform.parent;
-
-        Destroy(gameObjectWithTag);
+        var child = parent.GetChild(0);
+        if (child == null) throw new NullReferenceException(parent.name + " is nothing child");
+        Destroy(child.gameObject);
 
         var model = Instantiate(prefabs[index]);
         model.name = prefabs[index].name;
-        model.transform.SetParent(_parent);
+        model.transform.SetParent(parent);
         model.transform.localPosition = Vector3.zero;
         model.transform.localRotation = Quaternion.identity;
 
@@ -115,6 +145,37 @@ public class ChangeCharacterPattern : MonoBehaviour
 
     void Start()
     {
-        _charaCreater = FindObjectOfType<CharaCreater>();
+        _sprites.AddRange
+        (
+            Resources.LoadAll<Sprite>("MakeOfCharacter/Texture/Description")
+        );
+
+        _description.sprite = _sprites[0];
+
+        _parameterBar = FindObjectOfType<ParameterBar>();
+
+        Decide();
+        _characterParamter.modelType = CharacterParameter.ModelType.HUMAN;
+        _characterParamter.costumeType = CharacterParameter.CostumeType.A;
+        _characterParamter.decorationType = CharacterParameter.DecorationType.A;
+    }
+
+    IEnumerator DecideCorutine()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        _characterParamter.attack = 0;
+        _characterParamter.defense = 0;
+        _characterParamter.speed = 0;
+        foreach (var parameter in FindObjectsOfType<ModelParameterInfo>())
+        {
+            _characterParamter.attack += parameter.getModelParameter.attack;
+            _characterParamter.defense += parameter.getModelParameter.defence;
+            _characterParamter.speed += parameter.getModelParameter.speed;
+        }
+
+        _parameterBar.ChangeParameterGauge();
+
+        yield return null;
     }
 }
