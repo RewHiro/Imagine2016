@@ -27,6 +27,7 @@ public class NewBehaviourScript : MonoBehaviour
     GameObject[] _characterView = null;
 
     private int[] _waitTime = new int[2];
+    private int[] _totalWaitTime = new int[2];
     private bool[] _isJump = new bool[2]; 
     private int _jumpPower = 8;
     private int[] _jumpCount = new int[2];
@@ -40,6 +41,18 @@ public class NewBehaviourScript : MonoBehaviour
     private int _throwCount = 0;
     private bool _isThrow = false;
 
+
+    //こける処理
+    //何回目
+    private int _kickCount = 0;
+    private int _totalKickCount = 5;
+    private int _characterID = 0;
+
+    private int[] _fallSpeed = new int[2];
+    private bool[] _isFall = new bool[2];
+    private int[] _fallCount = new int[2];
+    private int[] _totalFallCount = new int[2];
+
     void Start ()
     {
 	
@@ -52,6 +65,12 @@ public class NewBehaviourScript : MonoBehaviour
             _waitTime[0] = 30;
             _waitTime[1] = 0;
             _tempPosY[i] = _characterView[i].transform.localPosition.y;
+            _isFall[i] = false;
+            _fallSpeed[0] = -6;
+            _fallSpeed[1] = 6;
+            _fallCount[i] = 0;
+            _totalFallCount[i] = 0;
+            _totalWaitTime[i] = UnityEngine.Random.Range(60, 90);
         }
 	}
 	
@@ -60,7 +79,8 @@ public class NewBehaviourScript : MonoBehaviour
         UpdateOfNameLogo();
         UpdateOfClouds();
         UpdateOfCharacterView();
-        UpdateOfThrowBall();
+        UpdateOfCharacterFall();
+      //  UpdateOfThrowBall();
 	}
 
     private void UpdateOfNameLogo()
@@ -91,8 +111,6 @@ public class NewBehaviourScript : MonoBehaviour
                             _cloud[i].transform.localPosition.y,
                             _cloud[i].transform.localPosition.z);
             }
-
-
         }
     }
 
@@ -102,10 +120,16 @@ public class NewBehaviourScript : MonoBehaviour
         {
             if(_isJump[i] == false)
             ++_waitTime[i];
-            if(_waitTime[i] >= 60 && _isThrow == false)
+            if(_waitTime[i] >= _totalWaitTime[i] && _isThrow == false)
             {
+                _totalWaitTime[i] = UnityEngine.Random.Range(60,90);
                 _isJump[i] = true;
-                _isThrow = true;
+                ++_kickCount;
+                if(_kickCount % _totalKickCount == 0)
+                    _isFall[i] = true;
+
+                //_isThrow = true;
+
                 _waitTime[i] = 0;
             }
 
@@ -118,6 +142,11 @@ public class NewBehaviourScript : MonoBehaviour
                                   _characterView[i].transform.localPosition.y
                                 + _jumpPower - _gravity * _jumpCount[i] * _jumpCount[i],
                                   _characterView[i].transform.localPosition.z);
+                
+                if(_isFall[i] == false)
+                {
+                    _characterView[i].transform.Rotate(new Vector3(0, 24, 0));
+                }
 
 
                 if (_characterView[i].transform.localPosition.y < _tempPosY[i])
@@ -134,6 +163,35 @@ public class NewBehaviourScript : MonoBehaviour
         }
 
     }
+
+    private void UpdateOfCharacterFall()
+    {
+        for (int i = 0; i < _characterView.Length; ++i)
+        {
+            if (_isFall[i] == true)
+            {
+                ++_fallCount[i];
+                _characterView[i].transform.Rotate(new Vector3(0,0,_fallSpeed[i]));
+                if (_fallCount[i] == 15)
+                {
+                    _fallSpeed[i] *= -1;
+                    _isJump[i] = true;
+                }
+
+                if (_fallCount[i] >= 30)
+                {
+                    _isFall[i] = false;
+                    //_fallSpeed[i] *= -1;
+                    _fallCount[i] = 0;
+                }
+            }
+        }
+    }
+
+
+
+
+
 
     private void UpdateOfThrowBall()
     {
