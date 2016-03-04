@@ -42,6 +42,7 @@ public class ChangeCharacterPattern : MonoBehaviour
 
     CharacterParameter _characterParamter = new CharacterParameter();
     ParameterBar _parameterBar = null;
+    CharacterParameterInfo _characterParameterInfo = null;
 
     public CharacterParameter getCharacterParamter
     {
@@ -54,6 +55,7 @@ public class ChangeCharacterPattern : MonoBehaviour
     public void Decide()
     {
         StartCoroutine(DecideCorutine());
+        StartCoroutine(Transition());
     }
 
     //TypeButtonを押したら
@@ -100,7 +102,7 @@ public class ChangeCharacterPattern : MonoBehaviour
 
         _characterParamter.modelType = (CharacterParameter.ModelType)index;
         _description.sprite = _sprites[index];
-        Decide();
+        StartCoroutine(DecideCorutine());
     }
 
     public void SetCostume(int index)
@@ -112,7 +114,7 @@ public class ChangeCharacterPattern : MonoBehaviour
 
         _characterParamter.costumeType = (CharacterParameter.CostumeType)index;
         _description.sprite = _sprites[index + 3];
-        Decide();
+        StartCoroutine(DecideCorutine());
     }
 
     public void SetDecoration(int index)
@@ -123,7 +125,7 @@ public class ChangeCharacterPattern : MonoBehaviour
 
         _characterParamter.decorationType = (CharacterParameter.DecorationType)index;
         _description.sprite = _sprites[index + 6];
-        Decide();
+        StartCoroutine(DecideCorutine());
     }
 
     GameObject CreateModel(uint index, GameObject[] prefabs, Transform parent)
@@ -153,8 +155,9 @@ public class ChangeCharacterPattern : MonoBehaviour
         _description.sprite = _sprites[0];
 
         _parameterBar = FindObjectOfType<ParameterBar>();
+        _characterParameterInfo = FindObjectOfType<CharacterParameterInfo>();
 
-        Decide();
+        StartCoroutine(DecideCorutine());
         _characterParamter.modelType = CharacterParameter.ModelType.HUMAN;
         _characterParamter.costumeType = CharacterParameter.CostumeType.A;
         _characterParamter.decorationType = CharacterParameter.DecorationType.A;
@@ -173,9 +176,16 @@ public class ChangeCharacterPattern : MonoBehaviour
             _characterParamter.defense += parameter.getModelParameter.defence;
             _characterParamter.speed += parameter.getModelParameter.speed;
         }
-
+        _characterParameterInfo.Decide();
         _parameterBar.ChangeParameterGauge();
 
         yield return null;
+    }
+
+    IEnumerator Transition()
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        // 遷移処理
     }
 }
