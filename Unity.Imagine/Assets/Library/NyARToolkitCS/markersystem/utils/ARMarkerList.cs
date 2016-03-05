@@ -30,6 +30,7 @@
  *	<airmail(at)ebony.plala.or.jp> or <nyatla(at)nyatla.jp>
  * 
  */
+
 using System.Collections.Generic;
 using NyAR.Core;
 
@@ -43,13 +44,15 @@ namespace NyAR.MarkerSystem.Utils {
     public class Item : TMarkerData {
       /** MK_ARの情報。比較のための、ARToolKitマーカを格納します。*/
       public NyARMatchPatt_Color_WITHOUT_PCA matchpatt;
+
       /** MK_ARの情報。検出した矩形の格納変数。マーカの一致度を格納します。*/
       public double cf;
       public int patt_w;
       public int patt_h;
+
       /** MK_ARの情報。パターンのエッジ割合。*/
       public int patt_edge_percentage;
-      /** */
+
       public Item(NyARCode i_patt, int i_patt_edge_percentage, double i_patt_size) {
         //base();
         this.matchpatt = new NyARMatchPatt_Color_WITHOUT_PCA(i_patt);
@@ -65,6 +68,7 @@ namespace NyAR.MarkerSystem.Utils {
     private readonly NyARMatchPattResult _patt_result = new NyARMatchPattResult();
     private readonly MultiResolutionPattProvider _mpickup = new MultiResolutionPattProvider();
     private ARMarkerSortList _mkmap;
+
     public ARMarkerList() {
       this._mkmap = new ARMarkerSortList();//初期値1マーカ
                                            //sqはtrackingでnull初期化済み
@@ -82,7 +86,7 @@ namespace NyAR.MarkerSystem.Utils {
     }
 
     // マーカの一致敷居値を設定する。
-    public void setConficenceTh(double i_th) { this._configense_th = i_th; }
+    public void SetConficenceTh(double i_th) { this._configense_th = i_th; }
 
     /**
      * o_targetsに、敷居値を越えたターゲットリストを返却する。
@@ -92,7 +96,7 @@ namespace NyAR.MarkerSystem.Utils {
      * @return
      * @ 
      */
-    public bool update(INyARPerspectiveCopy i_pix_drv, SquareStack.Item i_sq) {
+    public bool Update(INyARPerspectiveCopy i_pix_drv, SquareStack.Item i_sq) {
       //sq_tmpに値を生成したかのフラグ
       bool is_ganalated_sq = false;
       for (int i = this.Count - 1; i >= 0; i--) {
@@ -125,12 +129,12 @@ namespace NyAR.MarkerSystem.Utils {
      * @param i_num_of_markers
      * マーカの個数
      */
-    public void prepare() {
+    public void Prepare() {
       //マッチングテーブルをリセット
       this._mkmap.reset();
     }
 
-    public void finish() {
+    public void Finish() {
       //一致率の最も高いアイテムを得る。
       ARMarkerSortList.Item top_item = this._mkmap.getTopItem();
       //アイテムを検出できなくなるまで、一致率が高い順にアイテムを得る。

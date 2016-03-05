@@ -113,15 +113,18 @@ namespace NyARUnityUtils {
   sealed class NyARRgb2GsFilterRgbAve_UnityRaster : INyARRgb2GsFilterRgbAve {
     private bool _is_inverse;
     private NyARUnityRaster _ref_raster;
+
     public NyARRgb2GsFilterRgbAve_UnityRaster(NyARUnityRaster i_ref_raster, bool is_inverse) {
       System.Diagnostics.Debug.Assert(i_ref_raster.isEqualBufferType(NyARBufferType.OBJECT_CS_Unity));
       this._ref_raster = i_ref_raster;
       this._is_inverse = is_inverse;
     }
+
     public void convert(INyARGrayscaleRaster i_raster) {
       NyARIntSize s = this._ref_raster.getSize();
       this.convertRect(0, 0, s.w, s.h, i_raster);
     }
+
     public void convertRect(int l, int t, int w, int h, INyARGrayscaleRaster o_raster) {
       Color32[] c = (Color32[])(this._ref_raster.getBuffer());
       NyARIntSize size = this._ref_raster.getSize();
@@ -173,6 +176,7 @@ namespace NyARUnityUtils {
             src += row_padding_src;
           }
           return;
+
         default:
           INyARGsPixelDriver out_drv = o_raster.getGsPixelDriver();
           for (int y = t; y < b; y++) {
@@ -184,7 +188,6 @@ namespace NyARUnityUtils {
           }
           return;
       }
-
     }
   }
 
@@ -193,20 +196,19 @@ namespace NyARUnityUtils {
     private Color32[] _ref_buf;
     private NyARIntSize _ref_size;
     private bool _is_inv_v = true;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="NyARUnityUtils.NyARRgbPixelDriver_CsUnity"/> class.
     /// </summary>
     /// <param name='i_inv_v'>
     /// Y軸を反転する場合はtrue
     /// </param>
-    public NyARRgbPixelDriver_CsUnity() {
-    }
-    public NyARIntSize getSize() {
-      return this._ref_size;
-    }
-    public void setInverse(bool i_val) {
-      this._is_inv_v = i_val;
-    }
+    public NyARRgbPixelDriver_CsUnity() { }
+
+    public NyARIntSize getSize() { return this._ref_size; }
+
+    public void setInverse(bool i_val) { this._is_inv_v = i_val; }
+
     /**
      * この関数は、指定した座標の1ピクセル分のRGBデータを、配列に格納して返します。
      */
@@ -296,8 +298,6 @@ namespace NyARUnityUtils {
     }
   }
 
-
-
   sealed class PerspectiveCopy_Unity : NyARPerspectiveCopy_Base {
     private NyARUnityRaster _ref_raster;
     private bool _is_inv_v = false;
@@ -368,6 +368,7 @@ namespace NyARUnityUtils {
             cp4_cy_cp5 += cp4;
           }
           return true;
+
         case NyARBufferType.OBJECT_CS_Unity:
           Color32[] out_buf = (Color32[])(((INyARRgbRaster)o_out).getBuffer());
           if (this._is_inv_v == ((NyARUnityRaster)o_out).IsFlipVirtical()) {
@@ -403,6 +404,7 @@ namespace NyARUnityUtils {
             cp4_cy_cp5 += cp4;
           }
           return true;
+
         default:
           //ANY to RGBx
           if (o_out is INyARRgbRaster) {
@@ -444,6 +446,7 @@ namespace NyARUnityUtils {
       }
       return false;
     }
+
     protected override bool multiPixel(int pk_l, int pk_t, double[] cpara, int i_resolution, INyARRaster o_out) {
       Color32[] in_pixs = (Color32[])this._ref_raster.getBuffer();
       int in_w = this._ref_raster.getWidth();
@@ -516,5 +519,3 @@ namespace NyARUnityUtils {
   }
   #endregion
 }
-
-
