@@ -1,15 +1,19 @@
 fileFormatVersion: 2
-guid: e09ddabba055ca442a0437ade3a36ecc
-timeCreated: 1456910686
+guid: 80742b3fd69f11d4f81d2e5930616fc9
+timeCreated: 1457175975
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Line001
+    100004: "\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8005"
     400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: "\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8001"
+    400002: Line001
+    400004: "\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8005"
+    2300000: "\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8005"
+    3300000: "\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8005"
+    4300000: "\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8005"
     9500000: //RootNode
   materials:
     importMaterials: 1

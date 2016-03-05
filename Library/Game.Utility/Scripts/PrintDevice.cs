@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Collections.Generic;
@@ -54,8 +55,9 @@ namespace Game.Utility
         {
             var pd = new PrintDocument();
             pd.DocumentName = "ar marker";
-            pd.PrinterSettings.PrinterName = printerName;
+            pd.DefaultPageSettings.PrinterSettings.PrinterName = printerName;
             pd.PrintPage += new PrintPageEventHandler(PrintEventAction);
+            if (!pd.DefaultPageSettings.PrinterSettings.IsValid) throw new NotSupportedException("有効なプリンターがないです");
             pd.Print();
         }
 
@@ -78,11 +80,67 @@ namespace Game.Utility
 
         public static bool getPrinterColorConfig(bool type)
         {
-            var printer = new PrinterSettings();
-            var pageSettings = new PageSettings(printer);
-            pageSettings.Color = type;
-            return pageSettings.Color;
+            var printDocument = new PrintDocument();
+            var printerSettings = printDocument.DefaultPageSettings;
+            printerSettings.Color = type;
+            return printerSettings.Color;
         }
 
+        /// <summary>
+        /// プリンターが有効か
+        /// </summary>
+        /// <param name="printName">プリンターの名前</param>
+        /// <returns></returns>
+        public static bool IsValid(string printName)
+        {
+            var printDocument = new PrintDocument();
+            var printerSettings = printDocument.PrinterSettings;
+            printerSettings.PrinterName = printName;
+            return printerSettings.IsValid;
+        }
+
+        /// <summary>
+        /// カラー印刷ができるか
+        /// </summary>
+        /// <param name="printName">プリンターの名前</param>
+        /// <returns></returns>
+        public static bool CanSupportsColor(string printName)
+        {
+            var printDocument = new PrintDocument();
+            var printerSettings = printDocument.PrinterSettings;
+            printerSettings.PrinterName = printName;
+            return printerSettings.SupportsColor;
+        }
+
+        /// <summary>
+        /// 使用可能な用紙サイズの名前一覧を取得
+        /// </summary>
+        /// <param name="printName">プリンターの名前</param>
+        /// <returns></returns>
+        public static IEnumerable<string> GetPaperSizes(string printName)
+        {
+            var printDocument = new PrintDocument();
+            var printerSettings = printDocument.PrinterSettings;
+            printerSettings.PrinterName = printName;
+
+            foreach (PaperSize paperSize in printerSettings.PaperSizes)
+            {
+                yield return paperSize.PaperName;
+            }
+        }
+
+        /// <summary>
+        /// 印刷する向きを設定
+        /// </summary>
+        /// <param name="isBeside">
+        /// true:横
+        /// false:縦
+        /// </param>
+        public static void SetLandScape(bool isBeside)
+        {
+            var printDocument = new PrintDocument();
+            var printerSettings = printDocument.DefaultPageSettings;
+            printerSettings.Landscape = isBeside;
+        }
     }
 }
