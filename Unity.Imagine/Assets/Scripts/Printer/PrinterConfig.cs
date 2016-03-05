@@ -27,6 +27,8 @@ public class PrinterConfig : MonoBehaviour
                 _item.text = printer.Current;
                 _data.options.Add(_item);
             }
+
+            _data.captionText.text = _data.options[0].text;
         }
         else if(_type == PRINTER_COLOR)
         {
