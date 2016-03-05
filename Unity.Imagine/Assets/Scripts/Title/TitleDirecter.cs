@@ -28,7 +28,7 @@ public class TitleDirecter : MonoBehaviour
     {
 
     }
-    
+
 
     void Update()
     {
