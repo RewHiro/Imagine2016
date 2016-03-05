@@ -1,46 +1,30 @@
 ﻿
 using UnityEngine;
-using System.Collections.Generic;
 using NyARUnityUtils;
-using jp.nyatla.nyartoolkit.cs.markersystem;
+using NyAR.MarkerSystem;
 
-public class ARCamera : SingletonBehaviour<ARCamera> {
+//------------------------------------------------------------
+// TIPS:
+// ゲーム空間を描画する、ゲームとしてのカメラ
+//
+//------------------------------------------------------------
+
+public class ARCamera : MonoBehaviour {
 
   NyARUnityMarkerSystem _arSystem = null;
   public NyARUnityMarkerSystem arSystem { get { return _arSystem; } }
 
-  NyARUnityWebCam _arCamera = null;
-  public NyARUnityWebCam arCamera { get { return _arCamera; } }
-
-  List<ARModel> _models = null;
-  public List<ARModel> models { get { return _models; } }
-
   [SerializeField]
-  GameObject _panel = null;
-
-  protected override void Awake() {
-    base.Awake();
-    if (WebCamTexture.devices.Length <= 0) { return; }
-
-    var wcTexture = new WebCamTexture(320, 240, 15);
-    _arCamera = NyARUnityWebCam.createInstance(wcTexture);
-
-    var config = new NyARMarkerSystemConfig(_arCamera.width, _arCamera.height);
-    _arSystem = new NyARUnityMarkerSystem(config);
-
-    _panel.GetComponent<Renderer>().material.mainTexture = wcTexture;
-    _arSystem.setARBackgroundTransform(_panel.transform);
-    _arSystem.setARCameraProjection(Camera.main);
-
-    _models = new List<ARModel>();
-  }
-
+  Camera _camera = null;
+  
   void Start() {
-    _arCamera.start();
+    var manager = ARDeviceManager.instance;
+
+    var config = new NyARMarkerSystemConfig(manager.device.width, manager.device.height);
+    _arSystem = new NyARUnityMarkerSystem(config);
+    _arSystem.setARBackgroundTransform(manager.cameraScreen.transform);
+    _arSystem.setARCameraProjection(_camera);
   }
 
-  void Update() {
-    _arCamera.update();
-    _arSystem.update(_arCamera);
-  }
+  public void UpdateView(NyARUnityWebCam device) { _arSystem.update(device); }
 }
