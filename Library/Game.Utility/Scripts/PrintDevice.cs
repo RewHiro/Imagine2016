@@ -27,6 +27,8 @@ namespace Game.Utility
             }
         }
 
+        static PrintDocument _printDocument = new PrintDocument();
+
         public static bool PrintRequest(string path, string printerName)
         {
             if (!BindImage(path)) { return false; }
@@ -53,12 +55,11 @@ namespace Game.Utility
 
         static void PrintImage(string printerName)
         {
-            var pd = new PrintDocument();
-            pd.DocumentName = "ar marker";
-            pd.DefaultPageSettings.PrinterSettings.PrinterName = printerName;
-            pd.PrintPage += new PrintPageEventHandler(PrintEventAction);
-            if (!pd.DefaultPageSettings.PrinterSettings.IsValid) throw new NotSupportedException("有効なプリンターがないです");
-            pd.Print();
+            _printDocument.DocumentName = "ar marker";
+            _printDocument.DefaultPageSettings.PrinterSettings.PrinterName = printerName;
+            _printDocument.PrintPage += new PrintPageEventHandler(PrintEventAction);
+            if (!_printDocument.DefaultPageSettings.PrinterSettings.IsValid) throw new NotSupportedException("有効なプリンターがないです");
+            _printDocument.Print();
         }
 
         static void PrintEventAction(object sender, PrintPageEventArgs args)
@@ -80,9 +81,14 @@ namespace Game.Utility
 
         public static bool getPrinterColorConfig(bool type)
         {
-            var printDocument = new PrintDocument();
-            var printerSettings = printDocument.DefaultPageSettings;
+            var printerSettings = _printDocument.DefaultPageSettings;
             printerSettings.Color = type;
+            return printerSettings.Color;
+        }
+
+        public static bool getPrinterColorConfig()
+        {
+            var printerSettings = _printDocument.DefaultPageSettings;
             return printerSettings.Color;
         }
 
