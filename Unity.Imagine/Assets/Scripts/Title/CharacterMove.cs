@@ -73,7 +73,6 @@ public class CharacterMove : MonoBehaviour
         UpdateOfCharacterSetIsJump();
         UpdateofCharacterJump();
         UpdateOfCharacterSpin();
-
     }
 
     private void UpdateOfCharacterSetIsJump()
@@ -93,7 +92,6 @@ public class CharacterMove : MonoBehaviour
 
             _waitTime = 0;
         }
-
     }
 
     private void UpdateofCharacterJump()
