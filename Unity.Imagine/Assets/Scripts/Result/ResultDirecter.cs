@@ -17,14 +17,23 @@ public class ResultDirecter : MonoBehaviour
     [SerializeField]
     GameObject[] _panelImage = null;
 
+    /*
     //終わったかどうか
     [SerializeField]
     bool _isEnd;
     [SerializeField]
     int _winPlayerNum;
+    */
+
+    [SerializeField]
+    GameObject _paperParticle;
 
     //Game終了後Setしたかどうか
     private bool _isSetPanels = false;
+
+    public bool _isEnd { get; set; }
+
+    public int _winPlayerNum { get; set; }
 
     void Start()
     {
@@ -41,6 +50,7 @@ public class ResultDirecter : MonoBehaviour
         if (_isEnd == true && _isSetPanels == false)
         {
             SetPanels();
+            SetPaperParticle();
             _isSetPanels = true;
         }
     }
@@ -58,5 +68,15 @@ public class ResultDirecter : MonoBehaviour
         }
     }
 
+    private void SetPaperParticle()
+    {
+        if (_winPlayerNum == 2)
+        {
+            _paperParticle.transform.localPosition
+                = new Vector3(-_paperParticle.transform.localPosition.x,
+                _paperParticle.transform.localPosition.y,
+                _paperParticle.transform.localPosition.z);
+        }
+    }
 
 }
