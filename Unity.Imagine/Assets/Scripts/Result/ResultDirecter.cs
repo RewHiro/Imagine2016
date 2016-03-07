@@ -17,23 +17,37 @@ public class ResultDirecter : MonoBehaviour
     [SerializeField]
     GameObject[] _panelImage = null;
 
-    /*
+    
     //終わったかどうか
     [SerializeField]
     bool _isEnd;
+    public bool isEnd
+    {
+        get
+        {
+            return _isEnd;
+        }
+    }
+
+    //勝ったほうのPlayerの番号
     [SerializeField]
     int _winPlayerNum;
-    */
+    public int winPlayerNum
+    {
+        get
+        {
+            return _winPlayerNum;
+        }
+    }
 
     [SerializeField]
     GameObject _paperParticle;
 
+    [SerializeField]
+    GameObject _buttonOfEndGame;
+
     //Game終了後Setしたかどうか
     private bool _isSetPanels = false;
-
-    public bool _isEnd { get; set; }
-
-    public int _winPlayerNum { get; set; }
 
     void Start()
     {
@@ -42,13 +56,23 @@ public class ResultDirecter : MonoBehaviour
 
     void Update()
     {
-        CheckISEnd();
+        CheckIsEnd();
     }
 
-    private void CheckISEnd()
+    public void SetAllActive(bool isActive_)
+    {
+        for (int i = 0; i < _panelImage.Length; ++i)
+            _panelImage[i].SetActive(isActive_);
+
+        _paperParticle.SetActive(isActive_);
+        _buttonOfEndGame.SetActive(isActive_);
+    }
+
+    private void CheckIsEnd()
     {
         if (_isEnd == true && _isSetPanels == false)
         {
+            SetAllActive(true);
             SetPanels();
             SetPaperParticle();
             _isSetPanels = true;
@@ -77,6 +101,13 @@ public class ResultDirecter : MonoBehaviour
                 _paperParticle.transform.localPosition.y,
                 _paperParticle.transform.localPosition.z);
         }
+
+        else if(_winPlayerNum!= 1 && _winPlayerNum != 2)
+        {
+            Debug.Log("Warning! This number isn't PlayerNum");
+        }
+
     }
+
 
 }
