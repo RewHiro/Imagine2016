@@ -18,6 +18,9 @@ public class PrintStart : MonoBehaviour {
     //[SerializeField]
     //private int y;
 
+    [SerializeField]
+    private GameObject _NotPrinterConfigPanel = null;
+
     //参考サイト：http://www.insatsuyasan.com/data/datasize_tool.html
     const int PrintSize = 620;
 
@@ -26,7 +29,14 @@ public class PrintStart : MonoBehaviour {
     /// </summary>
     public void PrintingStart()
     {
-        StartCoroutine(ScreenShot());
+        if(!PrintDevice.isValid)
+        {
+            _NotPrinterConfigPanel.SetActive(true);
+        }
+        else
+        {
+            StartCoroutine(ScreenShot());
+        }
     }
 
     private IEnumerator ScreenShot()
