@@ -5,7 +5,7 @@ public class CharacterParameterInfo : MonoBehaviour
 {
     CharacterParameter _characterParameter;
 
-    CharacterParameter getCharacterParameter
+    public CharacterParameter getCharacterParameter
     {
         get
         {
