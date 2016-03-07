@@ -3,6 +3,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Game.Utility
 {
@@ -57,9 +58,10 @@ namespace Game.Utility
         {
             _printDocument.DocumentName = "ar marker";
             _printDocument.DefaultPageSettings.PrinterSettings.PrinterName = printerName;
-            _printDocument.PrintPage += new PrintPageEventHandler(PrintEventAction);
             if (!_printDocument.DefaultPageSettings.PrinterSettings.IsValid) throw new NotSupportedException("有効なプリンターがないです");
+            _printDocument.PrintPage += new PrintPageEventHandler(PrintEventAction);
             _printDocument.Print();
+            _printDocument.PrintPage -= new PrintPageEventHandler(PrintEventAction);
         }
 
         static void PrintEventAction(object sender, PrintPageEventArgs args)
@@ -71,7 +73,7 @@ namespace Game.Utility
             image.Dispose();
         }
 
-        public static IEnumerable<string> getPrinterNames()
+        public static IEnumerable<string> GetPrinterNames()
         {
             foreach (string name in PrinterSettings.InstalledPrinters)
             {
@@ -79,14 +81,14 @@ namespace Game.Utility
             }
         }
 
-        public static bool getPrinterColorConfig(bool type)
+        public static bool GetPrinterColorConfig(bool type)
         {
             var printerSettings = _printDocument.DefaultPageSettings;
             printerSettings.Color = type;
             return printerSettings.Color;
         }
 
-        public static bool getPrinterColorConfig()
+        public static bool GetPrinterColorConfig()
         {
             var printerSettings = _printDocument.DefaultPageSettings;
             return printerSettings.Color;
@@ -103,6 +105,19 @@ namespace Game.Utility
             var printerSettings = printDocument.PrinterSettings;
             printerSettings.PrinterName = printName;
             return printerSettings.IsValid;
+        }
+
+        /// <summary>
+        /// 有効なプリンターかあるかどうか調べる
+        /// </summary>
+        /// <returns></returns>
+        public static bool isValid
+        {
+            get
+            {
+                var name = GetPrinterNames();
+                return name.Count() != 0;
+            }
         }
 
         /// <summary>
