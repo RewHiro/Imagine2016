@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ResulTest : MonoBehaviour
+public class RandomColorSystem : MonoBehaviour
 {
     void Update()
     {
