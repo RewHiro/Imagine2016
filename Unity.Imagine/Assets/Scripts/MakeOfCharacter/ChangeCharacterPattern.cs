@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
 using System.Collections;
@@ -17,6 +18,10 @@ using System.Collections.Generic;
 
 public class ChangeCharacterPattern : MonoBehaviour
 {
+
+    const string NEXT_LOAD_SCENE_NAME = "Printer";
+    const string PREVIOUS_LOAD_SCENE_NAME = "Menu";
+
     [SerializeField]
     GameObject[] _panels = null;
 
@@ -56,6 +61,7 @@ public class ChangeCharacterPattern : MonoBehaviour
 
     public void Decide()
     {
+        if (ScreenSequencer.instance.isEffectPlaying) return;
         StartCoroutine(DecideCorutine());
         StartCoroutine(Transition());
     }
@@ -84,15 +90,20 @@ public class ChangeCharacterPattern : MonoBehaviour
         _panels[2].SetActive(true);
     }
 
-    public void PushOfDecideButton()
-    {
-        //決定ボタンを押したら
-    }
-
     //
     public void PushOfBackTitle()
     {
         //右上のButtonを押したら
+
+        var screenSequencer = ScreenSequencer.instance;
+
+        if (screenSequencer.isEffectPlaying) return;
+
+        screenSequencer.SequenceStart
+        (
+            () => { SceneManager.LoadScene(PREVIOUS_LOAD_SCENE_NAME); },
+            new Fade(1.0f)
+        );
     }
 
     public void SetType(int index)
@@ -191,5 +202,11 @@ public class ChangeCharacterPattern : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
 
         // 遷移処理
+
+        ScreenSequencer.instance.SequenceStart
+            (
+                () => { SceneManager.LoadScene(NEXT_LOAD_SCENE_NAME); }, 
+                new Fade(1.0f)
+            );
     }
 }
