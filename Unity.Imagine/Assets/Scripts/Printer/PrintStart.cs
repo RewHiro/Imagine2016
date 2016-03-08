@@ -6,43 +6,63 @@ using System.IO;
 
 public class PrintStart : MonoBehaviour {
 
-    [SerializeField, Tooltip("画像の名前")]
-    private string _textureName;
+    //[SerializeField, Tooltip("画像の名前")]
+    //private string _textureName;
+
+    //[SerializeField]
+    //private int width;
+    //[SerializeField]
+    //private int height;
+    //[SerializeField]
+    //private int x;
+    //[SerializeField]
+    //private int y;
 
     [SerializeField]
-    private int width;
-    [SerializeField]
-    private int height;
-    [SerializeField]
-    private int x;
-    [SerializeField]
-    private int y;
+    private GameObject _NotPrinterConfigPanel = null;
+
+    //参考サイト：http://www.insatsuyasan.com/data/datasize_tool.html
+    const int PrintSize = 620;
 
     /// <summary>
     /// ボタンを押したらプリントスタート
     /// </summary>
     public void PrintingStart()
     {
-        StartCoroutine(ScreenShot());
+        if(!PrintDevice.isValid)
+        {
+            _NotPrinterConfigPanel.SetActive(true);
+        }
+        else
+        {
+            StartCoroutine(ScreenShot());
+        }
     }
 
     private IEnumerator ScreenShot()
     {
         yield return new WaitForEndOfFrame();
 
-        float x2 = (Screen.width / 1920.0f) * x;
-        float y2 = (Screen.height / 1080.0f) * y;
-        float w = (Screen.width / 1920.0f) * width;
-        float h = (Screen.height / 1080.0f) * height;
+        //float x2 = (Screen.width / 1920.0f) * x;
+        //float y2 = (Screen.height / 1080.0f) * y;
+        //float w = (Screen.width / 1920.0f) * width;
+        //float h = (Screen.height / 1080.0f) * height;
 
-        Texture2D tex = new Texture2D((int)w, (int)h, TextureFormat.RGB24, false);
-        tex.ReadPixels(new Rect(x2, y2, w, h), 0, 0);
+        //Texture2D tex = new Texture2D((int)w, (int)h, TextureFormat.RGB24, false);
+        //tex.ReadPixels(new Rect(x2, y2, w, h), 0, 0);
+        //tex.Apply();
+
+        RenderTexture renderTexture = Resources.Load<RenderTexture>("PrinterScene/PrintTexture");
+        RenderTexture.active = renderTexture;
+
+        Texture2D tex = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.ARGB32, false);
+        tex.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
         tex.Apply();
 
         var pngData = tex.EncodeToPNG();
         var screenShotPath = GetScreenShotPath();
         File.WriteAllBytes(screenShotPath, pngData);
-        
+
         var printer = GameObject.Find("Printer").GetComponent<Dropdown>();
         Debug.Log(printer.value);
 
@@ -52,10 +72,9 @@ public class PrintStart : MonoBehaviour {
         //var path = Application.dataPath + "/Resources/" + _textureName + ".png";
         //Debug.Log(path);
         Debug.Log(screenShotPath);
-        //PrintDevice.PrintRequest(screenShotPath, PrintDevice.DrawSize.one, printer.options[printer.value].text);
-
         Debug.Log(printer.options[printer.value].text);
-        
+
+        PrintDevice.PrintRequest(screenShotPath, PrintDevice.DrawSize.one* PrintSize, printer.options[printer.value].text);
     }
 
     private string GetScreenShotPath()

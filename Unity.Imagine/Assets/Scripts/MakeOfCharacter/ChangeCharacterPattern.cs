@@ -33,12 +33,14 @@ public class ChangeCharacterPattern : MonoBehaviour
     GameObject[] _decorationPrefabs = null;
 
     [SerializeField]
-    GameObject _character = null;
+    GameObject _characterPlace = null;
 
     [SerializeField]
     Image _description = null;
 
     List<Sprite> _sprites = new List<Sprite>();
+
+    GameObject _character = null;
 
     CharacterParameter _characterParamter = new CharacterParameter();
     ParameterBar _parameterBar = null;
@@ -151,6 +153,8 @@ public class ChangeCharacterPattern : MonoBehaviour
         (
             Resources.LoadAll<Sprite>("MakeOfCharacter/Texture/Description")
         );
+
+        _character = _characterPlace.transform.GetChild(0).gameObject;
 
         _description.sprite = _sprites[0];
 

@@ -12,11 +12,11 @@ public class ParameterBar : MonoBehaviour
     [SerializeField]
     RectTransform _defenceGauge = null;
 
-    ChangeCharacterPattern _changeCharacterPattern = null;
+    CharacterParameterInfo _characterParameterInfo = null;
 
     void Start()
     {
-        _changeCharacterPattern = FindObjectOfType<ChangeCharacterPattern>();
+        _characterParameterInfo = FindObjectOfType<CharacterParameterInfo>();
     }
 
     public ParameterBar ChangeParameterGauge()
@@ -29,7 +29,7 @@ public class ParameterBar : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
 
-        var characterParameter = _changeCharacterPattern.getCharacterParamter;
+        var characterParameter = _characterParameterInfo.getCharacterParameter;
         _speedGauge.localScale = new Vector3(characterParameter.speed * 0.2f, 1, 1);
         _attackGauge.localScale = new Vector3(characterParameter.attack * 0.2f, 1, 1);
         _defenceGauge.localScale = new Vector3(characterParameter.defense * 0.2f, 1, 1);
