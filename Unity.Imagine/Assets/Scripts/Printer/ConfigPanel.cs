@@ -3,16 +3,16 @@ using Game.Utility;
 
 public class ConfigPanel : MonoBehaviour {
 
-    private GameObject _NotPrinterConfigPanel = null;
+    private GameObject _notPrinterConfigPanel = null;
 
     void Start()
     {
-        _NotPrinterConfigPanel = GameObject.Find("NotPrinterPanel");
+        _notPrinterConfigPanel = GameObject.Find("NotPrinterPanel");
     }
 
     public void ClickButton()
     {
-        _NotPrinterConfigPanel.SetActive(false);
+        _notPrinterConfigPanel.SetActive(false);
     }
 	
 }
