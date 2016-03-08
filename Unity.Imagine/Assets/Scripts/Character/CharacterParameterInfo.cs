@@ -3,9 +3,13 @@ using System;
 
 public class CharacterParameterInfo : MonoBehaviour
 {
+    /// <summary>
+    /// デバッグ用
+    /// </summary>
+    [SerializeField]
     CharacterParameter _characterParameter;
 
-    CharacterParameter getCharacterParameter
+    public CharacterParameter getCharacterParameter
     {
         get
         {
