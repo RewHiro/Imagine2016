@@ -1,35 +1,54 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Barrage : MonoBehaviour {
+public class Barrage : ActionManager
+{
 
     [SerializeField]
-    private KeyCode _key;
-
+    GameObject _bulletObj = null;
 
     [SerializeField]
     private int _keyCount = 0;
 
-    public int _getKey { get { return _keyCount; } }
+    [SerializeField]
+    TimeCount _timeCount = null;
 
-    void Start ()
-    {
+    public int _getKeyCount { get { return _keyCount; } }
 
-	}
-	
-	void Update ()
+    void Start()
     {
-        _keyCount += Barragebutton(_key);
-        Debug.Log(Barragebutton(_key));
+        //_timeCount = GetComponent<TimeCount>();
+    }
+
+    void Update()
+    {
+        _keyCount += Barragebutton(keyCode);
     }
 
     int Barragebutton(KeyCode key)
-        {
-        if(Input.GetKeyDown(key))
+    {
+        if (_timeCount._getTime <= 0) return 0;
+        if (Input.GetKeyDown(key))
         {
             return 1;
         }
 
         return 0;
+    }
+
+    public override void Action()
+    {
+        if (Input.GetKeyDown(keyCode) && _timeCount._getTime > 1)
+        {
+            Debug.Log(keyCode + " : ゲーム01テスト : " + Enemy.transform.name);
+            Vector3 homo = Enemy.transform.position;
+            var obj = Instantiate(_bulletObj);
+            obj.transform.position = transform.position + transform.localScale/2;
+           homo.y -= transform.localScale.y;
+            var value = homo - transform.position;
+            obj.GetComponent<TestShot>()._vectorValue = value.normalized;
+            obj.GetComponent<TestShot>()._parent = gameObject;
         }
+    }
+
 }

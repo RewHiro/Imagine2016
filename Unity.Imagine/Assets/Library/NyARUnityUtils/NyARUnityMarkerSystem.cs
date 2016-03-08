@@ -1,8 +1,8 @@
 ﻿
 using UnityEngine;
 using System;
-using jp.nyatla.nyartoolkit.cs.markersystem;
-using jp.nyatla.nyartoolkit.cs.core;
+using NyAR.MarkerSystem;
+using NyAR.Core;
 
 namespace NyARUnityUtils {
 
@@ -21,7 +21,7 @@ namespace NyARUnityUtils {
     /// </param>
     public Matrix4x4 getUnityProjectionMatrix(ref Matrix4x4 i_mat) {
       NyARFrustum.FrustumParam f = this.getFrustum().getFrustumParam(new NyARFrustum.FrustumParam());
-      NyARUnityUtil.toCameraFrustumRH(this._ref_param, 1, f.near, f.far, ref i_mat);
+      NyARUnityUtil.ToCameraFrustumRH(this._ref_param, 1, f.near, f.far, ref i_mat);
       return i_mat;
     }
 
@@ -34,7 +34,7 @@ namespace NyARUnityUtils {
     public Matrix4x4 getUnityProjectionMatrix() {
       Matrix4x4 mat = new Matrix4x4();
       NyARFrustum.FrustumParam f = this.getFrustum().getFrustumParam(new NyARFrustum.FrustumParam());
-      NyARUnityUtil.toCameraFrustumRH(this._ref_param, 1, f.near, f.far, ref mat);
+      NyARUnityUtil.ToCameraFrustumRH(this._ref_param, 1, f.near, f.far, ref mat);
       return mat;
     }
 
@@ -51,12 +51,12 @@ namespace NyARUnityUtils {
     /// I_buf.
     /// </param>
     public void getMarkerMatrix(int i_id, ref Matrix4x4 i_buf) {
-      NyARUnityUtil.toCameraViewRH(base.getMarkerMatrix(i_id), 1, ref i_buf);
+      NyARUnityUtil.ToCameraViewRH(base.getMarkerMatrix(i_id), 1, ref i_buf);
     }
 
     public Matrix4x4 getUnityMarkerMatrix(int i_id) {
       Matrix4x4 buf = new Matrix4x4();
-      NyARUnityUtil.toCameraViewRH(base.getMarkerMatrix(i_id), 1, ref buf);
+      NyARUnityUtil.ToCameraViewRH(base.getMarkerMatrix(i_id), 1, ref buf);
       return buf;
     }
 
@@ -186,7 +186,7 @@ namespace NyARUnityUtils {
     /// O_rotation.
     /// </param>
     public void getMarkerTransform(int i_id, ref Vector3 o_pos, ref Quaternion o_rotation) {
-      NyARUnityUtil.toCameraViewRH(this.getMarkerMatrix(i_id), 1, ref o_pos, ref o_rotation);
+      NyARUnityUtil.ToCameraViewRH(this.getMarkerMatrix(i_id), 1, ref o_pos, ref o_rotation);
     }
 
     /// <summary>
@@ -201,7 +201,7 @@ namespace NyARUnityUtils {
     public void setMarkerTransform(int i_id, Transform i_t) {
       Vector3 p = new Vector3();
       Quaternion r = new Quaternion();
-      NyARUnityUtil.toCameraViewRH(this.getMarkerMatrix(i_id), 1, ref p, ref r);
+      NyARUnityUtil.ToCameraViewRH(this.getMarkerMatrix(i_id), 1, ref p, ref r);
       i_t.localPosition = p;
       i_t.localRotation = r;
     }

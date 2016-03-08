@@ -56,11 +56,7 @@ public class KeyAction : MonoBehaviour {
         _actionMgr[0].Enemy = _actionMgr[1].transform.gameObject;
         _actionMgr[1].Enemy = _actionMgr[0].transform.gameObject;
 
-        // この色変えは確認用です。
-        _actionMgr[0].GetComponent<MeshRenderer>().material.color = Color.red;
-        _actionMgr[1].GetComponent<MeshRenderer>().material.color = Color.blue;
     }
-
     void KeysAction()
     {
         if (_actionMgr.Length < 2) { return; }

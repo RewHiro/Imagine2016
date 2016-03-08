@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 /*
 2 / 29
@@ -17,65 +18,68 @@ using System;
 public class ChangeCharacterPattern : MonoBehaviour
 {
     [SerializeField]
-    public Image image = null;
+    GameObject[] _panels = null;
+
+    //Typeのモデル
     [SerializeField]
-    public GameObject[] panels = null;
+    GameObject[] _typePrefabs = null;
 
-    public List<Action> _listOfPushButtonAction = new List<Action>();
+    //Costumeのモデル
+    [SerializeField]
+    GameObject[] _costumePrefabs = null;
 
-    void Start()
+    //Decorationのモデル
+    [SerializeField]
+    GameObject[] _decorationPrefabs = null;
+
+    [SerializeField]
+    GameObject _character = null;
+
+    [SerializeField]
+    Image _description = null;
+
+    List<Sprite> _sprites = new List<Sprite>();
+
+    CharacterParameter _characterParamter = new CharacterParameter();
+    ParameterBar _parameterBar = null;
+    CharacterParameterInfo _characterParameterInfo = null;
+
+    public CharacterParameter getCharacterParamter
     {
-        Register();
+        get
+        {
+            return _characterParamter;
+        }
     }
 
-    //ラッピング
-    public void Register()
+    public void Decide()
     {
-        _listOfPushButtonAction.Add(() => { image.color = new Color(1.0f, 0.0f, 0.0f); });
-        _listOfPushButtonAction.Add(() => { image.color = new Color(0.0f, 1.0f, 0.0f); });
-        _listOfPushButtonAction.Add(() => { image.color = new Color(0.0f, 0.0f, 1.0f); });
-        _listOfPushButtonAction.Add(() => { image.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f); });
-        _listOfPushButtonAction.Add(() => { image.transform.localScale = new Vector3(0.5f, 0.5f, 1.0f); });
-        _listOfPushButtonAction.Add(() => { image.transform.localScale = new Vector3(0.25f, 0.25f, 1.0f); });
-        _listOfPushButtonAction.Add(() => { image.transform.localPosition = new Vector3(1.0f, 1.0f, 1.0f); });
-        _listOfPushButtonAction.Add(() => { image.transform.localPosition = new Vector3(5.0f, 5.0f, 5.0f); });
-        _listOfPushButtonAction.Add(() => { image.transform.localPosition = new Vector3(10.0f, 10.0f, 10.0f); });
+        StartCoroutine(DecideCorutine());
+        StartCoroutine(Transition());
     }
-
 
     //TypeButtonを押したら
     public void PushButtonOfType()
     {
-        panels[0].SetActive(true);
-        panels[1].SetActive(false);
-        panels[2].SetActive(false);
+        _panels[0].SetActive(true);
+        _panels[1].SetActive(false);
+        _panels[2].SetActive(false);
     }
 
     //CostumeButtonを押したら
     public void PushButtonOfCostume()
     {
-        panels[0].SetActive(false);
-        panels[1].SetActive(true);
-        panels[2].SetActive(false);
+        _panels[0].SetActive(false);
+        _panels[1].SetActive(true);
+        _panels[2].SetActive(false);
     }
 
     //DecorationButtonを押したら
     public void PushButtonOfDecoration()
     {
-        panels[0].SetActive(false);
-        panels[1].SetActive(false);
-        panels[2].SetActive(true);
-    }
-
-    public void ActionOfPushButton(int buttonNum_)
-    {
-        //3 * 3なので 0~8まで
-        if (buttonNum_ >= 0 && buttonNum_ <= 8)
-            _listOfPushButtonAction[buttonNum_]();
-
-        //もし踏み外したら
-        else if (buttonNum_ >= 9)
-            Debug.Log(buttonNum_);
+        _panels[0].SetActive(false);
+        _panels[1].SetActive(false);
+        _panels[2].SetActive(true);
     }
 
     public void PushOfDecideButton()
@@ -89,5 +93,99 @@ public class ChangeCharacterPattern : MonoBehaviour
         //右上のButtonを押したら
     }
 
+    public void SetType(int index)
+    {
+        if ((uint)index > (int)CharacterParameter.ModelType.NONE) throw new ArgumentException("type is error");
 
+        _character = CreateModel((uint)index, _typePrefabs, _character.transform.parent);
+        SetCostume((int)getCharacterParamter.costumeType);
+
+        _characterParamter.modelType = (CharacterParameter.ModelType)index;
+        _description.sprite = _sprites[index];
+        StartCoroutine(DecideCorutine());
+    }
+
+    public void SetCostume(int index)
+    {
+        if ((uint)index > (int)CharacterParameter.CostumeType.NONE) throw new ArgumentException("costume is error");
+
+        var place = _character.transform.GetChild(0);
+        CreateModel((uint)index, _costumePrefabs, place);
+
+        _characterParamter.costumeType = (CharacterParameter.CostumeType)index;
+        _description.sprite = _sprites[index + 3];
+        StartCoroutine(DecideCorutine());
+    }
+
+    public void SetDecoration(int index)
+    {
+        if ((uint)index > (int)CharacterParameter.DecorationType.NONE) throw new ArgumentException("type is error");
+
+        //CreateModel((uint)index, _decorationPrefabs, "Decoration");
+
+        _characterParamter.decorationType = (CharacterParameter.DecorationType)index;
+        _description.sprite = _sprites[index + 6];
+        StartCoroutine(DecideCorutine());
+    }
+
+    GameObject CreateModel(uint index, GameObject[] prefabs, Transform parent)
+    {
+        if (index > prefabs.Length) throw new IndexOutOfRangeException("out of range");
+
+        var child = parent.GetChild(0);
+        if (child == null) throw new NullReferenceException(parent.name + " is nothing child");
+        Destroy(child.gameObject);
+
+        var model = Instantiate(prefabs[index]);
+        model.name = prefabs[index].name;
+        model.transform.SetParent(parent);
+        model.transform.localPosition = Vector3.zero;
+        model.transform.localRotation = Quaternion.identity;
+
+        return model;
+    }
+
+    void Start()
+    {
+        _sprites.AddRange
+        (
+            Resources.LoadAll<Sprite>("MakeOfCharacter/Texture/Description")
+        );
+
+        _description.sprite = _sprites[0];
+
+        _parameterBar = FindObjectOfType<ParameterBar>();
+        _characterParameterInfo = FindObjectOfType<CharacterParameterInfo>();
+
+        StartCoroutine(DecideCorutine());
+        _characterParamter.modelType = CharacterParameter.ModelType.HUMAN;
+        _characterParamter.costumeType = CharacterParameter.CostumeType.A;
+        _characterParamter.decorationType = CharacterParameter.DecorationType.A;
+    }
+
+    IEnumerator DecideCorutine()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        _characterParamter.attack = 0;
+        _characterParamter.defense = 0;
+        _characterParamter.speed = 0;
+        foreach (var parameter in FindObjectsOfType<ModelParameterInfo>())
+        {
+            _characterParamter.attack += parameter.getModelParameter.attack;
+            _characterParamter.defense += parameter.getModelParameter.defence;
+            _characterParamter.speed += parameter.getModelParameter.speed;
+        }
+        _characterParameterInfo.Decide();
+        _parameterBar.ChangeParameterGauge();
+
+        yield return null;
+    }
+
+    IEnumerator Transition()
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        // 遷移処理
+    }
 }

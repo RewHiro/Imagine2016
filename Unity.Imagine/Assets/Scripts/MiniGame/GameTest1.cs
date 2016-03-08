@@ -30,8 +30,8 @@ public class GameTest1 : ActionManager
             obj.GetComponent<TestShot>()._vectorValue = value.normalized;
             obj.GetComponent<TestShot>()._parent = gameObject;
         }
-        if (Input.GetKey(keyCode)) {
-            transform.Rotate(5.0f, 0.0f, 0.0f);
-        }
+       //if (Input.GetKey(keyCode)) {
+       //     transform.Rotate(5.0f, 0.0f, 0.0f);
+       // }
     }
 }

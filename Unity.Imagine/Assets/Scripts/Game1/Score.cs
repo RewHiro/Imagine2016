@@ -16,6 +16,6 @@ public class Score : MonoBehaviour {
 	
 	void Update ()
     {
-        _text.text = "Score : " + _barrago._getKey;
+        _text.text = "Score : " + _barrago._getKeyCount;
     }
 }
