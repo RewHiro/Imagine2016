@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class TitleDirecter : MonoBehaviour
 {
+
+    const string LOAD_SCENE_NAME = "Menu";
 
     [SerializeField]
     GameObject _logo = null;
@@ -69,8 +71,15 @@ public class TitleDirecter : MonoBehaviour
         }
     }
 
-    private void PushStartButton()
+    public void PushStartButton()
     {
         //StartButtonが押されたら
+        var screenSequencer = ScreenSequencer.instance;
+
+        screenSequencer.SequenceStart
+            (
+                () => { SceneManager.LoadScene(LOAD_SCENE_NAME); },
+                new Fade(1.0f)
+            );
     }
 }

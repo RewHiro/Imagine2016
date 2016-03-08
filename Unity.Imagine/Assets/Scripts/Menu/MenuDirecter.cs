@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System;
 
@@ -22,6 +22,8 @@ using System;
 */
 public class MenuDirecter : MonoBehaviour
 {
+    const string LOAD_SCENE_NAME = "Create";
+
     [SerializeField]
     Camera _camera = null;
 
@@ -77,6 +79,15 @@ public class MenuDirecter : MonoBehaviour
     public void PushOfCharaCreate()
     {
         //Createに移動
+        var screenSequencer = ScreenSequencer.instance;
+
+        if (screenSequencer.isEffectPlaying) return;
+
+        screenSequencer.SequenceStart
+            (
+                () => { SceneManager.LoadScene(LOAD_SCENE_NAME); },
+                new Fade(1.0f)
+            );
     }
 
     public void PushOfMainGame()
