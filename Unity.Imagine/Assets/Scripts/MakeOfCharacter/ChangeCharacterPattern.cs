@@ -33,17 +33,14 @@ public class ChangeCharacterPattern : MonoBehaviour
     [SerializeField]
     GameObject[] _costumePrefabs = null;
 
-    //Decorationのモデル
-    [SerializeField]
-    GameObject[] _decorationPrefabs = null;
-
     [SerializeField]
     GameObject _characterPlace = null;
 
     [SerializeField]
     Image _description = null;
 
-    List<Sprite> _sprites = new List<Sprite>();
+    List<Sprite> _descriptionSprites = new List<Sprite>();
+    List<Texture> _characterTextures = new List<Texture>();
 
     GameObject _character = null;
 
@@ -114,7 +111,10 @@ public class ChangeCharacterPattern : MonoBehaviour
         SetCostume((int)getCharacterParamter.costumeType);
 
         _characterParamter.modelType = (CharacterParameter.ModelType)index;
-        _description.sprite = _sprites[index];
+
+        SetDecoration((int)_characterParamter.decorationType);
+
+        _description.sprite = _descriptionSprites[index];
         StartCoroutine(DecideCorutine());
     }
 
@@ -126,7 +126,7 @@ public class ChangeCharacterPattern : MonoBehaviour
         CreateModel((uint)index, _costumePrefabs, place);
 
         _characterParamter.costumeType = (CharacterParameter.CostumeType)index;
-        _description.sprite = _sprites[index + 3];
+        _description.sprite = _descriptionSprites[index + 3];
         StartCoroutine(DecideCorutine());
     }
 
@@ -134,10 +134,9 @@ public class ChangeCharacterPattern : MonoBehaviour
     {
         if ((uint)index > (int)CharacterParameter.DecorationType.NONE) throw new ArgumentException("type is error");
 
-        //CreateModel((uint)index, _decorationPrefabs, "Decoration");
-
         _characterParamter.decorationType = (CharacterParameter.DecorationType)index;
-        _description.sprite = _sprites[index + 6];
+        _character.GetComponent<MeshRenderer>().material.mainTexture = _characterTextures[index + (int)_characterParamter.modelType * 4];
+        _description.sprite = _descriptionSprites[index + 6];
         StartCoroutine(DecideCorutine());
     }
 
@@ -160,14 +159,29 @@ public class ChangeCharacterPattern : MonoBehaviour
 
     void Start()
     {
-        _sprites.AddRange
+        _descriptionSprites.AddRange
         (
             Resources.LoadAll<Sprite>("MakeOfCharacter/Texture/Description")
         );
 
+        _characterTextures.AddRange
+            (
+                Resources.LoadAll<Texture>("Character/Beast/Texture")
+            );
+
+        _characterTextures.AddRange
+            (
+                Resources.LoadAll<Texture>("Character/Human/Texture")
+            );
+
+        _characterTextures.AddRange
+            (
+                Resources.LoadAll<Texture>("Character/Robo/Texture")
+            );
+
         _character = _characterPlace.transform.GetChild(0).gameObject;
 
-        _description.sprite = _sprites[0];
+        _description.sprite = _descriptionSprites[0];
 
         _parameterBar = FindObjectOfType<ParameterBar>();
         _characterParameterInfo = FindObjectOfType<CharacterParameterInfo>();
