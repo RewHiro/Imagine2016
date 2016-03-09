@@ -7,5 +7,5 @@ public class ActionManager : MonoBehaviour {
 
     public GameObject Enemy { get; set; }
 
-    public virtual void Action() { Debug.Log("仮想メソッドです。継承して使ってください。"); }
+    public virtual void Action() { /*Debug.Log("仮想メソッドです。継承して使ってください。");*/ }
 }

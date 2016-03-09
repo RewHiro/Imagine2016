@@ -19,9 +19,10 @@ public class Gage : MonoBehaviour
 
     private Vector3 _selectGagePosition = new Vector3(0, 0, 0);
 
-    private int _score = 0;
+    public int _score = 0;
 
     public int _getChargeScore { get { return _score; } }
+
 
     void Start()
     {
@@ -38,12 +39,13 @@ public class Gage : MonoBehaviour
             _image.rectTransform.anchoredPosition.x + _size.x / 2) return;
         _selectGagePosition.x += _speed;
         _selectGage.rectTransform.anchoredPosition = _selectGagePosition;
-        _score = RangeSelectNow();
+
+        //_score += RangeSelectNow();
     }
 
-    int RangeSelectNow()
+    public int RangeSelectNow()
     {
-        int score = 0;
+        //int score = 0;
         if (_rangeGageImage.Length == 0) return 0;
 
         foreach (Image selectRange in _rangeGageImage)
@@ -55,11 +57,11 @@ public class Gage : MonoBehaviour
                 selectRange.rectTransform.anchoredPosition.x +
                 selectRange.rectTransform.sizeDelta.x / 2)
             {
-                score++;
+                _score++;
             }
         }
 
-        return score;
+        return _score;
 
     }
 
@@ -68,7 +70,6 @@ public class Gage : MonoBehaviour
         _selectGagePosition = _image.rectTransform.anchoredPosition;
         _selectGagePosition.x -= _size.x / 2;
         _selectGage.rectTransform.anchoredPosition = _selectGagePosition;
-
     }
 
 }
