@@ -42,6 +42,8 @@ public class MultiTouch : MonoBehaviour
 
     void Update()
     {
+        //Debug.Log(Input.touches.Length);
+
         TouchAction a = A;
         TouchUpdate(a);
 
