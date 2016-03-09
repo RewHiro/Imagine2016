@@ -14,7 +14,7 @@ public class KeyAction : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        Init();
+        //Init();
         initCount = -1;
     }
 	
