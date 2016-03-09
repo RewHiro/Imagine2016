@@ -17,6 +17,9 @@ public class CharacterViewController : MonoBehaviour
     [SerializeField, Range(1.0f, 100.0f), TooltipAttribute("カメラとターゲットの距離")]
     float DISTANCE = 5.0f;
 
+    //[SerializeField, TooltipAttribute("カメラとのオフセット")]
+    
+
     [SerializeField, Range(0.0f, 10.0f), TooltipAttribute("止まる時間(秒)")]
     float ACCELERATION_TIME = 5.0f;
 
