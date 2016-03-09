@@ -33,7 +33,6 @@ public class CharacterMove : MonoBehaviour
 
     public struct CharacterStatus
     {
-
         //最大待ち時間
         public int _totalWaitTime;
         //飛んでいるかどうか
@@ -84,6 +83,7 @@ public class CharacterMove : MonoBehaviour
 
     void Update()
     {
+
         UpdateOfCharacterFall();
         UpdateOfCharacterDrop();
         if (_isDrop == false) return;
@@ -213,7 +213,6 @@ public class CharacterMove : MonoBehaviour
                 _characterStatus._isSpin = false;
                 _characterStatus._fallCount = 0;
             }
-
         }
     }
 
