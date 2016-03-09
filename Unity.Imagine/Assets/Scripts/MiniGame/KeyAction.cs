@@ -7,20 +7,35 @@ public class KeyAction : MonoBehaviour {
     [SerializeField]
     private KeyCode[] _key = { KeyCode.A, KeyCode.D };
 
-    private ActionManager[] _actionMgr;
+    private ActionManager[] _actionMgr = null;
+
+    private int initCount { get; set; }
+    private const int INIT_COUNT_FRAME = 1;
 
     // Use this for initialization
     void Start () {
-        Init();
+        //Init();
+        initCount = -1;
     }
 	
 	// Update is called once per frame
 	void Update () {
+        Init();
         KeysAction();
+    }
+
+    public void InitOn()
+    {
+        initCount = INIT_COUNT_FRAME;
     }
 
     void Init()
     {
+        if (initCount != 0) {
+            --initCount;
+            return;
+        }
+        --initCount;
         _actionMgr = GetComponentsInChildren<ActionManager>();
 
         // 両端のオブジェクトの要素番号を取り出して1P、2P決める処理
@@ -56,10 +71,14 @@ public class KeyAction : MonoBehaviour {
         _actionMgr[0].Enemy = _actionMgr[1].transform.gameObject;
         _actionMgr[1].Enemy = _actionMgr[0].transform.gameObject;
 
+        // この色変えは確認用です。
+        _actionMgr[0].GetComponent<MeshRenderer>().material.color = Color.red;
+        _actionMgr[1].GetComponent<MeshRenderer>().material.color = Color.blue;
     }
+
     void KeysAction()
     {
-        if (_actionMgr.Length < 2) { return; }
+        if (_actionMgr == null || _actionMgr.Length < 2) { return; }
         foreach (var action in _actionMgr)
         {
             action.Action();
