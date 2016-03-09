@@ -31,7 +31,7 @@ public class ScreenSequencer : SingletonBehaviour<ScreenSequencer> {
   public bool isEffectExist { get { return effect != null; } }
 
   /// <summary> 演出実行中なら true を返す </summary>
-  public bool isEffectPlaying { get { return isEffectExist ? effect.IsPlaying() : false; } }
+  public bool isEffectPlaying { get { return (isEffectExist ? effect.IsPlaying() : false); } }
 
   /// <summary> 画面遷移を開始 </summary>
   public void SequenceStart(Action action) {
