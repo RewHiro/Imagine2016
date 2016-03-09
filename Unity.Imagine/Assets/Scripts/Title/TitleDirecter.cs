@@ -35,7 +35,7 @@ public class TitleDirecter : MonoBehaviour
     void Update()
     {
         //NameLogoのUpdate
-        UpdateOfNameLogo();
+        //UpdateOfNameLogo();
         //雲のUpdate
         UpdateOfClouds();
     }
