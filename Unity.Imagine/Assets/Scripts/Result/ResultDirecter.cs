@@ -15,21 +15,10 @@ public class ResultDirecter : MonoBehaviour
     [SerializeField]
     GameObject[] _panelImage = null;
 
-    
-    //終わったかどうか
-    [SerializeField]
-    bool _isEnd;
-    public bool isEnd
-    {
-        get
-        {
-            return _isEnd;
-        }
-    }
-
     //勝ったほうのPlayerの番号
     [SerializeField]
     int _winPlayerNum;
+
     public int winPlayerNum
     {
         get
@@ -44,9 +33,6 @@ public class ResultDirecter : MonoBehaviour
     [SerializeField]
     GameObject _buttonOfEndGame;
 
-    //Game終了後Setしたかどうか
-    private bool _isSetPanels = false;
-
     void Start()
     {
 
@@ -54,10 +40,16 @@ public class ResultDirecter : MonoBehaviour
 
     void Update()
     {
-        CheckIsEnd();
+        
     }
 
-    public void SetAllActive(bool isActive_)
+    public void SetResult(int winPlayerNum_)
+    {
+        SetPanelsActive(true);
+        SetCanvas(winPlayerNum_);
+    }
+
+    public void SetPanelsActive(bool isActive_)
     {
         for (int i = 0; i < _panelImage.Length; ++i)
             _panelImage[i].SetActive(isActive_);
@@ -66,20 +58,16 @@ public class ResultDirecter : MonoBehaviour
         _buttonOfEndGame.SetActive(isActive_);
     }
 
-    private void CheckIsEnd()
+    public void SetCanvas(int winPlayerNum_)
     {
-        if (_isEnd == true && _isSetPanels == false)
-        {
-            SetAllActive(true);
-            SetPanels();
-            SetPaperParticle();
-            _isSetPanels = true;
-        }
+        SetPanels(winPlayerNum_);
+        SetPaperParticle(winPlayerNum_);
     }
 
-    private void SetPanels()
+
+    public void SetPanels(int winPlayerNum_)
     {
-        if (_winPlayerNum == 2)
+        if (winPlayerNum_ != 2) return;
         {
             Vector3 _tempPos = _panelImage[0].transform.localPosition;
             _panelImage[0].transform.localPosition
@@ -90,9 +78,9 @@ public class ResultDirecter : MonoBehaviour
         }
     }
 
-    private void SetPaperParticle()
+    public void SetPaperParticle(int winPlayerNum_)
     {
-        if (_winPlayerNum == 2)
+        if (winPlayerNum_ == 2)
         {
             _paperParticle.transform.localPosition
                 = new Vector3(-_paperParticle.transform.localPosition.x,
@@ -100,11 +88,10 @@ public class ResultDirecter : MonoBehaviour
                 _paperParticle.transform.localPosition.z);
         }
 
-        else if(_winPlayerNum!= 1 && _winPlayerNum != 2)
+        else if(winPlayerNum_ != 1 && winPlayerNum_ != 2)
         {
             Debug.Log("Warning! This number isn't PlayerNum");
         }
-
     }
 
 

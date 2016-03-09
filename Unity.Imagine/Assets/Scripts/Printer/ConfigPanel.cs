@@ -1,18 +1,33 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using Game.Utility;
 
 public class ConfigPanel : MonoBehaviour {
 
-    private GameObject _NotPrinterConfigPanel = null;
+    const string LOAD_SCENE_NAME = "Menu";
+
+    private GameObject _notPrinterConfigPanel = null;
 
     void Start()
     {
-        _NotPrinterConfigPanel = GameObject.Find("NotPrinterPanel");
+        _notPrinterConfigPanel = GameObject.Find("NotPrinterPanel");
     }
 
     public void ClickButton()
     {
-        _NotPrinterConfigPanel.SetActive(false);
+        _notPrinterConfigPanel.SetActive(false);
+    }
+
+    public void Return()
+    {
+        var screenSequencer = ScreenSequencer.instance;
+        if (screenSequencer.isEffectPlaying) return;
+
+        screenSequencer.SequenceStart
+            (
+                () => { SceneManager.LoadScene(LOAD_SCENE_NAME); },
+                new Fade(1.0f)
+            );
     }
 	
 }

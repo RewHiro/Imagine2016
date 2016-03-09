@@ -9,17 +9,26 @@ public class CharacterParameterInfo : MonoBehaviour
     [SerializeField]
     CharacterParameter _characterParameter;
 
+    static GameObject _instance = null;
+    void Awake()
+    {
+        if (_instance == null)
+        {
+            DontDestroyOnLoad(gameObject);
+            _instance = gameObject;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     public CharacterParameter getCharacterParameter
     {
         get
         {
             return _characterParameter;
         }
-    }
-
-    void Awake()
-    {
-        DontDestroyOnLoad(this);
     }
 
     public void Decide()

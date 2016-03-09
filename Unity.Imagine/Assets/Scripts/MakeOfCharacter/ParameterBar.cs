@@ -17,6 +17,7 @@ public class ParameterBar : MonoBehaviour
     void Start()
     {
         _characterParameterInfo = FindObjectOfType<CharacterParameterInfo>();
+        ChangeParameterGauge();
     }
 
     public ParameterBar ChangeParameterGauge()
