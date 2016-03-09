@@ -4,31 +4,31 @@ using System;
 using System.Collections;
 
 public class Fade : Effect {
-  public Fade(float time) : base() { _time = time; }
+  public Fade(float time) : base() { _sequenceTime = (time > 0f) ? time * 0.5f : 1f; }
 
   enum State { FadeOut, FadeIn, Update, }
   State _state = State.Update;
-  float _time = 0f;
+  float _sequenceTime = 0f;
 
   public override bool IsPlaying() { return _state != State.Update; }
 
   public override IEnumerator Sequence(Action action) {
     _state = State.FadeOut;
-    yield return Coroutine(FadeUpdate(count => count < _time, 0f, 1));
+    yield return UpdateSequence(time => time < _sequenceTime, 0f, 1);
     action();
-    yield return Coroutine(FadeUpdate(count => count > 0f, _time, -1));
+    yield return UpdateSequence(time => time > 0f, _sequenceTime, -1);
   }
 
-  IEnumerator FadeUpdate(Func<float, bool> RoopExpression, float count, int sign) {
-    while (RoopExpression(count)) {
+  IEnumerator UpdateSequence(Func<float, bool> predicate, float time, int sign) {
+    while (predicate(time)) {
+      time += Time.deltaTime * sign;
+      ImageUpdate(time);
       yield return null;
-      count += Time.deltaTime * sign;
-      ImageUpdate(count);
     }
-    ++_state;
+    if (_state < State.Update) { ++_state; }
   }
 
-  void ImageUpdate(float count) {
-    sequencer.image.color = Color.black * (count / _time);
+  void ImageUpdate(float time) {
+    sequencer.image.color = Color.black * (time / _sequenceTime);
   }
 }
