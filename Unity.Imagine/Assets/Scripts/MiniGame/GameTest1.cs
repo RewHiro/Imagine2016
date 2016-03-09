@@ -3,6 +3,17 @@ using System.Collections;
 
 public class GameTest1 : ActionManager
 {
+    //[SerializeField]
+    GameObject _bulletObj = null;
+    GameObject bulletObj {
+        get {
+            if(_bulletObj == null)
+            {
+                _bulletObj = Resources.Load("MiniGame/Sphere") as GameObject;
+            }
+            return _bulletObj;
+        }
+    }
 
     // Use this for initialization
     void Start()
@@ -18,12 +29,20 @@ public class GameTest1 : ActionManager
 
     public override void Action()
     {
+        transform.LookAt(Enemy.transform);
         if (Input.GetKeyDown(keyCode))
         {
-            Debug.Log(keyCode + " : ゲーム01テスト");
+            Debug.Log(keyCode + " : ゲーム01テスト : " + Enemy.transform.name);
+
+            var obj = Instantiate(bulletObj);
+            var value = Enemy.transform.position - transform.position;
+            obj.transform.position = transform.position;
+            obj.transform.position += value.normalized;
+            obj.GetComponent<TestShot>()._vectorValue = value.normalized;
+            obj.GetComponent<TestShot>()._parent = gameObject;
         }
-        if (Input.GetKey(keyCode)) {
-            transform.Rotate(5.0f, 0.0f, 0.0f);
-        }
+        //if (Input.GetKey(keyCode)) {
+        //    transform.Rotate(5.0f, 0.0f, 0.0f);
+        //}
     }
 }
