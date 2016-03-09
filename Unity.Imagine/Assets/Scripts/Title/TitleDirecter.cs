@@ -24,7 +24,7 @@ public class TitleDirecter : MonoBehaviour
     [SerializeField]
     GameObject[] _cloud = null;
     //雲の移動速度
-    private float _moveCloudSpeed = 0.4f * 10;
+    private float _moveCloudSpeed = 6.0f;
 
     void Start()
     {
