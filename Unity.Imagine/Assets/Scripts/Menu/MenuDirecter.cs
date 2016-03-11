@@ -39,13 +39,22 @@ public class MenuDirecter : MonoBehaviour
     [SerializeField]
     Image _explanationImage = null;
 
+    //現在のカメラRotation
+    private int _nowCameraRotation = 0;
+    private int _rotationSpeed = 3;
+
+
+    //カメラ移動しているかどうか
+    private bool _isChangingCameraRotation = false;
+
+
     void Start()
     {
         Register();
-        _sprites.AddRange
-       (
-           Resources.LoadAll<Sprite>("MakeOfCharacter/Texture/Description")
-       );
+        _sprites.Add(Resources.Load<Sprite>("Menu/Texture/menu_title_power_game"));
+        _sprites.Add(Resources.Load<Sprite>("Menu/Texture/menu_title_defence_game"));
+        _sprites.Add(Resources.Load<Sprite>("Menu/Texture/menu_title_speed_game"));
+
         _explanationImage.sprite = _sprites[0];
     }
 
@@ -55,8 +64,9 @@ public class MenuDirecter : MonoBehaviour
         {
             //Createに戻す
             _isChangeSelectGame = false;
-            _camera.transform.localRotation =
-                Quaternion.Euler(0, 0, 0);
+
+            _rotationSpeed = -3;
+            _isChangingCameraRotation = true;
         });
 
         _ListsOfActionPushButton.Add(() =>
@@ -73,7 +83,23 @@ public class MenuDirecter : MonoBehaviour
 
     private void ChangeCameraAngle()
     {
-        
+        if (_isChangingCameraRotation != true) return;
+        _nowCameraRotation += _rotationSpeed;
+
+        _camera.transform.localRotation =
+             Quaternion.Euler(_nowCameraRotation, 0, 0);
+
+        if (UnityEngine.Mathf.Abs(_nowCameraRotation) >= 90 && _rotationSpeed > 0)
+        {
+            FindObjectOfType<AnimeterTest>().isPlay = true;
+            _isChangingCameraRotation = false;
+
+        }
+
+        else if (UnityEngine.Mathf.Abs(_nowCameraRotation) <= 0 && _rotationSpeed < 0)
+        {
+            _isChangingCameraRotation = false;
+        }
     }
 
     public void PushOfCharaCreate()
@@ -95,10 +121,10 @@ public class MenuDirecter : MonoBehaviour
         if ( _isChangeSelectGame == false)
         {
             _isChangeSelectGame = true;
-            //TODO : ムービングを作る
-            _camera.transform.localRotation =
-                Quaternion.Euler(90, 0, 0);
-            FindObjectOfType<AnimeterTest>().isPlay = true;
+
+            _rotationSpeed = 3;
+            _isChangingCameraRotation = true;
+
         }
     }
 
@@ -113,12 +139,12 @@ public class MenuDirecter : MonoBehaviour
         {
             _nowSelectGameNum = nowSelectGameNum_;
             Debug.Log(_nowSelectGameNum);
-            _explanationImage.sprite = _sprites[_nowSelectGameNum];
+            _explanationImage.sprite = _sprites[_nowSelectGameNum - 1];
         }
         else if (nowSelectGameNum_ == 0)
         {
             _nowSelectGameNum = UnityEngine.Random.Range(1, 3);
-            _explanationImage.sprite = _sprites[_nowSelectGameNum];
+            _explanationImage.sprite = _sprites[_nowSelectGameNum - 1];
         }
     }
 }
