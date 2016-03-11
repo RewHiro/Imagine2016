@@ -121,5 +121,4 @@ public class MenuDirecter : MonoBehaviour
             _explanationImage.sprite = _sprites[_nowSelectGameNum];
         }
     }
-
 }
