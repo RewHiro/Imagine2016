@@ -10,7 +10,7 @@ public class ChargePlayer : ActionManager
 
     public bool _getPressOnce { get { return _pressOnce; } }
 
-    bool _isInit = false;
+    bool _isInit;
 
     public bool _getIsInit { get { return _isInit; } }
 
@@ -18,12 +18,14 @@ public class ChargePlayer : ActionManager
     [SerializeField]
     private EnergyGage[] _energyGage;
 
-    void Start(){}
+    void Start(){
+        _isInit = false;
+    }
 
     void Update()
     {
-        Debug.Log(_isInit);
-        Debug.Log(_energyGage[0]._getIsPowerGage); 
+        //Debug.Log(_isInit);
+        //Debug.Log(_energyGage[0]._getIsPowerGage); 
         IsKeyDownMoveGage();
         EnergyGageMove();
     }
@@ -41,7 +43,7 @@ public class ChargePlayer : ActionManager
         {
             _gage.RangeSelectNow();
             _pressOnce = true;
-            _isInit = false;
+           // _isInit = false;
         }
     }
 
