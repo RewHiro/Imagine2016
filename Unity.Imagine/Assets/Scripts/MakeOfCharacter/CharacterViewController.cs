@@ -14,8 +14,8 @@ public class CharacterViewController : MonoBehaviour
     [SerializeField, TooltipAttribute("カメラで写したいターゲット")]
     Transform _target = null;
 
-    [SerializeField, Range(1.0f, 100.0f), TooltipAttribute("カメラとターゲットの距離")]
-    float DISTANCE = 5.0f;
+    [SerializeField, TooltipAttribute("カメラとのオフセット")]
+    Vector3 OFF_SET = Vector3.back;
 
     [SerializeField, Range(0.0f, 10.0f), TooltipAttribute("止まる時間(秒)")]
     float ACCELERATION_TIME = 5.0f;
@@ -48,8 +48,10 @@ public class CharacterViewController : MonoBehaviour
 
         POINT = _target.position;
 
+        var offSet = OFF_SET + POINT;
+
         gameObject.transform.position =
-            new Vector3(POINT.x, POINT.y, -DISTANCE);
+            new Vector3(offSet.x, offSet.y, offSet.z);
 
         StartCoroutine(Control());
     }
