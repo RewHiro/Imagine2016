@@ -33,7 +33,6 @@ public class CharacterMove : MonoBehaviour
 
     public struct CharacterStatus
     {
-
         //最大待ち時間
         public int _totalWaitTime;
         //飛んでいるかどうか
@@ -56,6 +55,19 @@ public class CharacterMove : MonoBehaviour
 
     CharacterStatus _characterStatus;
 
+    /*
+    ////////////////開幕落ちてくる処理///////////////////////
+    */
+
+    //落ちる処理が終わってるかどうか
+    private bool _isEndFalled = false;
+
+    //落ちる距離
+    private float _totalFallDistance;
+
+    //ちょっとバウンドする。
+    private bool _isDrop = false;
+
     void Start()
     {
         _characterStatus._totalWaitTime = 0;
@@ -65,14 +77,74 @@ public class CharacterMove : MonoBehaviour
         _characterStatus._isSpin = false;
         _characterStatus._fallCount = 0;
         _characterStatus._totalFallCount = 30;
+        _totalFallDistance = 500.0f;
     }
 
 
     void Update()
     {
+
+        UpdateOfCharacterFall();
+        UpdateOfCharacterDrop();
+        if (_isDrop == false) return;
         UpdateOfCharacterSetIsJump();
         UpdateofCharacterJump();
         UpdateOfCharacterSpin();
+
+        if (TouchController.IsTouchBegan())
+        {
+            PushHit();
+        }
+    }
+
+    private void UpdateOfCharacterFall()
+    {
+        if (_isEndFalled == true) return;
+
+        ++_characterStatus._jumpCount;
+
+        _totalFallDistance += -_gravity * _characterStatus._jumpCount * _characterStatus._jumpCount / 20;
+
+        _character.transform.localPosition
+               = new Vector3(_character.transform.localPosition.x,
+                             _characterStatus._tempPosY + _totalFallDistance,
+                             _character.transform.localPosition.z);
+
+        if (_totalFallDistance < 0)
+        {
+            _isEndFalled = true;
+            _character.transform.localPosition
+            = new Vector3(_character.transform.localPosition.x,
+                          _characterStatus._tempPosY,
+                          _character.transform.localPosition.z);
+            _characterStatus._jumpCount = 0;
+        }
+    }
+
+
+    private void UpdateOfCharacterDrop()
+    {
+        if (_isDrop == false && _isEndFalled == true)
+        {
+            ++_characterStatus._jumpCount;
+
+            _character.transform.localPosition
+              = new Vector3(_character.transform.localPosition.x,
+                            _character.transform.localPosition.y
+                            + _jumpPower / 2 - _gravity * _characterStatus._jumpCount * _characterStatus._jumpCount,
+                            _character.transform.localPosition.z);
+
+            if (_character.transform.localPosition.y < _characterStatus._tempPosY)
+            {
+                _isDrop = true;
+                _character.transform.localPosition
+                = new Vector3(_character.transform.localPosition.x,
+                              _characterStatus._tempPosY,
+                              _character.transform.localPosition.z);
+                _characterStatus._jumpCount = 0;
+            }
+
+        }
     }
 
     private void UpdateOfCharacterSetIsJump()
@@ -83,13 +155,8 @@ public class CharacterMove : MonoBehaviour
         if (_waitTime >= _characterStatus._totalWaitTime)
         {
             //Randomで飛ぶタイミングを変更
-            _characterStatus._totalWaitTime = UnityEngine.Random.Range(60, 90);
+            _characterStatus._totalWaitTime = UnityEngine.Random.Range(120, 240);
             _characterStatus._isJump = true;
-            ++_kickCount;
-            //Trueならこかす
-            if (_kickCount % _totalKickCount == 0 && _canSpin == true)
-                _characterStatus._isSpin = true;
-
             _waitTime = 0;
         }
     }
@@ -109,7 +176,7 @@ public class CharacterMove : MonoBehaviour
             //こけていないときに回転させる
             if (_characterStatus._isSpin == false)
             {
-                _character.transform.Rotate(new Vector3(0,_spinSpeed * 4, 0));
+                _character.transform.Rotate(new Vector3(0, _spinSpeed * 4, 0));
             }
 
             //初期位置より下にいったら元の位置に戻し、ジャンプ処理の終了
@@ -131,7 +198,7 @@ public class CharacterMove : MonoBehaviour
         {
             ++_characterStatus._fallCount;
             //Rotateをいじりこかす
-            _character.transform.Rotate(new Vector3(0, 0,_spinSpeed));
+            _character.transform.Rotate(new Vector3(0, 0, _spinSpeed));
             //Count 90 / fallSpeed = 15なので　15基準です
             if (_characterStatus._fallCount == 15)
             {
@@ -146,7 +213,23 @@ public class CharacterMove : MonoBehaviour
                 _characterStatus._isSpin = false;
                 _characterStatus._fallCount = 0;
             }
+        }
+    }
 
+    void PushHit()
+    {
+        var hitObject = new RaycastHit();
+        var isHit = TouchController.IsRaycastHit(out hitObject);
+
+        if (!isHit) { Debug.Log("failure"); return; }
+
+        Debug.Log("object is " + hitObject.transform.name);
+
+        if (hitObject.transform.name == _character.name 
+            && _characterStatus._isSpin == false && _characterStatus._isJump == false)
+        {
+            _characterStatus._isSpin = true;
+            _characterStatus._isJump = true;
         }
     }
 }
