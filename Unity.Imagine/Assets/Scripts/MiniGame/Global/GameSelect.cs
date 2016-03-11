@@ -24,6 +24,7 @@ public class GameSelect : MonoBehaviour {
     {
         foreach(var obj in _objList)
         {
+            if(obj == null) { continue; }
             Destroy(obj);
         }
         foreach(var component in _components)
@@ -40,7 +41,7 @@ public class GameSelect : MonoBehaviour {
 
         if (players.Length != _PLAYER_MAX) { return; }
        
-        if(GUI.Button(new Rect(20, 20, 100, 50), "Game1"))
+        if (GUI.Button(new Rect(20, Screen.height - 70, 100, 50), "Game1"))
         {
             ComponentDestroy();
             for (int i = 0; i < _PLAYER_MAX; ++i)
@@ -50,23 +51,32 @@ public class GameSelect : MonoBehaviour {
             GetComponent<KeyAction>().InitOn();
         }
 
-        if (GUI.Button(new Rect(140, 20, 100, 50), "Game2"))
+        if (GUI.Button(new Rect(140, Screen.height - 70, 100, 50), "Game2"))
         {
             ComponentDestroy();
             for (int i = 0; i < _PLAYER_MAX; ++i)
             {
                 _components[i] = players[i].AddComponent(typeof(Pendulum));
             }
-            GameObject obj = Instantiate(Resources.Load("MiniGame/Pendulum/Ball") as GameObject);
+            //CreateShield();
+            var obj = Instantiate(Resources.Load("MiniGame/Pendulum/Ball2") as GameObject);
             obj.GetComponent<Ball>().SetPlayers(players);
-            Vector3 pos = players[1].transform.position - players[0].transform.position;
+            var pos = players[1].transform.position - players[0].transform.position;
             obj.transform.position = players[0].transform.position + pos * 0.5f;
             obj.name = "Ball";
+
+            var canvasObj = Resources.Load("MiniGame/Pendulum/PendulumCanvas") as GameObject;
+            var canvas = Instantiate(canvasObj);
+            canvas.name = canvasObj.name;
+
             _objList.Add(obj);
+            _objList.Add(canvas);
+            _objList.Add(players[0].GetComponent<Pendulum>().CreateShield());
+            _objList.Add(players[1].GetComponent<Pendulum>().CreateShield());
             GetComponent<KeyAction>().InitOn();
         }
 
-        if (GUI.Button(new Rect(260, 20, 100, 50), "Game3"))
+        if (GUI.Button(new Rect(260, Screen.height - 70, 100, 50), "Game3"))
         {
 
         }

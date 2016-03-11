@@ -84,4 +84,15 @@ public class KeyAction : MonoBehaviour {
             action.Action();
         }
     }
+
+    public List<GameObject> GetPlayers()
+    {
+        if(_actionMgr == null) { return null; }
+        List<GameObject> list = new List<GameObject>();
+        foreach (var action in _actionMgr)
+        {
+            list.Add(action.gameObject);
+        }
+        return list;
+    }
 }

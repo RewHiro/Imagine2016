@@ -17,7 +17,9 @@ public class Ball : MonoBehaviour {
     [SerializeField]
     float _addPowerValue = 5.0f;
 
-    Rigidbody _rigidbody; 
+    Rigidbody _rigidbody;
+
+    bool _stopFlag = false;
 
     enum Target{
         Player1,
@@ -28,6 +30,9 @@ public class Ball : MonoBehaviour {
     // Use this for initialization
     void Start () {
         init();
+
+        Vector3 offset = new Vector3(0.0f, 1.0f, 0.0f);
+        transform.position += (offset);
     }
 
     void init()
@@ -39,6 +44,7 @@ public class Ball : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (_stopFlag) { return; }
         ThrowBall();
     }
 
@@ -46,7 +52,15 @@ public class Ball : MonoBehaviour {
     {
         //Debug.Log((int)target);
         Vector3 vectorPower = _player[(int)target].transform.position - transform.position;
-        _rigidbody.velocity = vectorPower.normalized * power;
+
+        float ballLength = Vector3.Distance(_player[(int)target].transform.position, transform.position);
+        float playerLength = Vector3.Distance(_player[0].transform.position, _player[1].transform.position);
+        float nomarize = ballLength / playerLength;
+        Vector3 sin = new Vector3(0.0f, -Mathf.Cos(nomarize * Mathf.PI), 0.0f);
+
+        float offsetY = 7.0f;
+        Vector3 offset = new Vector3(0.0f, offsetY / 2.5f, 0.0f);
+        _rigidbody.velocity = vectorPower.normalized * power + sin * offsetY + offset;
         //_rigidbody.AddForce(vectorPower.normalized);
     }
 
@@ -64,5 +78,11 @@ public class Ball : MonoBehaviour {
     public void SetPlayers(GameObject[] players)
     {
         _player = players;
+    }
+
+    public void StopBall()
+    {
+        _stopFlag = true;
+        _rigidbody.velocity = Vector3.zero;
     }
 }
