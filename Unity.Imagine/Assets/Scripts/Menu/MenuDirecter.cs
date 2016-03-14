@@ -22,7 +22,8 @@ using System;
 */
 public class MenuDirecter : MonoBehaviour
 {
-    const string LOAD_SCENE_NAME = "Create";
+    const string LOAD_SCENE_CREATE = "Create";
+    const string LOAD_SCENE_TITLE = "Title";
 
     [SerializeField]
     Camera _camera = null;
@@ -74,6 +75,20 @@ public class MenuDirecter : MonoBehaviour
             //選択のはい
         });
 
+        _ListsOfActionPushButton.Add(() =>
+        {
+            //Titleに移動
+            var screenSequencer = ScreenSequencer.instance;
+
+            if (screenSequencer.isEffectPlaying) return;
+
+            screenSequencer.SequenceStart
+                (
+                    () => { SceneManager.LoadScene(LOAD_SCENE_TITLE); },
+                    new Fade(1.0f)
+                );
+        });
+
     }
 
     void Update()
@@ -111,7 +126,7 @@ public class MenuDirecter : MonoBehaviour
 
         screenSequencer.SequenceStart
             (
-                () => { SceneManager.LoadScene(LOAD_SCENE_NAME); },
+                () => { SceneManager.LoadScene(LOAD_SCENE_CREATE); },
                 new Fade(1.0f)
             );
     }
@@ -135,16 +150,18 @@ public class MenuDirecter : MonoBehaviour
 
     public void SelectOfGameNum(int nowSelectGameNum_)
     {
-        if (nowSelectGameNum_ >= 1 && nowSelectGameNum_ <= 3)
+        if (nowSelectGameNum_ >= 0 && nowSelectGameNum_ <= 2)
         {
             _nowSelectGameNum = nowSelectGameNum_;
             Debug.Log(_nowSelectGameNum);
-            _explanationImage.sprite = _sprites[_nowSelectGameNum - 1];
+            _explanationImage.sprite = _sprites[_nowSelectGameNum];
+            FindObjectOfType<SelectGameStatus>().SelectGameNum = _nowSelectGameNum;
         }
-        else if (nowSelectGameNum_ == 0)
+        else if (nowSelectGameNum_ == 3)
         {
-            _nowSelectGameNum = UnityEngine.Random.Range(1, 3);
-            _explanationImage.sprite = _sprites[_nowSelectGameNum - 1];
+            _nowSelectGameNum = UnityEngine.Random.Range(0, 2);
+            _explanationImage.sprite = _sprites[_nowSelectGameNum];
+            FindObjectOfType<SelectGameStatus>().SelectGameNum = _nowSelectGameNum;
         }
     }
 }
