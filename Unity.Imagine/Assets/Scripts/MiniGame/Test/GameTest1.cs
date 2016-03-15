@@ -9,7 +9,7 @@ public class GameTest1 : ActionManager
         get {
             if(_bulletObj == null)
             {
-                _bulletObj = Resources.Load("MiniGame/Sphere") as GameObject;
+                _bulletObj = Resources.Load("MiniGame/Test/Sphere") as GameObject;
             }
             return _bulletObj;
         }
