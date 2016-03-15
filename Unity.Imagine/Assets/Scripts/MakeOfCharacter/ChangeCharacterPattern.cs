@@ -127,6 +127,9 @@ public class ChangeCharacterPattern : MonoBehaviour
 
         _description.sprite = _descriptionSprites[index];
 
+        _character.transform.GetChild(0).GetComponentInChildren<CharacterAppearance>().enabled = 
+            false;
+
         StartCoroutine(DecideCorutine());
     }
 
