@@ -21,14 +21,15 @@ public class Pendulum : ActionManager
 
     }
 
-    public GameObject CreateShield()
+    public GameObject CreateShield(GameObject hitParticle)
     {
         var shield = Instantiate(shieldObj);
         shield.transform.position = transform.position;
         shield.transform.rotation = transform.rotation;
-        shield.transform.Translate(new Vector3(0.0f, 0.0f, 0.5f));
+        shield.transform.Translate(new Vector3(0.0f, 0.0f, 0.8f));
         shield.transform.parent = transform;
         shield.name = shieldObj.name;
+        shield.GetComponent<Shield>().hitParticle = hitParticle;
         _shieldObj = shield;
         //_shield.transform.Translate(shield.transform.position);
         //transform.LookAt(Enemy.transform);
