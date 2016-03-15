@@ -116,7 +116,7 @@ public class ChangeCharacterPattern : MonoBehaviour
     {
         if ((uint)index > (int)CharacterParameter.ModelType.NONE) throw new ArgumentException("type is error");
 
-        ChangeSelect(index, (int)getCharacterParamter.modelType,_panelOfChangeType);
+        ChangeSelect(index, (int)getCharacterParamter.modelType, _panelOfChangeType);
 
         _character = CreateModel((uint)index, _typePrefabs, _character.transform.parent);
         SetCostume((int)getCharacterParamter.costumeType);
@@ -166,8 +166,7 @@ public class ChangeCharacterPattern : MonoBehaviour
 
         var model = Instantiate(prefabs[index]);
         model.name = prefabs[index].name;
-        model.transform.SetParent(parent);
-        model.transform.localPosition = Vector3.zero;
+        model.transform.SetParent(parent, false);
         model.transform.localRotation = Quaternion.identity;
 
         return model;

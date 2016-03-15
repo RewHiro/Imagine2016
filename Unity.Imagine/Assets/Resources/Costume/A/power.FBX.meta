@@ -1,15 +1,22 @@
 fileFormatVersion: 2
-guid: 6128563cbf4562f499ad1e7b6d83789f
-timeCreated: 1457518995
+guid: 569589732f9c5c24ab1f0751ebd1c610
+timeCreated: 1458054486
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: Teapot001
+    100000: Box001
+    100002: //RootNode
+    100004: "\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8001"
+    400000: Box001
+    400002: //RootNode
+    400004: "\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8001"
+    2300000: Box001
+    2300002: "\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8001"
+    3300000: Box001
+    3300002: "\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8001"
+    4300000: Box001
+    4300002: "\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8001"
     9500000: //RootNode
   materials:
     importMaterials: 1

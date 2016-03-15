@@ -38,7 +38,6 @@ public class CharacterJump : MonoBehaviour
         var localPosition = transform.localPosition;
 
         if (localPosition.y > -0.01f) return;
-        Debug.Log("HIT");
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().velocity = Vector3.zero;
         transform.localPosition = new Vector3(localPosition.x, 0, localPosition.z);
