@@ -35,7 +35,7 @@ public class ResultDirecter : MonoBehaviour
 
     void Start()
     {
-
+        SetResult(1);
     }
 
     void Update()
