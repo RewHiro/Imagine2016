@@ -39,6 +39,15 @@ public class ChangeCharacterPattern : MonoBehaviour
     [SerializeField]
     Image _description = null;
 
+    [SerializeField]
+    Transform _panelOfChangeType = null;
+
+    [SerializeField]
+    Transform _panelOfChangeCostume = null;
+
+    [SerializeField]
+    Transform _panelOfChangeDecoration = null;
+
     List<Sprite> _descriptionSprites = new List<Sprite>();
     List<Texture> _characterTextures = new List<Texture>();
 
@@ -107,6 +116,8 @@ public class ChangeCharacterPattern : MonoBehaviour
     {
         if ((uint)index > (int)CharacterParameter.ModelType.NONE) throw new ArgumentException("type is error");
 
+        ChangeSelect(index, (int)getCharacterParamter.modelType,_panelOfChangeType);
+
         _character = CreateModel((uint)index, _typePrefabs, _character.transform.parent);
         SetCostume((int)getCharacterParamter.costumeType);
 
@@ -115,12 +126,15 @@ public class ChangeCharacterPattern : MonoBehaviour
         SetDecoration((int)_characterParamter.decorationType);
 
         _description.sprite = _descriptionSprites[index];
+
         StartCoroutine(DecideCorutine());
     }
 
     public void SetCostume(int index)
     {
         if ((uint)index > (int)CharacterParameter.CostumeType.NONE) throw new ArgumentException("costume is error");
+
+        ChangeSelect(index, (int)getCharacterParamter.costumeType, _panelOfChangeCostume);
 
         var place = _character.transform.GetChild(0);
         CreateModel((uint)index, _costumePrefabs, place);
@@ -133,6 +147,8 @@ public class ChangeCharacterPattern : MonoBehaviour
     public void SetDecoration(int index)
     {
         if ((uint)index > (int)CharacterParameter.DecorationType.NONE) throw new ArgumentException("type is error");
+
+        ChangeSelect(index, (int)getCharacterParamter.decorationType, _panelOfChangeDecoration);
 
         _characterParamter.decorationType = (CharacterParameter.DecorationType)index;
         _character.GetComponent<MeshRenderer>().material.mainTexture = _characterTextures[index + (int)_characterParamter.modelType * 4];
@@ -155,6 +171,14 @@ public class ChangeCharacterPattern : MonoBehaviour
         model.transform.localRotation = Quaternion.identity;
 
         return model;
+    }
+
+    void ChangeSelect(int index, int type, Transform panel)
+    {
+        if (index == type) return;
+        Destroy(panel.GetChild(type).GetChild(0).gameObject);
+        var circle = Instantiate(Resources.Load<GameObject>("MakeOfCharacter/TypeSelect"));
+        circle.transform.SetParent(panel.GetChild(index), false);
     }
 
     void Start()
@@ -219,7 +243,7 @@ public class ChangeCharacterPattern : MonoBehaviour
 
         ScreenSequencer.instance.SequenceStart
             (
-                () => { SceneManager.LoadScene(NEXT_LOAD_SCENE_NAME); }, 
+                () => { SceneManager.LoadScene(NEXT_LOAD_SCENE_NAME); },
                 new Fade(1.0f)
             );
     }

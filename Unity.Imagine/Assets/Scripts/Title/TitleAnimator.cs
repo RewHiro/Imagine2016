@@ -15,7 +15,35 @@ public class TitleAnimator : MonoBehaviour
     GameObject _titleStartedDirector = null;
 
     [SerializeField]
-    GameObject _orthoCamera = null;
+    Transform _orthoCamera = null;
+
+    [SerializeField]
+    GameObject[] _boxC = null;
+
+    [SerializeField]
+    GameObject _boxU = null;
+
+    [SerializeField]
+    GameObject[] _boxB = null;
+
+    [SerializeField]
+    GameObject _boxO = null;
+
+    /// <summary>
+    /// 色
+    /// </summary>
+    [SerializeField]
+    Color _boxCColor = Color.red;
+
+    [SerializeField]
+    Color _boxUolor = Color.red;
+
+    [SerializeField]
+    Color _boxBColor = Color.red;
+
+    [SerializeField]
+    Color _boxOColor = Color.red;
+
 
     Animator _animator = null;
 
@@ -41,6 +69,8 @@ public class TitleAnimator : MonoBehaviour
         foreach (var material in _materials)
         {
             material.mainTexture = new Texture();
+            material.EnableKeyword("_Emission");
+            material.SetColor("_EmissionColor", Color.black);
         }
 
         _plane.SetActive(false);
@@ -57,19 +87,20 @@ public class TitleAnimator : MonoBehaviour
         const int O = 0;
 
         const float START_TIME = 2.9f;
-        const float LIMIT_POS_Y = -20.0f;
+        const float LIMIT_POS_Y = -18.0f;
 
-        yield return ChangeTexture(START_TIME + 0.0f, C);
-        yield return ChangeTexture(START_TIME + 0.1f, U);
+        yield return ChangeTexture(START_TIME + 0.0f, C, _boxCColor, _boxC);
+        yield return ChangeTexture(START_TIME + 0.1f, U, _boxUolor, _boxU);
         _plane.SetActive(true);
-        yield return ChangeTexture(START_TIME + 0.2f, B);
-        yield return ChangeTexture(START_TIME + 0.3f, O);
+        yield return ChangeTexture(START_TIME + 0.2f, B, _boxBColor,_boxB);
+        yield return ChangeTexture(START_TIME + 0.3f, O, _boxOColor,_boxO);
 
         yield return new WaitForSeconds(2.0f);
 
-        while (_orthoCamera.transform.position.y > LIMIT_POS_Y)
+        while (transform.position.y < LIMIT_POS_Y)
         {
-            _orthoCamera.transform.Translate(0, -SPEED, 0);
+            Debug.Log(transform.position);
+            transform.Translate(0, SPEED, 0);
             yield return null;
         }
 
@@ -78,13 +109,49 @@ public class TitleAnimator : MonoBehaviour
         _titleStartedDirector.SetActive(true);
     }
 
-    IEnumerator ChangeTexture(float offSetTime, int index)
+    IEnumerator ChangeTexture
+        (
+        float offSetTime,
+        int index,
+        Color color,
+        IEnumerable<GameObject> boxObjects
+        )
     {
         while (_animator.GetTime() < offSetTime)
         {
             yield return null;
         }
 
-        _materials[index].mainTexture = _textures[index];
+        var enumerator = boxObjects.GetEnumerator();
+        while (enumerator.MoveNext())
+        {
+            enumerator.Current.layer = LayerMask.NameToLayer("Viewer"); ;
+        }
+
+        var material = _materials[index];
+        material.mainTexture = _textures[index];
+        material.EnableKeyword("_Emission");
+        material.SetColor("_EmissionColor", color);
+    }
+
+    IEnumerator ChangeTexture
+    (
+    float offSetTime,
+    int index,
+    Color color,
+    GameObject boxObject
+    )
+    {
+        while (_animator.GetTime() < offSetTime)
+        {
+            yield return null;
+        }
+
+        boxObject.layer = LayerMask.NameToLayer("Viewer"); ;
+
+        var material = _materials[index];
+        material.mainTexture = _textures[index];
+        material.EnableKeyword("_Emission");
+        material.SetColor("_EmissionColor", color);
     }
 }
