@@ -24,6 +24,7 @@ public class MenuDirecter : MonoBehaviour
 {
     const string LOAD_SCENE_CREATE = "Create";
     const string LOAD_SCENE_TITLE = "Title";
+    const string LOAD_SCENE_GAME = "MiniGames";
 
     [SerializeField]
     Camera _camera = null;
@@ -33,7 +34,7 @@ public class MenuDirecter : MonoBehaviour
     public List<Action> _ListsOfActionPushButton = new List<Action>();
 
     //今どのゲームを選択しているか
-    private int _nowSelectGameNum = 1;
+    private int _nowSelectGameNum = 0;
 
     List<Sprite> _sprites = new List<Sprite>();
 
@@ -48,6 +49,9 @@ public class MenuDirecter : MonoBehaviour
     //カメラ移動しているかどうか
     private bool _isChangingCameraRotation = false;
 
+    //TargetCursor
+    [SerializeField]
+    Image _targetCursor = null;
 
     void Start()
     {
@@ -57,6 +61,7 @@ public class MenuDirecter : MonoBehaviour
         _sprites.Add(Resources.Load<Sprite>("Menu/Texture/menu_title_speed_game"));
 
         _explanationImage.sprite = _sprites[0];
+        MoveCursor(_nowSelectGameNum);
     }
 
     private void Register()
@@ -73,6 +78,15 @@ public class MenuDirecter : MonoBehaviour
         _ListsOfActionPushButton.Add(() =>
         {
             //選択のはい
+            var screenSequencer = ScreenSequencer.instance;
+
+            if (screenSequencer.isEffectPlaying) return;
+
+            screenSequencer.SequenceStart
+                (
+                    () => { SceneManager.LoadScene(LOAD_SCENE_GAME); },
+                    new Fade(1.0f)
+                );
         });
 
         _ListsOfActionPushButton.Add(() =>
@@ -156,12 +170,21 @@ public class MenuDirecter : MonoBehaviour
             Debug.Log(_nowSelectGameNum);
             _explanationImage.sprite = _sprites[_nowSelectGameNum];
             FindObjectOfType<SelectGameStatus>().SelectGameNum = _nowSelectGameNum;
+            MoveCursor(_nowSelectGameNum);
         }
         else if (nowSelectGameNum_ == 3)
         {
             _nowSelectGameNum = UnityEngine.Random.Range(0, 2);
             _explanationImage.sprite = _sprites[_nowSelectGameNum];
             FindObjectOfType<SelectGameStatus>().SelectGameNum = _nowSelectGameNum;
+           MoveCursor(_nowSelectGameNum);
         }
     }
+
+    private void MoveCursor(int _selectGameNum)
+    {
+        _targetCursor.transform.localPosition
+            = new Vector3(-460 + _selectGameNum * 200,-40,-450);
+    }
+
 }
