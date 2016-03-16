@@ -16,6 +16,9 @@ public class CharacterAppearance : MonoBehaviour
     [SerializeField, Range(0.03f, 0.04f), Tooltip("回転する時間")]
     private float _rotateTime = 0.035f;
 
+    //登場してるときtrue, 終わったらfalse
+    private bool _appearanceFlug = true;
+
     void Start()
     {
         transform.localPosition = _startPos;
@@ -24,6 +27,7 @@ public class CharacterAppearance : MonoBehaviour
 
     void Update()
     {
+        if (!_appearanceFlug) return;
         Appearance();
     }
 
@@ -38,6 +42,7 @@ public class CharacterAppearance : MonoBehaviour
         if (transform.localPosition == _endPos)
         {
             transform.localRotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
+            _appearanceFlug = false;
         }
     }
 
@@ -46,6 +51,7 @@ public class CharacterAppearance : MonoBehaviour
     {
         transform.localPosition = _startPos;
         transform.localRotation = Quaternion.Euler(180.0f, 0.0f, 0.0f);
+        _appearanceFlug = true;
     }
 
 }
