@@ -18,31 +18,53 @@ public class Pendulum : ActionManager
 
     // Use this for initialization
     void Start () {
+
+    }
+
+    public GameObject CreateShield(GameObject hitParticle)
+    {
         var shield = Instantiate(shieldObj);
         shield.transform.position = transform.position;
         shield.transform.rotation = transform.rotation;
-        shield.transform.Translate(new Vector3(0.0f, 0.0f, 0.5f));
+        shield.transform.Translate(new Vector3(0.0f, 0.0f, 0.8f));
         shield.transform.parent = transform;
         shield.name = shieldObj.name;
+        shield.GetComponent<Shield>().hitParticle = hitParticle;
+        _shieldObj = shield;
         //_shield.transform.Translate(shield.transform.position);
         //transform.LookAt(Enemy.transform);
+
+        return _shieldObj;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
 
 	}
 
     public override void Action()
     {
         transform.LookAt(Enemy.transform);
+        if (_shieldObj == null)
+        {
+            if (GetComponentInChildren<Shield>() != null)
+            {
+                var shield = GetComponentInChildren<Shield>();
+                shield.enabled = true;
+                shield.Reset();
+                var obj = GetComponentInChildren<Shield>().gameObject;
+                if (obj != null) { _shieldObj = obj; }
+            }
+        }
         if (Input.GetKeyDown(keyCode))
         {
-            Debug.Log(keyCode + " : ペンデュラム : " + Enemy.transform.name);
+            //Debug.Log(keyCode + " : ペンデュラム : " + Enemy.transform.name);
+            if (_shieldObj == null) { return; }
+            _shieldObj.GetComponent<Shield>().PushOn();
         }
-        if (Input.GetKey(keyCode))
-        {
-            transform.Rotate(5.0f, 0.0f, 0.0f);
-        }
+        //if (Input.GetKey(keyCode))
+        //{
+            //transform.Rotate(5.0f, 0.0f, 0.0f);
+        //}
     }
 }
