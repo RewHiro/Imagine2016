@@ -74,7 +74,11 @@ public class PrintStart : MonoBehaviour {
         Debug.Log(screenShotPath);
         Debug.Log(printer.options[printer.value].text);
 
-        PrintDevice.PrintRequest(screenShotPath, PrintDevice.DrawSize.one* PrintSize, printer.options[printer.value].text);
+        PrintDevice.PrintRequest(screenShotPath,
+            PrintDevice.DrawSize.one* PrintSize,
+            printer.options[printer.value].text,
+            PrinterConfig._printColor
+            );
     }
 
     private string GetScreenShotPath()

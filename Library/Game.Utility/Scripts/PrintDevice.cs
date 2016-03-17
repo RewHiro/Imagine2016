@@ -30,19 +30,19 @@ namespace Game.Utility
 
         static PrintDocument _printDocument = new PrintDocument();
 
-        public static bool PrintRequest(string path, string printerName)
+        public static bool PrintRequest(string path, string printerName, bool color)
         {
             if (!BindImage(path)) { return false; }
-            PrintImage(printerName);
+            PrintImage(printerName, color);
             _image.Dispose();
             _image = null;
             return true;
         }
 
-        public static bool PrintRequest(string path, DrawSize size, string printerName)
+        public static bool PrintRequest(string path, DrawSize size, string printerName, bool color)
         {
             PrintDevice.size = size;
-            return PrintRequest(path, printerName);
+            return PrintRequest(path, printerName, color);
         }
 
         static Image _image = null;
@@ -54,10 +54,11 @@ namespace Game.Utility
             return _image != null;
         }
 
-        static void PrintImage(string printerName)
+        static void PrintImage(string printerName, bool color)
         {
             _printDocument.DocumentName = "ar marker";
             _printDocument.DefaultPageSettings.PrinterSettings.PrinterName = printerName;
+            _printDocument.DefaultPageSettings.Color = color;
             if (!_printDocument.DefaultPageSettings.PrinterSettings.IsValid) throw new NotSupportedException("有効なプリンターがないです");
             _printDocument.PrintPage += new PrintPageEventHandler(PrintEventAction);
             _printDocument.Print();
