@@ -4,14 +4,16 @@ using System.Collections;
 public class RandomBullet : MonoBehaviour {
 
     [SerializeField]
-    ModelParameterInfo _characterParameter;
+    CharacterParameterInfo _characterParameter;
 
+    [SerializeField]
+    int _randomMax = 11;
     
     int _speedStatus = 0;
 	void Start ()
     {
         //_characterParameter = GetComponent<ModelParameterInfo>();
-        _speedStatus = _characterParameter.getModelParameter.speed;
+        _speedStatus = _characterParameter.getCharacterParameter.speed;
     }
 	
 	void Update ()
@@ -19,14 +21,15 @@ public class RandomBullet : MonoBehaviour {
 
     }
 
-    void StatusRandomBullet()
+   public bool StatusRandomBullet()
     {
-        int random = Random.Range(1, 11);
+        int random = Random.Range(1, _randomMax);
 
         if(_speedStatus < random)
         {
-
+            return true;
         }
-        //Debug.Log(Random.Range(1, 11));
+
+        return false;
     }
 }
