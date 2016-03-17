@@ -7,7 +7,7 @@ public class Barrage : ActionManager
     [SerializeField]
     GameObject _bulletObj = null;
 
-    [SerializeField]
+    //[SerializeField]
     private int _keyCount = 0;
 
     [SerializeField]
@@ -44,7 +44,7 @@ public class Barrage : ActionManager
             Vector3 homo = Enemy.transform.position;
             var obj = Instantiate(_bulletObj);
             obj.transform.position = transform.position + transform.localScale/2;
-           homo.y -= transform.localScale.y;
+           //homo.y -= transform.localScale.y;
             var value = homo - transform.position;
             obj.GetComponent<TestShot>()._vectorValue = value.normalized;
             obj.GetComponent<TestShot>()._parent = gameObject;
