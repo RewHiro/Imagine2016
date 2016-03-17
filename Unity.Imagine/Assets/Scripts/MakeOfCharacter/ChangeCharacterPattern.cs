@@ -19,9 +19,6 @@ using System.Collections.Generic;
 public class ChangeCharacterPattern : MonoBehaviour
 {
 
-    const string NEXT_LOAD_SCENE_NAME = "Printer";
-    const string PREVIOUS_LOAD_SCENE_NAME = "Menu";
-
     [SerializeField]
     GameObject[] _panels = null;
 
@@ -107,7 +104,7 @@ public class ChangeCharacterPattern : MonoBehaviour
 
         screenSequencer.SequenceStart
         (
-            () => { SceneManager.LoadScene(PREVIOUS_LOAD_SCENE_NAME); },
+            () => { GameScene.Menu.ChangeScene(); },
             new Fade(1.0f)
         );
     }
@@ -245,7 +242,7 @@ public class ChangeCharacterPattern : MonoBehaviour
 
         ScreenSequencer.instance.SequenceStart
             (
-                () => { SceneManager.LoadScene(NEXT_LOAD_SCENE_NAME); },
+                () => { GameScene.Printer.ChangeScene(); },
                 new Fade(1.0f)
             );
     }
