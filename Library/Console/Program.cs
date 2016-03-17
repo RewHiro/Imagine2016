@@ -13,7 +13,7 @@ class Debugger {
     Console.WriteLine(printer.IsDefaultPrinter);
     Console.WriteLine(printer.IsValid);
     Console.WriteLine(printer.PrinterName);
-
+    
     Console.WriteLine("\n----- debugger finish");
   }
 

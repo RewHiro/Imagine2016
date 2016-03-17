@@ -8,7 +8,7 @@ public class ButterflyMove : MonoBehaviour
 
     private float _sinWaveCount = 0.0f;
 
-    private float _moveSpeed = -0.3f;
+    private float _moveSpeed = -60.0f;
 
     void Start()
     {
@@ -21,10 +21,10 @@ public class ButterflyMove : MonoBehaviour
 
     private void UpdateOfMove()
     {
-        _sinWaveCount += 0.1f;
+        _sinWaveCount += Time.deltaTime * 5;
 
         _image.transform.localPosition =
-            new Vector3(_image.transform.localPosition.x + _moveSpeed,
+            new Vector3(_image.transform.localPosition.x + _moveSpeed * Time.deltaTime,
                         _image.transform.localPosition.y + UnityEngine.Mathf.Sin(_sinWaveCount),
                         _image.transform.localPosition.z);
 
