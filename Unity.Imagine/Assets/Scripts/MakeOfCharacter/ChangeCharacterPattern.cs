@@ -54,6 +54,8 @@ public class ChangeCharacterPattern : MonoBehaviour
     ParameterBar _parameterBar = null;
     CharacterParameterInfo _characterParameterInfo = null;
 
+    static bool _isPush = false;
+
     public CharacterParameter getCharacterParamter
     {
         get
@@ -113,6 +115,8 @@ public class ChangeCharacterPattern : MonoBehaviour
     {
         if ((uint)index > (int)CharacterParameter.ModelType.NONE) throw new ArgumentException("type is error");
 
+        if (_isPush) return;
+
         ChangeSelect(index, (int)getCharacterParamter.modelType, _panelOfChangeType);
 
         _character = CreateModel((uint)index, _typePrefabs, _character.transform.parent);
@@ -134,6 +138,8 @@ public class ChangeCharacterPattern : MonoBehaviour
     {
         if ((uint)index > (int)CharacterParameter.CostumeType.NONE) throw new ArgumentException("costume is error");
 
+        if (_isPush) return;
+
         ChangeSelect(index, (int)getCharacterParamter.costumeType, _panelOfChangeCostume);
 
         var place = _character.transform.GetChild(0);
@@ -147,6 +153,8 @@ public class ChangeCharacterPattern : MonoBehaviour
     public void SetDecoration(int index)
     {
         if ((uint)index > (int)CharacterParameter.DecorationType.C) throw new ArgumentException("type is error");
+
+        if (_isPush) return;
 
         ChangeSelect(index, (int)getCharacterParamter.decorationType, _panelOfChangeDecoration);
 
@@ -217,6 +225,9 @@ public class ChangeCharacterPattern : MonoBehaviour
 
     IEnumerator DecideCorutine()
     {
+        if (_isPush) yield break;
+        _isPush = true;
+
         yield return new WaitForSeconds(0.1f);
 
         _characterParamter.attack = 0;
@@ -230,6 +241,8 @@ public class ChangeCharacterPattern : MonoBehaviour
         }
         _characterParameterInfo.Decide();
         _parameterBar.ChangeParameterGauge();
+
+        _isPush = false;
 
         yield return null;
     }
