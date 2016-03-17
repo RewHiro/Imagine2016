@@ -24,7 +24,7 @@ public class TitleDirecter : MonoBehaviour
     [SerializeField]
     GameObject[] _cloud = null;
     //雲の移動速度
-    private float _moveCloudSpeed = 6.0f;
+    private float _moveCloudSpeed = 60.0f;
 
     void Start()
     {
@@ -56,7 +56,7 @@ public class TitleDirecter : MonoBehaviour
         {
             //移動処理
             gameObject.transform.localPosition =
-                new Vector3(gameObject.transform.localPosition.x + _moveCloudSpeed,
+                new Vector3(gameObject.transform.localPosition.x + _moveCloudSpeed * Time.deltaTime,
                             gameObject.transform.localPosition.y,
                             gameObject.transform.localPosition.z);
 
@@ -78,7 +78,7 @@ public class TitleDirecter : MonoBehaviour
 
         screenSequencer.SequenceStart
             (
-                () => { SceneManager.LoadScene(LOAD_SCENE_NAME); },
+                () => { GameScene.Menu.ChangeScene(); },
                 new Fade(1.0f)
             );
     }
