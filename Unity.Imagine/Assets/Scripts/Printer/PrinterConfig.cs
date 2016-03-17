@@ -16,6 +16,9 @@ public class PrinterConfig : MonoBehaviour
     [SerializeField, Tooltip("0:プリンター設定, 1:カラー設定")]
     private int _type = PrinterName;
 
+    [SerializeField]
+    private GameObject _offScreenCamera = null;
+
     void Start()
     {
         _data = GetComponent<Dropdown>();
@@ -37,13 +40,16 @@ public class PrinterConfig : MonoBehaviour
         }
         else if (_type == PrinterColor)
         {
+            var color = _offScreenCamera.GetComponent<Grayscale>();
             if (_data.value == 0)
             {
                 _printColor = PrintDevice.GetPrinterColorConfig(true);
+                color.enabled = false;
             }
             else if (_data.value == 1)
             {
                 _printColor = PrintDevice.GetPrinterColorConfig(false);
+                color.enabled = true;
             }
         }
     }
@@ -58,11 +64,13 @@ public class PrinterConfig : MonoBehaviour
         {
             var _printColor = PrintDevice.GetPrinterColorConfig(true);
             Debug.Log("_printColor = " + _printColor);
+            _offScreenCamera.GetComponent<Grayscale>().enabled = false;
         }
         else if (_data.value == 1)
         {
             _printColor = PrintDevice.GetPrinterColorConfig(false);
             Debug.Log("_printColor = " + _printColor);
+            _offScreenCamera.GetComponent<Grayscale>().enabled = true;
         }
         else
         {
