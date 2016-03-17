@@ -146,7 +146,7 @@ public class ChangeCharacterPattern : MonoBehaviour
 
     public void SetDecoration(int index)
     {
-        if ((uint)index > (int)CharacterParameter.DecorationType.NONE) throw new ArgumentException("type is error");
+        if ((uint)index > (int)CharacterParameter.DecorationType.C) throw new ArgumentException("type is error");
 
         ChangeSelect(index, (int)getCharacterParamter.decorationType, _panelOfChangeDecoration);
 
@@ -161,7 +161,7 @@ public class ChangeCharacterPattern : MonoBehaviour
         if (index > prefabs.Length) throw new IndexOutOfRangeException("out of range");
 
         var child = parent.GetChild(0);
-        if (child == null) throw new NullReferenceException(parent.name + " is nothing child");
+        if (child.gameObject == null) throw new NullReferenceException(parent.name + " is nothing child");
         Destroy(child.gameObject);
 
         var model = Instantiate(prefabs[index]);
@@ -212,7 +212,7 @@ public class ChangeCharacterPattern : MonoBehaviour
         StartCoroutine(DecideCorutine());
         _characterParamter.modelType = CharacterParameter.ModelType.HUMAN;
         _characterParamter.costumeType = CharacterParameter.CostumeType.A;
-        _characterParamter.decorationType = CharacterParameter.DecorationType.A;
+        _characterParamter.decorationType = CharacterParameter.DecorationType.NONE;
     }
 
     IEnumerator DecideCorutine()

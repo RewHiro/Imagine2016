@@ -20,10 +20,10 @@ public struct CharacterParameter
 
     public enum DecorationType
     {
+        NONE,
         A,
         B,
         C,
-        NONE,
     }
 
     public ModelType modelType;
