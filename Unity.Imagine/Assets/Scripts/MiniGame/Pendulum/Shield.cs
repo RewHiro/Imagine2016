@@ -33,6 +33,22 @@ public class Shield : MonoBehaviour {
 
     //Pendulum pendulum = null;
 
+    private Vector3 _particleOffsetPos = new Vector3(0.0f, 0.5f, 0.0f);
+
+    public GameObject hitParticle { get; set; }
+
+    private GameObject _breakParticle = null;
+    public GameObject breakParticle {
+        get
+        {
+            if(_breakParticle == null)
+            {
+                _breakParticle = Resources.Load("MiniGame/Pendulum/Effect/yellow") as GameObject;
+            }
+            return _breakParticle;
+        }
+    }
+
     IEnumerator<float> _move = null;
 
     private float _hitDelayCount = 0;
@@ -73,6 +89,15 @@ public class Shield : MonoBehaviour {
                 hp -= damage;
                 if(hp == 0) {
                     collision.gameObject.GetComponent<Ball>().StopBall();
+                    var particle = Instantiate(breakParticle);
+                    particle.transform.position = transform.position + _particleOffsetPos;
+                    particle.name = breakParticle.name;
+                }
+                else
+                {
+                    var particle = Instantiate(hitParticle);
+                    particle.transform.position = transform.position + _particleOffsetPos;
+                    particle.name = hitParticle.name;
                 }
                 _hitDelayCount = _MAX_HIT_DELAY_COUNT;
             }

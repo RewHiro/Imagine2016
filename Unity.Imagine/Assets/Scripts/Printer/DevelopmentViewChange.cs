@@ -34,12 +34,7 @@ public class DevelopmentViewChange : MonoBehaviour
         _param.costumeType = _info.getCharacterParameter.costumeType;
         _param.decorationType = _info.getCharacterParameter.decorationType;
         _index = _params[_param];
-        if(_index > _sprite.Count)
-        {
-            //Resourceがそろったら例外処理に変更する
-            //それまではindexを0にしてエラーなくす
-            _index = 0;
-        }
+        if(_index > _sprite.Count)throw new IndexOutOfRangeException("_sprite index out of range");
         _image.sprite = _sprite[_index];
     }
 
@@ -48,22 +43,22 @@ public class DevelopmentViewChange : MonoBehaviour
     /// </summary>
     void Load()
     {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
             {
-                for (int k = 0; k < 3; k++)
+                for (int k = 0; k < 4; k++)
                 {
                     _params.Add(_param, _index);
                     _index++;
-                    _param.modelType++;
+                    _param.decorationType++;
                 }
-                _param.modelType = CharacterParameter.ModelType.HUMAN;
+                _param.decorationType = CharacterParameter.DecorationType.A;
                 _param.costumeType++;
             }
-            _param.modelType = CharacterParameter.ModelType.HUMAN;
+            _param.decorationType = CharacterParameter.DecorationType.A;
             _param.costumeType = CharacterParameter.CostumeType.A;
-            _param.decorationType++;
+            _param.modelType++;
         }
     }
 }

@@ -1,0 +1,82 @@
+fileFormatVersion: 2
+guid: 59db4a527382b234bb0e6818e351547e
+timeCreated: 1457517324
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: menu_fukidasi_0
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 512
+  textureSettings:
+    filterMode: -1
+    aniso: 0
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: menu_fukidasi_0
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 203
+        width: 497
+        height: 303
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -226.5, y: 151.5}
+        - {x: -244.5, y: 91.5}
+        - {x: -244.5, y: -107.5}
+        - {x: -185.5, y: -143.5}
+        - {x: 192.5, y: -143.5}
+        - {x: 221.5, y: -52.5}
+        - {x: 221.5, y: 151.5}
+      - - {x: -478.5, y: -397.5}
+        - {x: -142.5, y: -106.5}
+        - {x: -152.5, y: -105.5}
+        - {x: -153.5, y: -104.5}
+        - {x: -176.5, y: 115.5}
+        - {x: -198.5, y: -145.5}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
