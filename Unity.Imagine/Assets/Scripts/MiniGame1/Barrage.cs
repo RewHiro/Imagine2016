@@ -40,7 +40,7 @@ public class Barrage : ActionManager
     {
         if (Input.GetKeyDown(keyCode) && _timeCount._getTime > 1)
         {
-            Debug.Log(keyCode + " : ゲーム01テスト : " + Enemy.transform.name);
+            //Debug.Log(keyCode + " : ゲーム01テスト : " + Enemy.transform.name);
             Vector3 homo = Enemy.transform.position;
             var obj = Instantiate(_bulletObj);
             obj.transform.position = transform.position + transform.localScale/2;

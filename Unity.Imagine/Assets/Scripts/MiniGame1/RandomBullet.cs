@@ -2,13 +2,16 @@
 using System.Collections;
 
 public class RandomBullet : MonoBehaviour {
-    CharacterParameter _characterParameter;
 
+    [SerializeField]
+    ModelParameterInfo _characterParameter;
+
+    
     int _speedStatus = 0;
 	void Start ()
     {
-        _characterParameter = GetComponent<CharacterParameter>();
-        _speedStatus = _characterParameter.speed;
+        //_characterParameter = GetComponent<ModelParameterInfo>();
+        _speedStatus = _characterParameter.getModelParameter.speed;
     }
 	
 	void Update ()
