@@ -79,7 +79,7 @@ public class Barrage : ActionManager
         var value = _custom.transform.position - transform.position;
         //        var value = Enemy.transform.position - transform.position;
         obj.GetComponent<TestShot>()._vectorValue = value.normalized;
-        obj.GetComponent<TestShot>()._parent = gameObject;
+        obj.GetComponent<TestShot>()._parent = _custom;
     }
 
 }
