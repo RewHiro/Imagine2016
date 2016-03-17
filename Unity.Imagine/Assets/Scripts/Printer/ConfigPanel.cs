@@ -25,7 +25,7 @@ public class ConfigPanel : MonoBehaviour {
 
         screenSequencer.SequenceStart
             (
-                () => { SceneManager.LoadScene(LOAD_SCENE_NAME); },
+                () => { GameScene.Menu.ChangeScene(); },
                 new Fade(1.0f)
             );
     }
