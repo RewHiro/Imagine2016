@@ -56,6 +56,13 @@ public class AudioPlayer : MonoBehaviour {
   [Tooltip("再生が終了した AudioSource を自動的に開放する")]
   bool _autoRelease = false;
 
+  /// <summary> 再生終了時に自動で
+  /// <see cref="SourceObject"/> を解放するか指定 </summary>
+  public bool autoRelease {
+    get { return _autoRelease; }
+    set { _autoRelease = value; }
+  }
+
   new AudioManager audio { get { return AudioManager.instance; } }
 
   // TIPS: 関連付けられた SourceObject のインスタンス
