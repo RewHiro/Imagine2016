@@ -19,7 +19,7 @@ public class TestShot : MonoBehaviour {
     void OnCollisionEnter(Collision collision)
     {
         if(_parent == null) { return; }
-        if (_parent.transform.name != collision.transform.name)
+        if (_parent.transform.name == collision.transform.name)
         {
             Destroy(gameObject);
         }

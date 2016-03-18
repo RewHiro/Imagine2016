@@ -1,10 +1,17 @@
 ﻿
 using UnityEngine;
+using System.Linq;
 
 public class SceneTest : MonoBehaviour {
+  
 
-  [SerializeField]
-  bool _activate = false;
+  /*
+  [SerializeField, Range(0, 1)]
+  uint _soundIndex = 0;
 
-  void Start() { GameScene.Title.ChangeScene(); }
+  void Update() {
+    if (!TouchController.IsTouchBegan()) { return; }
+    AudioManager.instance.effect.Play(_soundIndex);
+  }
+  */
 }
