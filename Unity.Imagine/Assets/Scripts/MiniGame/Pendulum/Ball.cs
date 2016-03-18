@@ -52,7 +52,7 @@ public class Ball : MonoBehaviour {
 
     void ThrowBall()
     {
-        //Debug.Log((int)target);
+       // Debug.Log((int)target);
 
         if (!_player[(int)target].activeSelf) {
             _rigidbody.velocity = Vector3.zero;
