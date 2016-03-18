@@ -7,6 +7,9 @@ public class MenuBoxAnimater : MonoBehaviour
     bool _isPlay;
     [SerializeField]
     bool _isBack;
+
+    Animator _animator = null;
+
     public bool isPlay
     {
         get
@@ -33,8 +36,21 @@ public class MenuBoxAnimater : MonoBehaviour
         }
     }
 
+    public double animationTime
+    {
+        get
+        {
+            return _animator.GetTime();
+        }
 
-    Animator _animator = null;
+        set
+        {
+            _animator.SetTime(value);
+        }
+
+    }
+
+    
 
     private bool _isStarted = false;
 
