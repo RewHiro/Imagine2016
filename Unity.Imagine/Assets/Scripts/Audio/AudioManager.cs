@@ -21,6 +21,8 @@ public class AudioManager : SingletonBehaviour<AudioManager> {
   AudioClip[] _clips = null;
   public IEnumerable<AudioClip> clips { get { return _clips; } }
 
+  void Start() { DontDestroyOnLoad(gameObject); }
+
   /// <summary> 指定した ID の <see cref="AudioClip"/> を取得 </summary>
   public AudioClip GetClip(int index) {
     return _clips[Mathf.Clamp(index, 0, _clips.Length - 1)];
@@ -40,14 +42,34 @@ public class AudioManager : SingletonBehaviour<AudioManager> {
   }
 
   /// <summary> <see cref="SourceObject"/> を生成する </summary>
-  /// <param name="parent"> インスタンスを指定したオブジェクトの管理下に置く </param>
+  /// <param name="parent"> このオブジェクトの管理下にする </param>
   public SourceObject CreateSource(Transform parent) {
+    var source = SourceObject.Create();
+    source.transform.SetParent(parent);
+    _sources.Add(source);
+    return source;
+  }
+
+  /// <summary> <see cref="SourceObject"/> を生成する </summary>
+  public SourceObject CreateSource() {
     var source = SourceObject.Create();
     RegisterSource(source);
     return source;
   }
 
-  public SourceObject CreateSource() {
-    return null;
+  /// <summary> 管理下の <see cref="SourceObject"/> を全て解放する </summary>
+  public void ClearSources() {
+    foreach (var source in _sources) {
+      source.AllStop();
+      Destroy(source.gameObject);
+    }
+    _sources.Clear();
+  }
+
+  /// <summary> 指定した <see cref="SourceObject"/> を削除する </summary>
+  public bool RemoveSource(SourceObject source) {
+    var success = _sources.Remove(source);
+    if (success) { Destroy(source.gameObject); }
+    return success;
   }
 }
