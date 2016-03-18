@@ -8,7 +8,7 @@ public class ButterflyMove : MonoBehaviour
 
     private float _sinWaveCount = 0.0f;
 
-    private float _moveSpeed = -60.0f;
+    private float _moveSpeed = 60.0f;
 
     void Start()
     {
@@ -31,12 +31,17 @@ public class ButterflyMove : MonoBehaviour
         if (_image.transform.localPosition.x < -160)
         {
             _moveSpeed *= -1;
-            _image.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            _image.transform.localRotation = Quaternion.Euler(0, 0, -90);
         }
         if (_image.transform.localPosition.x > 160)
         {
+            Debug.Log("A");
             _moveSpeed *= -1;
-            _image.transform.localRotation = Quaternion.Euler(0, 180, 0);
+            _image.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            _image.transform.localPosition =
+            new Vector3(_image.transform.localPosition.x,
+                        _image.transform.localPosition.y-3,
+                        _image.transform.localPosition.z);
         }
     }
 }
