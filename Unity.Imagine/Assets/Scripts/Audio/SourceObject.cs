@@ -56,6 +56,9 @@ public class SourceObject : MonoBehaviour {
     return source;
   }
 
+  /// <summary> <see cref="AudioSource"/> が存在すれば true を返す </summary>
+  public bool ExistSource() { return GetSources().Any(); }
+
   /// <summary> ループ再生中ではない、１つでも再生中の
   /// <see cref="AudioSource"/> があれば true を返す </summary>
   public bool IsPlaying() {
