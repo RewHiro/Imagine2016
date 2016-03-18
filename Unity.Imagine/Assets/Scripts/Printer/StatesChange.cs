@@ -6,6 +6,7 @@ public class StatesChange : MonoBehaviour
 {
 
     private CharacterParameterInfo _info = null;
+    [SerializeField]
     private List<Sprite> _states = null;
     private Image _image = null;
 
@@ -66,10 +67,10 @@ public class StatesChange : MonoBehaviour
         }
         else if (_type == ModelType.DECORATION)
         {
+            _states.Add(Resources.Load<Sprite>("MakeOfCharacter/Texture/Description/Customize_setumei_3_0"));
             _states.Add(Resources.Load<Sprite>("MakeOfCharacter/Texture/Description/Customize_setumei_3_A"));
             _states.Add(Resources.Load<Sprite>("MakeOfCharacter/Texture/Description/Customize_setumei_3_B"));
             _states.Add(Resources.Load<Sprite>("MakeOfCharacter/Texture/Description/Customize_setumei_3_C"));
-            _states.Add(Resources.Load<Sprite>("MakeOfCharacter/Texture/Description/Customize_setumei_normal"));
         }
     }
 

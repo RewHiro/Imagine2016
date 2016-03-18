@@ -5,6 +5,7 @@ using System;
 
 public class DevelopmentViewChange : MonoBehaviour
 {
+
     private int _index = 0;
 
     private CharacterParameterInfo _info;
@@ -53,10 +54,10 @@ public class DevelopmentViewChange : MonoBehaviour
                     _index++;
                     _param.decorationType++;
                 }
-                _param.decorationType = CharacterParameter.DecorationType.A;
+                _param.decorationType = CharacterParameter.DecorationType.NONE;
                 _param.costumeType++;
             }
-            _param.decorationType = CharacterParameter.DecorationType.A;
+            _param.decorationType = CharacterParameter.DecorationType.NONE;
             _param.costumeType = CharacterParameter.CostumeType.A;
             _param.modelType++;
         }
