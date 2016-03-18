@@ -19,7 +19,8 @@ public class Barrage : ActionManager
     [SerializeField]
     GameObject _custom;
 
-
+    [SerializeField]
+    float _waitTime = 10f;
 
     int _count = 0;
 
@@ -44,10 +45,10 @@ public class Barrage : ActionManager
         if (Input.GetKeyDown(key))
         {
             _count++;
-           if (_probability > _count) return 1;
-            if(_randomBullet.StatusRandomBullet() == false) return 1;
-            Debug.Log("homo");
+            if (_probability > _count) return 1;
+            if (_randomBullet.StatusRandomBullet() == false) return 1;
             _count = 0;
+
             Bullet();
             return 2;
         }
@@ -55,15 +56,48 @@ public class Barrage : ActionManager
         return 0;
     }
 
+    //int Barragebutton(KeyCode key)
+    //{
+    //    if (_timeCount._getTime <= 0) return 0;
+    //    if (Input.GetKeyDown(key))
+    //    {
+    //       // StartCoroutine(BulletCreate( _waitTime));
+    //        return 1;
+    //    }
+
+    //    return 0;
+    //}
+
+
+    //IEnumerator BulletCreate(float waitTime)
+    //{
+    //    if (_timeCount._getTime <= 0) yield return 0;
+    //    Bullet();
+
+    //        _count++;
+    //        if (_probability > _count) yield return 0;
+    //        if (_randomBullet.StatusRandomBullet() == false) yield return 0;
+    //        _count = 0;
+    //        yield return new WaitForSeconds(waitTime);
+    //        //Debug.Log("homo");
+    //        Bullet();
+    //        //ここを修正する
+    //        _keyCount++;
+        
+
+    //}    
+
+
     public override void Action()
     {
-        if (Input.GetKeyDown(keyCode) && _timeCount._getTime > 1)
+        if (Input.GetKeyDown(keyCode) && _timeCount._getTime >= 1)
         {
             Bullet();
         }
-    }
 
-    void Bullet()
+        }
+
+        void Bullet()
     {
         //Debug.Log(keyCode + " : ゲーム01テスト : " + Enemy.transform.name);s
         Vector3 enemyPosition = Enemy.transform.position;
@@ -72,7 +106,6 @@ public class Barrage : ActionManager
         
         //obj.transform.position += transform.localScale;
         scale = transform.localScale;
-        //Debug.Log(transform.localScale);
         scale.z = 0;
         scale.x = 0;
         obj.transform.position = transform.position + scale;
