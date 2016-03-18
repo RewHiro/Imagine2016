@@ -1,8 +1,11 @@
 ﻿
 using UnityEngine;
+using System.Linq;
 
 public class SceneTest : MonoBehaviour {
+  
 
+  /*
   [SerializeField, Range(0, 1)]
   uint _soundIndex = 0;
 
@@ -10,4 +13,5 @@ public class SceneTest : MonoBehaviour {
     if (!TouchController.IsTouchBegan()) { return; }
     AudioManager.instance.effect.Play(_soundIndex);
   }
+  */
 }
