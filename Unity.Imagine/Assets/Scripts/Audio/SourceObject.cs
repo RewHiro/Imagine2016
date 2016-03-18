@@ -1,5 +1,7 @@
 ﻿
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -49,10 +51,9 @@ public class SourceObject : MonoBehaviour {
   }
 
   /// <summary> 新規の <see cref="AudioSource"/> を追加、取得する </summary>
-  public AudioSource AddSource(bool isLoop) {
+  public AudioSource AddSource() {
     var source = gameObject.AddComponent<AudioSource>();
     source.playOnAwake = false;
-    source.loop = isLoop;
     return source;
   }
 
@@ -94,5 +95,18 @@ public class SourceObject : MonoBehaviour {
   public void AllStop() {
     var sources = GetSources().Where(source => source.clip != null);
     foreach (var source in sources) { source.Stop(); }
+  }
+
+  /// <summary> 再生中でなくなれば、リソースを解放する </summary>
+  public IEnumerator AutoRelease(System.Action UnBind) {
+    System.Func<GameScene> GetActiveScene =
+      () => SceneManager.GetActiveScene().ToGameScene();
+
+    var current = GetActiveScene();
+    while (IsPlayingWithLoop()) {
+      if (current != GetActiveScene()) { break; }
+      yield return null;
+    }
+    UnBind();
   }
 }

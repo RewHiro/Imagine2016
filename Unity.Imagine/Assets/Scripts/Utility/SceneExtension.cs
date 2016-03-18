@@ -1,6 +1,7 @@
 ﻿
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using System.Linq;
 
 public enum GameScene {
   Title,
@@ -23,5 +24,18 @@ public static class SceneExtension {
   public static IEnumerable<Scene> GetAllActiveScenes() {
     var count = SceneManager.sceneCount;
     for (var i = 0; i < count; ++i) { yield return SceneManager.GetSceneAt(i); }
+  }
+
+  static int max { get { return (int)GameScene.Max; } }
+
+  // TIPS: GameScene の一覧を文字列として取得
+  static IEnumerable<string> GetAllGameScenes() {
+    return System.Enum.GetNames(typeof(GameScene)).Take(max);
+  }
+
+  /// <summary> <see cref="Scene"/> を <see cref="GameScene"/> に変換する </summary>
+  public static GameScene ToGameScene(this Scene scene) {
+    var result = GetAllGameScenes().First(name => name == scene.name);
+    return (GameScene)System.Enum.Parse(typeof(GameScene), result);
   }
 }
