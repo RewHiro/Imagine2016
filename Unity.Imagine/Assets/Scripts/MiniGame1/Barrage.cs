@@ -7,6 +7,9 @@ public class Barrage : ActionManager
     [SerializeField]
     GameObject _bulletObj = null;
 
+    [SerializeField]
+    GameObject _specialBulletObj = null;
+
     //[SerializeField]
     private int _keyCount = 0;
 
@@ -20,7 +23,9 @@ public class Barrage : ActionManager
     GameObject _custom;
 
     [SerializeField]
-    float _waitTime = 10f;
+    float _waitTime = 0.1f;
+
+    float _time = 0;
 
     int _count = 0;
 
@@ -30,6 +35,7 @@ public class Barrage : ActionManager
 
     void Start()
     {
+        _time = _waitTime;
         _randomBullet = GetComponent<RandomBullet>();
         //_timeCount = GetComponent<TimeCount>();
     }
@@ -39,70 +45,72 @@ public class Barrage : ActionManager
         _keyCount += Barragebutton(keyCode);
     }
 
-    int Barragebutton(KeyCode key)
-    {
-        if (_timeCount._getTime <= 0) return 0;
-        if (Input.GetKeyDown(key))
-        {
-            _count++;
-            if (_probability > _count) return 1;
-            if (_randomBullet.StatusRandomBullet() == false) return 1;
-            _count = 0;
-
-            Bullet();
-            return 2;
-        }
-
-        return 0;
-    }
-
     //int Barragebutton(KeyCode key)
     //{
     //    if (_timeCount._getTime <= 0) return 0;
     //    if (Input.GetKeyDown(key))
     //    {
-    //       // StartCoroutine(BulletCreate( _waitTime));
-    //        return 1;
+    //        _count++;
+    //        if (_probability > _count) return 1;
+    //        if (_randomBullet.StatusRandomBullet() == false) return 1;
+    //        _count = 0;
+
+    //        Bullet();
+    //        return 2;
     //    }
 
     //    return 0;
     //}
 
+    void WaitTime()
+    {
+        _time -= Time.deltaTime; 
+    }
 
-    //IEnumerator BulletCreate(float waitTime)
-    //{
-    //    if (_timeCount._getTime <= 0) yield return 0;
-    //    Bullet();
+    int Barragebutton(KeyCode key)
+    {
+        if (_timeCount._getTime <= 0) return 0;
+        if (Input.GetKeyDown(key))
+        {
+             StartCoroutine(BulletCreate( _waitTime));
+            return 1;
+        }
 
-    //        _count++;
-    //        if (_probability > _count) yield return 0;
-    //        if (_randomBullet.StatusRandomBullet() == false) yield return 0;
-    //        _count = 0;
-    //        yield return new WaitForSeconds(waitTime);
-    //        //Debug.Log("homo");
-    //        Bullet();
-    //        //ここを修正する
-    //        _keyCount++;
-        
+        return 0;
+    }
 
-    //}    
+
+    IEnumerator BulletCreate(float waitTime)
+    {
+        if (_timeCount._getTime <= 0) yield break;
+        Bullet(_bulletObj);
+        _count++;
+        if (_probability > _count) yield break;
+        if (_randomBullet.StatusRandomBullet() == false) yield break;
+        _count = 0;
+        yield return new WaitForSeconds(waitTime);
+        Bullet(_specialBulletObj);
+        //ここを修正する
+        _keyCount++;
+        yield break;
+    }
 
 
     public override void Action()
     {
-        if (Input.GetKeyDown(keyCode) && _timeCount._getTime >= 1)
-        {
-            Bullet();
-        }
+        //if (Input.GetKeyDown(keyCode) && _timeCount._getTime >= 1)
+        //{
+        //    Bullet();
+        //}
 
-        }
+    }
 
-        void Bullet()
+        void Bullet(GameObject bullet)
     {
         //Debug.Log(keyCode + " : ゲーム01テスト : " + Enemy.transform.name);s
         Vector3 enemyPosition = Enemy.transform.position;
         Vector3 scale = new Vector3(0,0,0);
-        var obj = Instantiate(_bulletObj);
+        var obj = Instantiate(bullet);
         
         //obj.transform.position += transform.localScale;
         scale = transform.localScale;
