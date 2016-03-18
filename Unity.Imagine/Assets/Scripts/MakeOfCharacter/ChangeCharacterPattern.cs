@@ -19,9 +19,6 @@ using System.Collections.Generic;
 public class ChangeCharacterPattern : MonoBehaviour
 {
 
-    const string NEXT_LOAD_SCENE_NAME = "Printer";
-    const string PREVIOUS_LOAD_SCENE_NAME = "Menu";
-
     [SerializeField]
     GameObject[] _panels = null;
 
@@ -56,6 +53,8 @@ public class ChangeCharacterPattern : MonoBehaviour
     CharacterParameter _characterParamter = new CharacterParameter();
     ParameterBar _parameterBar = null;
     CharacterParameterInfo _characterParameterInfo = null;
+
+    static bool _isPush = false;
 
     public CharacterParameter getCharacterParamter
     {
@@ -107,7 +106,7 @@ public class ChangeCharacterPattern : MonoBehaviour
 
         screenSequencer.SequenceStart
         (
-            () => { SceneManager.LoadScene(PREVIOUS_LOAD_SCENE_NAME); },
+            () => { GameScene.Menu.ChangeScene(); },
             new Fade(1.0f)
         );
     }
@@ -116,47 +115,30 @@ public class ChangeCharacterPattern : MonoBehaviour
     {
         if ((uint)index > (int)CharacterParameter.ModelType.NONE) throw new ArgumentException("type is error");
 
-        ChangeSelect(index, (int)getCharacterParamter.modelType, _panelOfChangeType);
+        if (_isPush) return;
+        _isPush = true;
 
-        _character = CreateModel((uint)index, _typePrefabs, _character.transform.parent);
-        SetCostume((int)getCharacterParamter.costumeType);
-
-        _characterParamter.modelType = (CharacterParameter.ModelType)index;
-
-        SetDecoration((int)_characterParamter.decorationType);
-
-        _description.sprite = _descriptionSprites[index];
-
-        _character.transform.GetChild(0).GetComponentInChildren<CharacterAppearance>().enabled = 
-            false;
-
-        StartCoroutine(DecideCorutine());
+        StartCoroutine(ChangeType(index));
     }
 
     public void SetCostume(int index)
     {
         if ((uint)index > (int)CharacterParameter.CostumeType.NONE) throw new ArgumentException("costume is error");
 
-        ChangeSelect(index, (int)getCharacterParamter.costumeType, _panelOfChangeCostume);
+        if (_isPush) return;
+        _isPush = true;
 
-        var place = _character.transform.GetChild(0);
-        CreateModel((uint)index, _costumePrefabs, place);
-
-        _characterParamter.costumeType = (CharacterParameter.CostumeType)index;
-        _description.sprite = _descriptionSprites[index + 3];
-        StartCoroutine(DecideCorutine());
+        StartCoroutine(ChangeCostume(index));
     }
 
     public void SetDecoration(int index)
     {
-        if ((uint)index > (int)CharacterParameter.DecorationType.NONE) throw new ArgumentException("type is error");
+        if ((uint)index > (int)CharacterParameter.DecorationType.C) throw new ArgumentException("type is error");
 
-        ChangeSelect(index, (int)getCharacterParamter.decorationType, _panelOfChangeDecoration);
+        if (_isPush) return;
+        _isPush = true;
 
-        _characterParamter.decorationType = (CharacterParameter.DecorationType)index;
-        _character.GetComponent<MeshRenderer>().material.mainTexture = _characterTextures[index + (int)_characterParamter.modelType * 4];
-        _description.sprite = _descriptionSprites[index + 6];
-        StartCoroutine(DecideCorutine());
+        StartCoroutine(ChangeDecoration(index));
     }
 
     GameObject CreateModel(uint index, GameObject[] prefabs, Transform parent)
@@ -164,7 +146,7 @@ public class ChangeCharacterPattern : MonoBehaviour
         if (index > prefabs.Length) throw new IndexOutOfRangeException("out of range");
 
         var child = parent.GetChild(0);
-        if (child == null) throw new NullReferenceException(parent.name + " is nothing child");
+        if (child.gameObject == null) throw new NullReferenceException(parent.name + " is nothing child");
         Destroy(child.gameObject);
 
         var model = Instantiate(prefabs[index]);
@@ -215,11 +197,12 @@ public class ChangeCharacterPattern : MonoBehaviour
         StartCoroutine(DecideCorutine());
         _characterParamter.modelType = CharacterParameter.ModelType.HUMAN;
         _characterParamter.costumeType = CharacterParameter.CostumeType.A;
-        _characterParamter.decorationType = CharacterParameter.DecorationType.A;
+        _characterParamter.decorationType = CharacterParameter.DecorationType.NONE;
     }
 
     IEnumerator DecideCorutine()
     {
+
         yield return new WaitForSeconds(0.1f);
 
         _characterParamter.attack = 0;
@@ -234,6 +217,8 @@ public class ChangeCharacterPattern : MonoBehaviour
         _characterParameterInfo.Decide();
         _parameterBar.ChangeParameterGauge();
 
+        _isPush = false;
+
         yield return null;
     }
 
@@ -245,8 +230,51 @@ public class ChangeCharacterPattern : MonoBehaviour
 
         ScreenSequencer.instance.SequenceStart
             (
-                () => { SceneManager.LoadScene(NEXT_LOAD_SCENE_NAME); },
+                () => { GameScene.Printer.ChangeScene(); },
                 new Fade(1.0f)
             );
+    }
+
+    IEnumerator ChangeType(int index)
+    {
+        ChangeSelect(index, (int)getCharacterParamter.modelType, _panelOfChangeType);
+
+        _character = CreateModel((uint)index, _typePrefabs, _character.transform.parent);
+        StartCoroutine(ChangeCostume((int)getCharacterParamter.costumeType));
+
+        _characterParamter.modelType = (CharacterParameter.ModelType)index;
+
+        StartCoroutine(ChangeDecoration((int)_characterParamter.decorationType));
+
+        _description.sprite = _descriptionSprites[index];
+
+        _character.transform.GetChild(0).GetComponentInChildren<CharacterAppearance>().enabled =
+            false;
+
+        yield return StartCoroutine(DecideCorutine());
+    }
+
+    IEnumerator ChangeCostume(int index)
+    {
+        ChangeSelect(index, (int)getCharacterParamter.costumeType, _panelOfChangeCostume);
+
+        var place = _character.transform.GetChild(0);
+        CreateModel((uint)index, _costumePrefabs, place);
+
+        _characterParamter.costumeType = (CharacterParameter.CostumeType)index;
+        _description.sprite = _descriptionSprites[index + 3];
+        yield return StartCoroutine(DecideCorutine());
+    }
+
+    IEnumerator ChangeDecoration(int index)
+    {
+        ChangeSelect(index, (int)getCharacterParamter.decorationType, _panelOfChangeDecoration);
+
+        _characterParamter.decorationType = (CharacterParameter.DecorationType)index;
+        var meshRenderers = _characterPlace.GetComponentsInChildren<MeshRenderer>();
+        var meshIndex = meshRenderers.Length - 1;
+        meshRenderers[meshIndex].material.mainTexture = _characterTextures[index + (int)_characterParamter.modelType * 4];
+        _description.sprite = _descriptionSprites[index + 6];
+        yield return StartCoroutine(DecideCorutine());
     }
 }

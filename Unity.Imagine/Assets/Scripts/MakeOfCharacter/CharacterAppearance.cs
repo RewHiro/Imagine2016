@@ -18,34 +18,33 @@ public class CharacterAppearance : MonoBehaviour
 
     void Start()
     {
+        StartCoroutine(UpdateMove());
+    }
+
+    IEnumerator UpdateMove()
+    {
         transform.localPosition = _startPos;
         transform.localRotation = Quaternion.Euler(180, 0, 0);
-    }
+        yield return null;
 
-    void Update()
-    {
-        Appearance();
-    }
-
-    void Appearance()
-    {
-        //マイフレーム呼び出す
-        transform.localPosition = Vector3.MoveTowards(transform.localPosition, _endPos, _movespeed);
-        //Quaternion.Slerp : 第一引数(Quaternion)から、第二引数(Quaternion)の方向に、第三引数(float)の時間をかけて回転する。
-        transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler(0.0f, 0.0f, 0.0f), _rotateTime);
-
-        //Quaternion.SlerpだとRotationがぴったしで止まってくれないので、座標がさだまったら向きを固定する
-        if (transform.localPosition == _endPos)
+        while (true)
         {
-            transform.localRotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
+            //マイフレーム呼び出す
+            transform.localPosition = Vector3.MoveTowards(transform.localPosition, _endPos, _movespeed);
+            //Quaternion.Slerp : 第一引数(Quaternion)から、第二引数(Quaternion)の方向に、第三引数(float)の時間をかけて回転する。
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler(0.0f, 0.0f, 0.0f), _rotateTime);
+            if (transform.localPosition == _endPos)break;
+            yield return null;
         }
+
+        transform.localRotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
+        yield return null;
     }
 
     //ボタン押されたら登場座標にする
     public void CharacterChange()
     {
-        transform.localPosition = _startPos;
-        transform.localRotation = Quaternion.Euler(180.0f, 0.0f, 0.0f);
+        StartCoroutine(UpdateMove());
     }
 
 }

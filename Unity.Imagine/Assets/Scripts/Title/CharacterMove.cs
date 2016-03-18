@@ -25,28 +25,31 @@ public class CharacterMove : MonoBehaviour
 
     //待っている時間
     [SerializeField]
-    int _waitTime;
+    float _waitTime;
 
     //こけるSpeed
     [SerializeField]
     int _spinSpeed;
+    [SerializeField]
+    Quaternion _setRotation;
 
     public struct CharacterStatus
     {
         //最大待ち時間
-        public int _totalWaitTime;
+        public float _totalWaitTime;
         //飛んでいるかどうか
         public bool _isJump;
         //ジャンプしている時間
-        public int _jumpCount;
+        public float _jumpCount;
         //_ジャンプ開始位置
         public float _tempPosY;
         //こけているかどうか
         public bool _isSpin;
+        public bool _canSpin;
         //こけている秒数
-        public int _fallCount;
+        public float _fallCount;
         //こけている最大時間
-        public int _totalFallCount;
+        public float _totalFallCount;
     }
 
     //こける処理
@@ -70,13 +73,14 @@ public class CharacterMove : MonoBehaviour
 
     void Start()
     {
-        _characterStatus._totalWaitTime = 0;
+        _characterStatus._totalWaitTime = 0.0f;
         _characterStatus._isJump = false;
         _characterStatus._jumpCount = 0;
         _characterStatus._tempPosY = _character.transform.localPosition.y;
         _characterStatus._isSpin = false;
-        _characterStatus._fallCount = 0;
-        _characterStatus._totalFallCount = 30;
+        _characterStatus._canSpin = true;
+        _characterStatus._fallCount = 0.0f;
+        _characterStatus._totalFallCount = 0.5f;
         _totalFallDistance = 500.0f;
     }
 
@@ -101,9 +105,9 @@ public class CharacterMove : MonoBehaviour
     {
         if (_isEndFalled == true) return;
 
-        ++_characterStatus._jumpCount;
+        _characterStatus._jumpCount += Time.deltaTime;
 
-        _totalFallDistance += -_gravity * _characterStatus._jumpCount * _characterStatus._jumpCount / 20;
+        _totalFallDistance += -_gravity * _characterStatus._jumpCount * _characterStatus._jumpCount * 360;
 
         _character.transform.localPosition
                = new Vector3(_character.transform.localPosition.x,
@@ -126,12 +130,12 @@ public class CharacterMove : MonoBehaviour
     {
         if (_isDrop == false && _isEndFalled == true)
         {
-            ++_characterStatus._jumpCount;
+            _characterStatus._jumpCount += Time.deltaTime;
 
             _character.transform.localPosition
               = new Vector3(_character.transform.localPosition.x,
                             _character.transform.localPosition.y
-                            + _jumpPower / 2 - _gravity * _characterStatus._jumpCount * _characterStatus._jumpCount,
+                            + _jumpPower / 2 - _gravity * _characterStatus._jumpCount * _characterStatus._jumpCount * 360,
                             _character.transform.localPosition.z);
 
             if (_character.transform.localPosition.y < _characterStatus._tempPosY)
@@ -141,7 +145,7 @@ public class CharacterMove : MonoBehaviour
                 = new Vector3(_character.transform.localPosition.x,
                               _characterStatus._tempPosY,
                               _character.transform.localPosition.z);
-                _characterStatus._jumpCount = 0;
+                _characterStatus._jumpCount = 0.0f;
             }
 
         }
@@ -150,14 +154,14 @@ public class CharacterMove : MonoBehaviour
     private void UpdateOfCharacterSetIsJump()
     {
         if (_characterStatus._isJump == false && _canJump == true)
-            ++_waitTime;
+            _waitTime += Time.deltaTime;
 
         if (_waitTime >= _characterStatus._totalWaitTime)
         {
             //Randomで飛ぶタイミングを変更
-            _characterStatus._totalWaitTime = UnityEngine.Random.Range(120, 240);
+            _characterStatus._totalWaitTime = UnityEngine.Random.Range(0.5f, 2.0f);
             _characterStatus._isJump = true;
-            _waitTime = 0;
+            _waitTime = 0.0f;
         }
     }
 
@@ -165,18 +169,19 @@ public class CharacterMove : MonoBehaviour
     {
         if (_characterStatus._isJump == true)
         {
-            ++_characterStatus._jumpCount;
+            _characterStatus._jumpCount += Time.deltaTime;
 
+            Debug.Log(_characterStatus._jumpCount);
             _character.transform.localPosition
                 = new Vector3(_character.transform.localPosition.x,
                               _character.transform.localPosition.y
-                            + _jumpPower - _gravity * _characterStatus._jumpCount * _characterStatus._jumpCount,
+                            + _jumpPower - _gravity * _characterStatus._jumpCount * _characterStatus._jumpCount * 360,
                               _character.transform.localPosition.z);
 
             //こけていないときに回転させる
             if (_characterStatus._isSpin == false)
             {
-                _character.transform.Rotate(new Vector3(0, _spinSpeed * 4, 0));
+                _character.transform.Rotate(new Vector3(0, _spinSpeed * 2, 0));
             }
 
             //初期位置より下にいったら元の位置に戻し、ジャンプ処理の終了
@@ -187,7 +192,10 @@ public class CharacterMove : MonoBehaviour
                 = new Vector3(_character.transform.localPosition.x,
                               _characterStatus._tempPosY,
                               _character.transform.localPosition.z);
-                _characterStatus._jumpCount = 0;
+              
+                _character.transform.localRotation = new Quaternion(_setRotation.x, _setRotation.y, _setRotation.z, 1);
+
+                _characterStatus._jumpCount = 0.0f;
             }
         }
     }
@@ -196,22 +204,17 @@ public class CharacterMove : MonoBehaviour
     {
         if (_characterStatus._isSpin == true)
         {
-            ++_characterStatus._fallCount;
+            _characterStatus._fallCount += Time.deltaTime;
+            _characterStatus._isJump = true;
             //Rotateをいじりこかす
-            _character.transform.Rotate(new Vector3(0, 0, _spinSpeed));
-            //Count 90 / fallSpeed = 15なので　15基準です
-            if (_characterStatus._fallCount == 15)
+            _character.transform.Rotate(new Vector3(0, 0, _spinSpeed * _characterStatus._fallCount));
+            if (_characterStatus._fallCount > 0.5f)
             {
                 //起こすためにSpeedを-1
                 _spinSpeed *= -1;
-                _characterStatus._isJump = true;
-            }
-
-            //起きたら戻す
-            if (_characterStatus._fallCount >= 30)
-            {
+                _characterStatus._canSpin = false;
                 _characterStatus._isSpin = false;
-                _characterStatus._fallCount = 0;
+                _characterStatus._fallCount = 0.0f;
             }
         }
     }
