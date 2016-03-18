@@ -29,9 +29,8 @@ public class MenuDirecter : MonoBehaviour
     //カメラ移動しているかどうか
     private bool _isChangingCameraRotation = false;
 
-    //TargetCursor
-    [SerializeField]
-    Image _targetCursor = null;
+    //Characterの移動アニメーションをしていいかどうか
+    private bool _canMoveCharacter = false;
 
     [SerializeField]
     GameObject[] _characterAnimation = null;
@@ -61,7 +60,6 @@ public class MenuDirecter : MonoBehaviour
         _sprites.Add(Resources.Load<Sprite>("Menu/Texture/menu_title_speed_game"));
 
         _explanationImage.sprite = _sprites[0];
-        MoveCursor(_nowSelectGameNum);
 
         for (int i = 0; i < 2; ++i)
         {
@@ -80,6 +78,8 @@ public class MenuDirecter : MonoBehaviour
         _ListsOfActionPushButton.Add(() =>
         {
             _nowCameraMode = NowCameraMode.UP_ANGLE;
+            _animationCount = 1.0f;
+            FindObjectOfType<MenuBoxAnimater>().isBack = true;
         });
 
         _ListsOfActionPushButton.Add(() =>
@@ -119,13 +119,13 @@ public class MenuDirecter : MonoBehaviour
             StartCoroutine(ChangeStartCameraAngle());
         }
 
-        else if(_nowCameraMode == NowCameraMode.UP_ANGLE)
+        else if (_nowCameraMode == NowCameraMode.UP_ANGLE)
         {
             StartCoroutine(EndDirection());
             StartCoroutine(ChangeEndCameraAngle());
         }
 
-        if (TouchController.IsTouchBegan())
+        if (TouchController.IsTouchBegan() && _canMoveCharacter == false)
             TouchCharacter();
     }
 
@@ -134,16 +134,17 @@ public class MenuDirecter : MonoBehaviour
         var hitObject = new RaycastHit();
         var isHit = TouchController.IsRaycastHit(out hitObject);
 
-        for(int i = 0; i < 2; ++i)
-        if (hitObject.transform.name == _characterAnimation[i].name)
-        {
-                if (_characterAnimation[i].name == "Asobu")
+        for (int i = 0; i < 2; ++i)
+            if (hitObject.transform.name == _characterAnimation[i].name)
+            {
+                if (_characterAnimation[i].name == "Asobu" && _canMoveCharacter == false)
                 {
+                    _canMoveCharacter = true;
                     _nowCameraMode = NowCameraMode.DOWN_ANGLE;
                     _animationCount = 0.0f;
                 }
 
-                else if (_characterAnimation[i].name == "tukuru")
+                else if (_characterAnimation[i].name == "Tukuru")
                 {
                     //Createに移動
                     var screenSequencer = ScreenSequencer.instance;
@@ -163,20 +164,21 @@ public class MenuDirecter : MonoBehaviour
     {
         while (_nowCameraRotation < 90.0f)
         {
-            _nowCameraRotation += 0.3f;
+            _nowCameraRotation += Time.deltaTime * 30;
 
             _camera.transform.localRotation =
                  Quaternion.Euler(_nowCameraRotation, 0, 0);
+
             yield return null;
         }
-        FindObjectOfType<AnimeterTest>().isPlay = true;
+       
     }
 
     IEnumerator ChangeEndCameraAngle()
     {
         while (_nowCameraRotation > 0.0f)
         {
-            _nowCameraRotation -= 0.3f;
+            _nowCameraRotation -= Time.deltaTime * 30;
 
             _camera.transform.localRotation =
                  Quaternion.Euler(_nowCameraRotation, 0, 0);
@@ -187,7 +189,7 @@ public class MenuDirecter : MonoBehaviour
     IEnumerator StartDirection()
     {
         // 遊びオブジェクトの移動処理
-        _animationCount += 1.0f / 60.0f;
+        _animationCount += Time.deltaTime;
         while (_animationCount <= 1.0f)
         {
             for (int i = 0; i < 2; ++i)
@@ -196,24 +198,31 @@ public class MenuDirecter : MonoBehaviour
                        = new Vector3(_startPosition[i].x + _def[i].x * _animationCount,
                                      _startPosition[i].y + _def[i].y * _animationCount,
                                      _startPosition[i].z + _def[i].z * _animationCount);
-                if (_animationCount == 1.0f)
-                {
-                    _characterAnimation[i].transform.localPosition
-                            = new Vector3(_animationStop[i].transform.localPosition.x,
-                                          _animationStop[i].transform.localPosition.y,
-                                          _animationStop[i].transform.localPosition.z);
-                    _nowCameraMode = NowCameraMode.NONE;
-                }
             }
             yield return null;
         }
+
+        for (int i = 0; i < 2; ++i)
+        {
+            _characterAnimation[i].transform.localPosition
+                    = new Vector3(_animationStop[i].transform.localPosition.x,
+                                  _animationStop[i].transform.localPosition.y,
+                                  _animationStop[i].transform.localPosition.z);
+        }
+            _nowCameraMode = NowCameraMode.NONE;
+        FindObjectOfType<MenuBoxAnimater>().isPlay = true;
+
+        yield return null;
     }
 
     IEnumerator EndDirection()
     {
+       
+
         // 遊びオブジェクトの移動処理
-        _animationCount -= 2.0f / 60.0f;
-        while (_animationCount >= 0.0f)
+        _animationCount -= Time.deltaTime;
+
+        while (_animationCount > 0.0f)
         {
             for (int i = 0; i < 2; ++i)
             {
@@ -221,17 +230,22 @@ public class MenuDirecter : MonoBehaviour
                        = new Vector3(_startPosition[i].x + _def[i].x * _animationCount,
                                      _startPosition[i].y + _def[i].y * _animationCount,
                                      _startPosition[i].z + _def[i].z * _animationCount);
-                if (_animationCount == 0.0f)
-                {
-                    _characterAnimation[i].transform.localPosition
-                            = new Vector3(_startPosition[i].x,
-                                          _startPosition[i].y,
-                                          _startPosition[i].z);
-                    _nowCameraMode = NowCameraMode.NONE;
-                }
             }
             yield return null;
         }
+
+        for (int i = 0; i < 2; ++i)
+        {
+            _characterAnimation[i].transform.localPosition
+                = new Vector3(_startPosition[i].x,
+                              _startPosition[i].y,
+                              _startPosition[i].z);
+        }
+
+        _nowCameraMode = NowCameraMode.NONE;
+        _canMoveCharacter = false;
+
+        yield return null;
     }
 
     public void ActionOfPushButton(int _buttonNum)
@@ -247,21 +261,14 @@ public class MenuDirecter : MonoBehaviour
             Debug.Log(_nowSelectGameNum);
             _explanationImage.sprite = _sprites[_nowSelectGameNum];
             FindObjectOfType<SelectGameStatus>().SelectGameNum = _nowSelectGameNum;
-            MoveCursor(_nowSelectGameNum);
+            FindObjectOfType<ChangeTarget>().ChangeTargetCursor(_nowSelectGameNum);
         }
         else if (nowSelectGameNum_ == 3)
         {
-            _nowSelectGameNum = UnityEngine.Random.Range(0, 2);
+            _nowSelectGameNum = UnityEngine.Random.Range(0, 3);
             _explanationImage.sprite = _sprites[_nowSelectGameNum];
             FindObjectOfType<SelectGameStatus>().SelectGameNum = _nowSelectGameNum;
-            MoveCursor(_nowSelectGameNum);
+            FindObjectOfType<ChangeTarget>().ChangeTargetCursor(_nowSelectGameNum);
         }
     }
-
-    private void MoveCursor(int _selectGameNum)
-    {
-        _targetCursor.transform.localPosition
-            = new Vector3(-460 + _selectGameNum * 200, -40, -450);
-    }
-
 }
