@@ -271,9 +271,8 @@ public class ChangeCharacterPattern : MonoBehaviour
         ChangeSelect(index, (int)getCharacterParamter.decorationType, _panelOfChangeDecoration);
 
         _characterParamter.decorationType = (CharacterParameter.DecorationType)index;
-        var meshRenderers = _characterPlace.GetComponentsInChildren<MeshRenderer>();
-        var meshIndex = meshRenderers.Length - 1;
-        meshRenderers[meshIndex].material.mainTexture = _characterTextures[index + (int)_characterParamter.modelType * 4];
+        var meshRenderer = _character.GetComponent<MeshRenderer>();
+        meshRenderer.material.mainTexture = _characterTextures[index + (int)_characterParamter.modelType * 4];
         _description.sprite = _descriptionSprites[index + 6];
         yield return StartCoroutine(DecideCorutine());
     }
