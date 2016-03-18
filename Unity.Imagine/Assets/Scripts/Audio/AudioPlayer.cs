@@ -6,7 +6,15 @@ using System.Linq;
 //------------------------------------------------------------
 // NOTICE:
 // SourceObject を利用、経由して
-// AudioSource の再生、停止の一部を代行する
+// AudioSource の再生、停止の命令を代行する
+//
+//------------------------------------------------------------
+// TIPS:
+// SourceManageMode について
+//
+// Additive は SourceObject の管理をしません
+// Control は AudioSource の追加を行いません
+// 追加、管理どちらも行う場合は、Full を指定してください
 //
 //------------------------------------------------------------
 
@@ -26,8 +34,14 @@ public class AudioPlayer : MonoBehaviour {
   }
 
   [SerializeField]
-  [Tooltip("再生する AudioSource の管理方法を指定")]
+  [Tooltip("SourceObject の管理方法を指定")]
   SourceManageMode _manageMode = SourceManageMode.None;
+
+  /// <summary> <see cref="SourceObject"/> の管理方法を指定 </summary>
+  public SourceManageMode manageMode {
+    get { return _manageMode; }
+    set { _manageMode = value; }
+  }
 
   bool isAdditive { get { return ((int)_manageMode % 2) > 0; } }
   bool isControl { get { return _manageMode > SourceManageMode.Additive; } }
@@ -37,7 +51,7 @@ public class AudioPlayer : MonoBehaviour {
   bool _autoRelease = false;
 
   new AudioManager audio { get { return AudioManager.instance; } }
-  readonly Queue<AudioSource> _sources = new Queue<AudioSource>();
+  readonly List<SourceObject> _sources = new List<SourceObject>();
 
   void Start() {
     Debug.Log(name + ": add = " + isAdditive);

@@ -85,4 +85,11 @@ public class SourceObject : MonoBehaviour {
     var sources = GetSources().Where(source => source.clip != null);
     foreach (var source in sources) { source.Play(); }
   }
+
+  /// <summary> <see cref="AudioClip"/> が登録された
+  /// <see cref="AudioSource"/> を全て同時に停止する </summary>
+  public void AllStop() {
+    var sources = GetSources().Where(source => source.clip != null);
+    foreach (var source in sources) { source.Stop(); }
+  }
 }
