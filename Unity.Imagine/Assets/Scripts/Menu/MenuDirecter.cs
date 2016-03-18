@@ -217,8 +217,10 @@ public class MenuDirecter : MonoBehaviour
 
     IEnumerator EndDirection()
     {
-       
 
+        //while()
+        Debug.Log(FindObjectOfType<MenuBoxAnimater>().animationTime);
+        
         // 遊びオブジェクトの移動処理
         _animationCount -= Time.deltaTime;
 
