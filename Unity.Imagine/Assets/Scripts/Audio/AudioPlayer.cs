@@ -9,13 +9,13 @@ using System.Linq;
 //
 //------------------------------------------------------------
 // TIPS:
-// 1: SourceManageMode について
+// 1: manageMode (SourceManageMode) について
 //
 // Additive は SourceObject の所有権を AudioManager 側に委ねます
 // Control は AudioSource の追加を行いません
 // 追加、管理どちらも行う場合は、Full を指定してください
 //
-// 2: _autoRelease について
+// 2: autoRelease (SourceObject.AutoRelease()) について
 //
 // 再生を完了したときに、自動で SourceObject を削除します
 // 
@@ -53,7 +53,7 @@ public class AudioPlayer : MonoBehaviour {
   bool isControl { get { return _manageMode > SourceManageMode.Additive; } }
 
   [SerializeField]
-  [Tooltip("再生が終了した AudioSource を自動的に開放する")]
+  [Tooltip("再生が終了した SourceObject を自動的に開放する")]
   bool _autoRelease = false;
 
   /// <summary> 再生終了時に自動で
@@ -87,8 +87,7 @@ public class AudioPlayer : MonoBehaviour {
 
   /// <summary> 自身に関連付けられた <see cref="SourceObject"/> に
   /// <see cref="AudioSource"/> を追加する </summary>
-  /// <param name="isLoop"> true = ループ再生を許可 </param>
-  public void AddSource(bool isLoop) { _sourceObject.AddSource(isLoop); }
+  public AudioSource AddSource() { return _sourceObject.AddSource(); }
 
   /// <summary> 再生中の <see cref="AudioSource"/> を全て取得 </summary>
   public IEnumerable<AudioSource> GetPlayingSources() {
@@ -102,10 +101,11 @@ public class AudioPlayer : MonoBehaviour {
 
     AudioSource source = null;
     var success = _sourceObject.GetSource(out source);
-    if (!success && isAdditive) { source = _sourceObject.AddSource(isLoop); }
+    if (!success && isAdditive) { source = _sourceObject.AddSource(); }
 
     if (source == null) { return; }
     source.clip = audio.GetClip(index);
+    source.loop = isLoop;
     source.Play();
 
     if (_autoRelease) { StartCoroutine(_sourceObject.AutoRelease(UnBind)); }
@@ -114,10 +114,12 @@ public class AudioPlayer : MonoBehaviour {
   /// <summary> 指定した ID の <see cref="AudioClip"/> を使って再生する </summary>
   public void Play(int index) { Play(index, false); }
 
+  /// <summary> <see cref="AudioClip"/> が登録済みの
+  /// <see cref="AudioSource"/> を全て再生する </summary>
+  public void AllPlay() { _sourceObject.AllPlay(); }
+
   /// <summary> 再生中の <see cref="AudioSource"/> を全て停止する </summary>
-  public void Stop() {
-    foreach (var source in _sourceObject.GetSources()) { source.Stop(); }
-  }
+  public void Stop() { _sourceObject.AllStop(); }
 
   /// <summary> 関連付けられた <see cref="SourceObject"/> を解放する </summary>
   public void UnBind() {

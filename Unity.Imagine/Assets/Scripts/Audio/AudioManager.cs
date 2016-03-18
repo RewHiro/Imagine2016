@@ -67,6 +67,7 @@ public class AudioManager : SingletonBehaviour<AudioManager> {
 
   /// <summary> 指定した <see cref="SourceObject"/> を削除する </summary>
   public bool RemoveSource(SourceObject source) {
+    source.AllStop();
     var success = _sources.Remove(source);
     if (success) { Destroy(source.gameObject); }
     return success;
