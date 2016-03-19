@@ -38,11 +38,6 @@ public class ResultDirecter : MonoBehaviour
         SetResult(1);
     }
 
-    void Update()
-    {
-        
-    }
-
     public void SetResult(int winPlayerNum_)
     {
         SetPanelsActive(true);
