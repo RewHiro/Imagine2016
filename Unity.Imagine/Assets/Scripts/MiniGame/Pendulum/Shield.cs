@@ -119,14 +119,14 @@ public class Shield : MonoBehaviour {
         for (int i = 0; i < PUSH_FREAM; ++i)
         {
             _armor = _maxArmor - _maxArmor / PUSH_FREAM * i;
-            transform.Translate(0.0f, 0.0f, 0.3f);
-            yield return 0.3f;
+            transform.Translate(0.0f, 0.0f, 0.3f * 40.0f);
+            yield return 0.3f * 40.0f;
         }
         for (int i = 0; i < PULL_FREAM; ++i)
         {
             _armor -= _maxArmor;
-            transform.Translate(0.0f, 0.0f, -0.3f);
-            yield return -0.3f;
+            transform.Translate(0.0f, 0.0f, -0.3f * 40.0f);
+            yield return -0.3f * 40.0f;
         }
         _armor = 0;
     }

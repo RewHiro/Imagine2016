@@ -94,6 +94,7 @@ public class ARDeviceManager : SingletonBehaviour<ARDeviceManager> {
         transform.position = Vector3.zero;
         arSystem.setMarkerTransform(model.id, model.transform);
         //transform.Rotate(Vector3.right * 90f);
+        model.gameObject.transform.eulerAngles = model.gameObject.GetComponent<ActionManager>().rotation;
       }
 
       Debug.Log(markerList.Count);
