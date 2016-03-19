@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Barrage : ActionManager
 {
+    [SerializeField]
+    StartCount _startCount; 
 
     [SerializeField]
     GameObject _bulletObj = null;
@@ -35,6 +37,10 @@ public class Barrage : ActionManager
 
     void Start()
     {
+        if (_startCount == null)
+        {
+            _startCount = GameObject.Find("StartCount").GetComponent<StartCount>();
+        }
         _time = _waitTime;
         _randomBullet = GetComponent<RandomBullet>();
         //_timeCount = GetComponent<TimeCount>();
@@ -42,7 +48,10 @@ public class Barrage : ActionManager
 
     void Update()
     {
-        _keyCount += Barragebutton(keyCode);
+        if (_startCount.getCountFinish)
+        {
+            _keyCount += Barragebutton(keyCode);
+        }
     }
 
     //int Barragebutton(KeyCode key)
@@ -62,10 +71,6 @@ public class Barrage : ActionManager
     //    return 0;
     //}
 
-    void WaitTime()
-    {
-        _time -= Time.deltaTime; 
-    }
 
     int Barragebutton(KeyCode key)
     {
@@ -96,14 +101,7 @@ public class Barrage : ActionManager
     }
 
 
-    public override void Action()
-    {
-        //if (Input.GetKeyDown(keyCode) && _timeCount._getTime >= 1)
-        //{
-        //    Bullet();
-        //}
-
-    }
+    public override void Action(){}
 
         void Bullet(GameObject bullet)
     {
