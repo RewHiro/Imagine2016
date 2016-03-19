@@ -17,8 +17,6 @@ public class MenuDirecter : MonoBehaviour
     //今どのゲームを選択しているか
     private int _nowSelectGameNum = 0;
 
-    List<Sprite> _sprites = new List<Sprite>();
-
     [SerializeField]
     Image _explanationImage = null;
 
@@ -43,6 +41,14 @@ public class MenuDirecter : MonoBehaviour
     private float _animationCount = 0.0f;
     private Vector3[] _def = new Vector3[2];
 
+    private double _totalReverseAnimationCount = 0.0f;
+    private double _reverseAnimationCount = 0.0f;
+    private bool _isChangedAnimationActive = false;
+
+
+    [SerializeField]
+    GameObject _animation = null;
+
     enum NowCameraMode
     {
         NONE,
@@ -55,11 +61,6 @@ public class MenuDirecter : MonoBehaviour
     void Start()
     {
         Register();
-        _sprites.Add(Resources.Load<Sprite>("Menu/Texture/menu_title_power_game"));
-        _sprites.Add(Resources.Load<Sprite>("Menu/Texture/menu_title_defence_game"));
-        _sprites.Add(Resources.Load<Sprite>("Menu/Texture/menu_title_speed_game"));
-
-        _explanationImage.sprite = _sprites[0];
 
         for (int i = 0; i < 2; ++i)
         {
@@ -79,7 +80,10 @@ public class MenuDirecter : MonoBehaviour
         {
             _nowCameraMode = NowCameraMode.UP_ANGLE;
             _animationCount = 1.0f;
+            _reverseAnimationCount = FindObjectOfType<MenuBoxAnimater>().animationTime;
+            _totalReverseAnimationCount = _reverseAnimationCount;
             FindObjectOfType<MenuBoxAnimater>().isBack = true;
+            _isChangedAnimationActive = false;
         });
 
         _ListsOfActionPushButton.Add(() =>
@@ -176,13 +180,16 @@ public class MenuDirecter : MonoBehaviour
 
     IEnumerator ChangeEndCameraAngle()
     {
-        while (_nowCameraRotation > 0.0f)
+        if (_totalReverseAnimationCount > _reverseAnimationCount + 3.0f)
         {
-            _nowCameraRotation -= Time.deltaTime * 30;
+            while (_nowCameraRotation > 0.0f)
+            {
+                _nowCameraRotation -= Time.deltaTime * 30;
 
-            _camera.transform.localRotation =
-                 Quaternion.Euler(_nowCameraRotation, 0, 0);
-            yield return null;
+                _camera.transform.localRotation =
+                     Quaternion.Euler(_nowCameraRotation, 0, 0);
+                yield return null;
+            }
         }
     }
 
@@ -210,44 +217,53 @@ public class MenuDirecter : MonoBehaviour
                                   _animationStop[i].transform.localPosition.z);
         }
             _nowCameraMode = NowCameraMode.NONE;
+        _animation.SetActive(true);
         FindObjectOfType<MenuBoxAnimater>().isPlay = true;
-
+        _characterAnimation[0].SetActive(false);
         yield return null;
     }
 
     IEnumerator EndDirection()
     {
+        _totalReverseAnimationCount += Time.deltaTime;
 
-        //while()
-        Debug.Log(FindObjectOfType<MenuBoxAnimater>().animationTime);
-        
-        // 遊びオブジェクトの移動処理
-        _animationCount -= Time.deltaTime;
-
-        while (_animationCount > 0.0f)
+        if (_totalReverseAnimationCount > _reverseAnimationCount + 3.0f)
         {
+            if(_isChangedAnimationActive == false)
+            {
+                _animation.SetActive(false);
+                _characterAnimation[0].SetActive(true);
+                _isChangedAnimationActive = true;
+            }
+
+            // 遊びオブジェクトの移動処理
+            _animationCount -= Time.deltaTime;
+
+            while (_animationCount > 0.0f)
+            {
+                for (int i = 0; i < 2; ++i)
+                {
+                    _characterAnimation[i].transform.localPosition
+                           = new Vector3(_startPosition[i].x + _def[i].x * _animationCount,
+                                         _startPosition[i].y + _def[i].y * _animationCount,
+                                         _startPosition[i].z + _def[i].z * _animationCount);
+                }
+                yield return null;
+            }
+
             for (int i = 0; i < 2; ++i)
             {
                 _characterAnimation[i].transform.localPosition
-                       = new Vector3(_startPosition[i].x + _def[i].x * _animationCount,
-                                     _startPosition[i].y + _def[i].y * _animationCount,
-                                     _startPosition[i].z + _def[i].z * _animationCount);
+                    = new Vector3(_startPosition[i].x,
+                                  _startPosition[i].y,
+                                  _startPosition[i].z);
             }
+
+            _nowCameraMode = NowCameraMode.NONE;
+            _canMoveCharacter = false;
+
             yield return null;
         }
-
-        for (int i = 0; i < 2; ++i)
-        {
-            _characterAnimation[i].transform.localPosition
-                = new Vector3(_startPosition[i].x,
-                              _startPosition[i].y,
-                              _startPosition[i].z);
-        }
-
-        _nowCameraMode = NowCameraMode.NONE;
-        _canMoveCharacter = false;
-
-        yield return null;
     }
 
     public void ActionOfPushButton(int _buttonNum)
@@ -261,14 +277,12 @@ public class MenuDirecter : MonoBehaviour
         {
             _nowSelectGameNum = nowSelectGameNum_;
             Debug.Log(_nowSelectGameNum);
-            _explanationImage.sprite = _sprites[_nowSelectGameNum];
             FindObjectOfType<SelectGameStatus>().SelectGameNum = _nowSelectGameNum;
             FindObjectOfType<ChangeTarget>().ChangeTargetCursor(_nowSelectGameNum);
         }
         else if (nowSelectGameNum_ == 3)
         {
             _nowSelectGameNum = UnityEngine.Random.Range(0, 3);
-            _explanationImage.sprite = _sprites[_nowSelectGameNum];
             FindObjectOfType<SelectGameStatus>().SelectGameNum = _nowSelectGameNum;
             FindObjectOfType<ChangeTarget>().ChangeTargetCursor(_nowSelectGameNum);
         }
