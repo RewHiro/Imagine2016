@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using NyAR.MarkerSystem;
 using NyARUnityUtils;
 
@@ -73,7 +74,7 @@ public class ARDeviceManager : SingletonBehaviour<ARDeviceManager> {
     var markerList = new List<Marker>();
 
     System.Action ResetList = () => {
-      if (markerList.Count == modelManager.models.Count) { return; }
+      if (markerList.Count == modelManager.models.Count()) { return; }
       markerList.Clear();
       foreach (var model in modelManager.models) { markerList.Add(new Marker(model.id)); }
     };
@@ -84,20 +85,20 @@ public class ARDeviceManager : SingletonBehaviour<ARDeviceManager> {
       ResetList();
       foreach (var model in modelManager.models) {
 
-        Debug.Log(model.id);
+        //Debug.Log(model.id);
         var marker = markerList.Find(mark => mark.id == model.id);
         _arSystem.getMarkerTransform(model.id, ref marker.position, ref marker.rotation);
-        Debug.Log(marker.position);
-        Debug.Log(marker.rotation);
+        //Debug.Log(marker.position);
+        //Debug.Log(marker.rotation);
 
         if (!_arSystem.isExistMarker(model.id)) { continue; }
         transform.position = Vector3.zero;
         arSystem.setMarkerTransform(model.id, model.transform);
         //transform.Rotate(Vector3.right * 90f);
-        model.gameObject.transform.eulerAngles = model.gameObject.GetComponent<ActionManager>().rotation;
+        //model.gameObject.transform.eulerAngles = model.gameObject.GetComponent<ActionManager>().rotation;
       }
 
-      Debug.Log(markerList.Count);
+      //Debug.Log(markerList.Count);
 
       yield return null;
     }
