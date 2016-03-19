@@ -26,7 +26,7 @@ public class Pendulum : ActionManager
         var shield = Instantiate(shieldObj);
         shield.transform.position = transform.position;
         shield.transform.rotation = transform.rotation;
-        shield.transform.Translate(new Vector3(0.0f, 0.0f, 0.8f));
+        shield.transform.Translate(new Vector3(0.0f, 0.0f, 0.8f * 40.0f));
         shield.transform.parent = transform;
         shield.name = shieldObj.name;
         shield.GetComponent<Shield>().hitParticle = hitParticle;
@@ -45,6 +45,7 @@ public class Pendulum : ActionManager
     public override void Action()
     {
         transform.LookAt(Enemy.transform);
+        rotation = transform.eulerAngles;
         if (_shieldObj == null)
         {
             if (GetComponentInChildren<Shield>() != null)
