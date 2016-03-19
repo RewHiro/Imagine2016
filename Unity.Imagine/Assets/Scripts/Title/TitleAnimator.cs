@@ -44,6 +44,9 @@ public class TitleAnimator : MonoBehaviour
     [SerializeField]
     Color _boxOColor = Color.red;
 
+    [SerializeField]
+    Texture _boxOTexture = null;
+
 
     Animator _animator = null;
 
@@ -71,7 +74,10 @@ public class TitleAnimator : MonoBehaviour
             material.mainTexture = new Texture();
             material.EnableKeyword("_Emission");
             material.SetColor("_EmissionColor", Color.black);
+            material.EnableKeyword("_Mode");
+            material.SetFloat("_Mode", 1);
         }
+        _materials[0].mainTexture = _boxOTexture;
 
         _plane.SetActive(false);
         _titleStartedDirector.SetActive(false);
@@ -133,6 +139,7 @@ public class TitleAnimator : MonoBehaviour
         var material = _materials[index];
         material.mainTexture = _textures[index];
         material.SetColor("_EmissionColor", color);
+        material.SetFloat("_Mode", 2);
     }
 
     IEnumerator ChangeTexture
@@ -153,6 +160,7 @@ public class TitleAnimator : MonoBehaviour
         var material = _materials[index];
         material.mainTexture = _textures[index];
         material.SetColor("_EmissionColor", color);
+        material.SetFloat("_Mode", 2);
         DynamicGI.SetEmissive(boxObject.GetComponent<MeshRenderer>(), color);
     }
 }
