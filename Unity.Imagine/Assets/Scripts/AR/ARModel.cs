@@ -19,9 +19,9 @@ public class ARModel : MonoBehaviour {
   public int id { get; private set; }
 
   void Start() {
-    id = ARDeviceManager.instance.arSystem.addARMarker(_marker, 8, 25, 160);
+    id = ARDeviceManager.instance.arSystem.addARMarker(_marker, 16, 25, 80);
     transform.localScale = Vector3.one * _modelScale;
 
-    ARModelManager.instance.models.Add(this);
+    ARModelManager.instance.Add(this);
   }
 }
