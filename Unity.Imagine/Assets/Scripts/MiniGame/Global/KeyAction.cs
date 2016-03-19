@@ -12,10 +12,13 @@ public class KeyAction : MonoBehaviour {
     private int initCount { get; set; }
     private const int INIT_COUNT_FRAME = 1;
 
+    public bool isGameStart { get; set; }
+
     // Use this for initialization
     void Start () {
         Init();
         initCount = -1;
+        isGameStart = false;
     }
 	
 	// Update is called once per frame
@@ -79,6 +82,14 @@ public class KeyAction : MonoBehaviour {
     void KeysAction()
     {
         if (_actionMgr == null || _actionMgr.Length < 2) { return; }
+        foreach (var action in _actionMgr)
+        {
+            if (!action.isRendered) {
+                isGameStart = false;
+                return;
+            }
+        }
+        isGameStart = (isGameStart == false) ? true : false;
         foreach (var action in _actionMgr)
         {
             action.Action();
