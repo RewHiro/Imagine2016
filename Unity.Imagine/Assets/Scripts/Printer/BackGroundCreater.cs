@@ -32,13 +32,13 @@ public class BackGroundCreater : MonoBehaviour
     //パネルの枚数を決める(方向によって枚数は変わる)
     private int _panelNumber = 0;
 
-    [SerializeField]
     private List<GameObject> _panel = null;
 
     private Vector3 _startPos = Vector3.zero;
 
     void Start()
     {
+        _panel = new List<GameObject>();
         if (_direction == MoveDirection.PLUSX || _direction == MoveDirection.MINUSX)
         {
             _panelNumber = 3;
@@ -50,6 +50,7 @@ public class BackGroundCreater : MonoBehaviour
                 _panel[i].SetActive(true);
                 _panel[i].transform.SetParent(transform);
                 _panel[i].GetComponent<Image>().sprite = _backGroundTexture;
+                _panel[i].name = "Panel" + (i + 1);
                 //子供にした後に座標を調整する必要がある。
                 _panel[i].transform.localScale = Vector3.one;
                 _panel[i].transform.localPosition = _startPos;
@@ -76,6 +77,7 @@ public class BackGroundCreater : MonoBehaviour
                 _panel[i].SetActive(true);
                 _panel[i].transform.SetParent(transform);
                 _panel[i].GetComponent<Image>().sprite = _backGroundTexture;
+                _panel[i].name = "Panel" + (i + 1);
 
                 _panel[i].transform.localScale = Vector3.one;
                 _panel[i].transform.localPosition = _startPos;
@@ -108,6 +110,7 @@ public class BackGroundCreater : MonoBehaviour
                 _panel[i].SetActive(true);
                 _panel[i].transform.SetParent(transform);
                 _panel[i].GetComponent<Image>().sprite = _backGroundTexture;
+                _panel[i].name = "Panel" + (i + 1);
 
                 _panel[i].transform.localScale = Vector3.one;
                 _panel[i].transform.localPosition = _startPos;
