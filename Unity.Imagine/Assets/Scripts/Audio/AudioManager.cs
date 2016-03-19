@@ -1,7 +1,6 @@
 ﻿
 using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
 
 //------------------------------------------------------------
 // NOTICE:
@@ -45,7 +44,7 @@ public class AudioManager : SingletonBehaviour<AudioManager> {
   /// <param name="parent"> このオブジェクトの管理下にする </param>
   public SourceObject CreateSource(Transform parent) {
     var source = SourceObject.Create();
-    source.transform.SetParent(parent);
+    source.transform.SetParent(parent == null ? transform : parent);
     _sources.Add(source);
     return source;
   }
@@ -68,6 +67,7 @@ public class AudioManager : SingletonBehaviour<AudioManager> {
 
   /// <summary> 指定した <see cref="SourceObject"/> を削除する </summary>
   public bool RemoveSource(SourceObject source) {
+    source.AllStop();
     var success = _sources.Remove(source);
     if (success) { Destroy(source.gameObject); }
     return success;
