@@ -15,25 +15,28 @@ public class ResultEffector : MonoBehaviour
     /// 勝利時に使用する関数
     /// </summary>
     /// <returns></returns>
-    public IEnumerator Win()
+    public void Win()
     {
         var effect = Instantiate(_winEffect);
-        yield return null;
+        effect.transform.SetParent(transform, false);
     }
 
     /// <summary>
     /// 敗北時に使用する関数
     /// </summary>
     /// <returns></returns>
-    public IEnumerator Lose()
+    public void Lose()
     {
-        yield return null;
+        var effect = Instantiate(_loseEffect);
+        effect.transform.SetParent(transform, false);
     }
 
     void Start()
     {
-        _winEffect = Resources.Load<GameObject>("Result/PaperParticle");
-        _loseEffect = Resources.Load<GameObject>("Result/Rain/rain");
+        const string RESULT_PATH = "Result/";
+
+        _winEffect = Resources.Load<GameObject>(RESULT_PATH + "PaperParticle");
+        _loseEffect = Resources.Load<GameObject>(RESULT_PATH + "Rain/rain");
 
         if (_winEffect == null) throw new NullReferenceException("win effect null");
         if (_loseEffect == null) throw new NullReferenceException("lose effect null");
