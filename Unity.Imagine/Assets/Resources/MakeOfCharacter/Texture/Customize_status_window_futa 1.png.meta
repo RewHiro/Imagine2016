@@ -1,9 +1,12 @@
 fileFormatVersion: 2
-guid: 4dc2a80acc65ea146a1f2fe9b4e4b74e
-timeCreated: 1458359554
+guid: 0fa3872df9fc02f44b9cb4563362f7dd
+timeCreated: 1458397781
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: Customize_status_window_futa 1_0
+    21300002: Customize_status_window_futa 1_1
+    21300004: Customize_status_window_futa 1_2
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -38,7 +41,7 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -49,7 +52,40 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: Customize_status_window_futa 1_0
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 481
+        width: 211
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Customize_status_window_futa 1_1
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 441
+        width: 211
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Customize_status_window_futa 1_2
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 401
+        width: 211
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
     outline: []
   spritePackingTag: 
   userData: 

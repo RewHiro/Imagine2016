@@ -1,0 +1,218 @@
+fileFormatVersion: 2
+guid: 69838e9e0566089479fc13cf5e5c4f4b
+timeCreated: 1458400627
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: kaiten 1_0
+    21300002: kaiten 1_1
+    21300004: kaiten 1_2
+    21300006: kaiten 1_3
+    21300008: kaiten 1_4
+    21300010: kaiten 1_5
+    21300012: kaiten 1_6
+    21300014: kaiten 1_7
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: kaiten 1_0
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 487
+        width: 14
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: kaiten 1_1
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 496
+        width: 8
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: kaiten 1_2
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 490
+        width: 8
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: kaiten 1_3
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 492
+        width: 5
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: kaiten 1_4
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 488
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: kaiten 1_5
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 489
+        width: 20
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: kaiten 1_6
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 408
+        width: 112
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -49, y: 37}
+        - {x: -54, y: 27}
+        - {x: -56, y: 21}
+        - {x: -56, y: -34}
+        - {x: -40, y: -37}
+        - {x: 50, y: -37}
+        - {x: 56, y: -26}
+        - {x: 56, y: 36}
+        - {x: 54, y: 37}
+    - name: kaiten 1_7
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 406
+        width: 113
+        height: 105
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 25.5, y: 25.5}
+        - {x: 12.5, y: 17.5}
+        - {x: -29.5, y: 25.5}
+        - {x: -31.5, y: 23.5}
+        - {x: -56.5, y: 1.5}
+        - {x: -56.5, y: -36.5}
+        - {x: -35.5, y: -50.5}
+        - {x: -19.5, y: -52.5}
+        - {x: 36.5, y: -52.5}
+        - {x: 56.5, y: -34.5}
+        - {x: 56.5, y: 3.5}
+        - {x: 33.5, y: 25.5}
+      - - {x: -49.5, y: 51.5}
+        - {x: -53.5, y: 46.5}
+        - {x: -53.5, y: 37.5}
+        - {x: -51.5, y: 27.5}
+        - {x: -47.5, y: 26.5}
+        - {x: -39.5, y: 26.5}
+        - {x: -35.5, y: 30.5}
+        - {x: -35.5, y: 41.5}
+        - {x: -38.5, y: 51.5}
+      - - {x: 7.5, y: 49.5}
+        - {x: 7.5, y: 38.5}
+        - {x: 15.5, y: 27.5}
+        - {x: 28.5, y: 27.5}
+        - {x: 28.5, y: 49.5}
+      - - {x: 37.5, y: 50.5}
+        - {x: 34.5, y: 48.5}
+        - {x: 34.5, y: 28.5}
+        - {x: 53.5, y: 28.5}
+        - {x: 56.5, y: 29.5}
+        - {x: 56.5, y: 45.5}
+        - {x: 46.5, y: 50.5}
+      - - {x: -13.5, y: 47.5}
+        - {x: -19.5, y: 47.5}
+        - {x: -21.5, y: 46.5}
+        - {x: -21.5, y: 33.5}
+        - {x: -18.5, y: 29.5}
+        - {x: -13.5, y: 29.5}
+        - {x: -11.5, y: 30.5}
+        - {x: -9.5, y: 37.5}
+        - {x: -9.5, y: 43.5}
+      - - {x: -6.5, y: 47.5}
+        - {x: -6.5, y: 31.5}
+        - {x: 1.5, y: 31.5}
+        - {x: 2.5, y: 34.5}
+        - {x: 2.5, y: 46.5}
+        - {x: 1.5, y: 47.5}
+      - - {x: -37.5, y: 52.5}
+        - {x: -37.5, y: 45.5}
+        - {x: -34.5, y: 35.5}
+        - {x: -27.5, y: 35.5}
+        - {x: -25.5, y: 36.5}
+        - {x: -25.5, y: 42.5}
+        - {x: -27.5, y: 51.5}
+        - {x: -29.5, y: 52.5}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

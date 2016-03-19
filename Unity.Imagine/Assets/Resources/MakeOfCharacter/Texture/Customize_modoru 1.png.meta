@@ -1,9 +1,10 @@
 fileFormatVersion: 2
-guid: 4dc2a80acc65ea146a1f2fe9b4e4b74e
-timeCreated: 1458359554
+guid: ddc35022dbf81c04bac7fc19249b8563
+timeCreated: 1458400471
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: Customize_modoru 1_0
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -38,7 +39,7 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -49,7 +50,30 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: Customize_modoru 1_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 368
+        width: 292
+        height: 144
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 146, y: 5}
+        - {x: 122, y: 10}
+        - {x: 122, y: 39}
+        - {x: 113, y: 47}
+        - {x: 79, y: 72}
+        - {x: -145, y: 72}
+        - {x: -146, y: 71}
+        - {x: -146, y: -72}
+        - {x: 80, y: -72}
+        - {x: 122, y: -39}
+        - {x: 123, y: -15}
+        - {x: 146, y: -9}
     outline: []
   spritePackingTag: 
   userData: 

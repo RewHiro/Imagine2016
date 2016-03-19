@@ -24,6 +24,8 @@ public class MenuDirecter : MonoBehaviour
     private float _nowCameraRotation = 0;
     private float _rotationSpeed = 1.5f / 10;
 
+    private bool _canSelectGame = true;
+
     //カメラ移動しているかどうか
     private bool _isChangingCameraRotation = false;
 
@@ -40,15 +42,17 @@ public class MenuDirecter : MonoBehaviour
 
     private float _animationCount = 0.0f;
     private Vector3[] _def = new Vector3[2];
+    private Vector3 _defAngle;
 
     private double _totalReverseAnimationCount = 0.0f;
     private double _reverseAnimationCount = 0.0f;
     private bool _isChangedAnimationActive = false;
 
-
     [SerializeField]
     GameObject _animation = null;
 
+    [SerializeField]
+    GameObject _statusCursor = null;
     enum NowCameraMode
     {
         NONE,
@@ -62,6 +66,8 @@ public class MenuDirecter : MonoBehaviour
     {
         Register();
 
+        ChangeStatusCursor(_nowSelectGameNum);
+
         for (int i = 0; i < 2; ++i)
         {
             _startPosition[i] = new Vector3(_characterAnimation[i].transform.localPosition.x,
@@ -72,12 +78,15 @@ public class MenuDirecter : MonoBehaviour
                                   _animationStop[i].transform.localPosition.y - _startPosition[i].y,
                                   _animationStop[i].transform.localPosition.z - _startPosition[i].z);
         }
+
+        _defAngle = _animationStop[1].transform.localEulerAngles;
     }
 
     private void Register()
     {
         _ListsOfActionPushButton.Add(() =>
         {
+            if (_nowCameraMode != NowCameraMode.NONE) return;
             _nowCameraMode = NowCameraMode.UP_ANGLE;
             _animationCount = 1.0f;
             _reverseAnimationCount = FindObjectOfType<MenuBoxAnimater>().animationTime;
@@ -113,6 +122,10 @@ public class MenuDirecter : MonoBehaviour
                     new Fade(1.0f)
                 );
         });
+        _ListsOfActionPushButton.Add(() =>
+        {
+            FindObjectOfType<ChangeText>().ChangeExplanationText(5);
+        });
     }
 
     void Update()
@@ -129,7 +142,7 @@ public class MenuDirecter : MonoBehaviour
             StartCoroutine(ChangeEndCameraAngle());
         }
 
-        if (TouchController.IsTouchBegan() && _canMoveCharacter == false)
+        if (TouchController.IsTouchBegan() && _canMoveCharacter == false && _canSelectGame == true)
             TouchCharacter();
     }
 
@@ -141,11 +154,13 @@ public class MenuDirecter : MonoBehaviour
         for (int i = 0; i < 2; ++i)
             if (hitObject.transform.name == _characterAnimation[i].name)
             {
-                if (_characterAnimation[i].name == "Asobu" && _canMoveCharacter == false)
+                if (_characterAnimation[i].name == "Asobu")
                 {
                     _canMoveCharacter = true;
+                    _canSelectGame = false;
                     _nowCameraMode = NowCameraMode.DOWN_ANGLE;
                     _animationCount = 0.0f;
+                    FindObjectOfType<ChangeText>().ChangeExplanationText(0);
                 }
 
                 else if (_characterAnimation[i].name == "Tukuru")
@@ -175,7 +190,7 @@ public class MenuDirecter : MonoBehaviour
 
             yield return null;
         }
-       
+
     }
 
     IEnumerator ChangeEndCameraAngle()
@@ -206,6 +221,12 @@ public class MenuDirecter : MonoBehaviour
                                      _startPosition[i].y + _def[i].y * _animationCount,
                                      _startPosition[i].z + _def[i].z * _animationCount);
             }
+
+            _characterAnimation[1].transform.localRotation
+                = Quaternion.Euler(_defAngle.x * _animationCount,
+                                   _defAngle.y * _animationCount,
+                                   _defAngle.z * _animationCount);
+
             yield return null;
         }
 
@@ -216,10 +237,15 @@ public class MenuDirecter : MonoBehaviour
                                   _animationStop[i].transform.localPosition.y,
                                   _animationStop[i].transform.localPosition.z);
         }
-            _nowCameraMode = NowCameraMode.NONE;
+
+        //Test
+        _characterAnimation[1].transform.localRotation = Quaternion.Euler(60, 105, 110);
+
+        _nowCameraMode = NowCameraMode.NONE;
         _animation.SetActive(true);
         FindObjectOfType<MenuBoxAnimater>().isPlay = true;
         _characterAnimation[0].SetActive(false);
+        _canMoveCharacter = false;
         yield return null;
     }
 
@@ -229,7 +255,7 @@ public class MenuDirecter : MonoBehaviour
 
         if (_totalReverseAnimationCount > _reverseAnimationCount + 3.0f)
         {
-            if(_isChangedAnimationActive == false)
+            if (_isChangedAnimationActive == false)
             {
                 _animation.SetActive(false);
                 _characterAnimation[0].SetActive(true);
@@ -248,6 +274,12 @@ public class MenuDirecter : MonoBehaviour
                                          _startPosition[i].y + _def[i].y * _animationCount,
                                          _startPosition[i].z + _def[i].z * _animationCount);
                 }
+
+                _characterAnimation[1].transform.localRotation
+                              = Quaternion.Euler(_defAngle.x * _animationCount,
+                                                 _defAngle.y * _animationCount,
+                                                 _defAngle.z * _animationCount);
+
                 yield return null;
             }
 
@@ -259,32 +291,44 @@ public class MenuDirecter : MonoBehaviour
                                   _startPosition[i].z);
             }
 
+            //Test
+            _characterAnimation[1].transform.localRotation = Quaternion.Euler(0, 0, 0);
             _nowCameraMode = NowCameraMode.NONE;
             _canMoveCharacter = false;
-
+            _canSelectGame = true;
             yield return null;
         }
     }
 
     public void ActionOfPushButton(int _buttonNum)
     {
-        _ListsOfActionPushButton[_buttonNum]();
+        if (_canMoveCharacter == false)
+            _ListsOfActionPushButton[_buttonNum]();
     }
 
     public void SelectOfGameNum(int nowSelectGameNum_)
     {
-        if (nowSelectGameNum_ >= 0 && nowSelectGameNum_ <= 2)
+        if (nowSelectGameNum_ >= 0 && nowSelectGameNum_ <= 2 && _canMoveCharacter == false)
         {
             _nowSelectGameNum = nowSelectGameNum_;
             Debug.Log(_nowSelectGameNum);
             FindObjectOfType<SelectGameStatus>().SelectGameNum = _nowSelectGameNum;
             FindObjectOfType<ChangeTarget>().ChangeTargetCursor(_nowSelectGameNum);
+            FindObjectOfType<ChangeText>().ChangeExplanationText(1 + _nowSelectGameNum);
+            ChangeStatusCursor(_nowSelectGameNum);
         }
-        else if (nowSelectGameNum_ == 3)
+        else if (nowSelectGameNum_ == 3 && _canMoveCharacter == false)
         {
             _nowSelectGameNum = UnityEngine.Random.Range(0, 3);
             FindObjectOfType<SelectGameStatus>().SelectGameNum = _nowSelectGameNum;
             FindObjectOfType<ChangeTarget>().ChangeTargetCursor(_nowSelectGameNum);
+            FindObjectOfType<ChangeText>().ChangeExplanationText(4);
+            ChangeStatusCursor(_nowSelectGameNum);
         }
+    }
+
+    private void ChangeStatusCursor(int _selectGameNum)
+    {
+        _statusCursor.transform.localRotation = Quaternion.Euler(0, 0, (_selectGameNum * -120) + 240);
     }
 }
