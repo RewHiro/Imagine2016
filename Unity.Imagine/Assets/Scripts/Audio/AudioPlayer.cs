@@ -74,6 +74,10 @@ public class AudioPlayer : MonoBehaviour {
     return _sourceObject.transform.parent == transform;
   }
 
+  /// <summary> 自身の関与している <see cref="SourceObject"/> を
+  /// 強制的に自身の管理下に置く </summary>
+  public void BindOwnership() { _sourceObject.transform.SetParent(transform); }
+
   // TIPS: AudioManager.CreateSource() のラッパー
   SourceObject CreateSource() {
     return audio.CreateSource(isControl ? transform : null);
@@ -83,6 +87,7 @@ public class AudioPlayer : MonoBehaviour {
   void Bind() {
     _sourceObject = audio.sources.FirstOrDefault(source => !source.IsPlaying());
     if (_sourceObject == null) { _sourceObject = CreateSource(); }
+    _sourceObject.AddSource();
   }
 
   /// <summary> 自身に関連付けられた <see cref="SourceObject"/> に
