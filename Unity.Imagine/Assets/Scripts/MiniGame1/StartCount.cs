@@ -5,6 +5,9 @@ using UnityEngine.UI;
 public class StartCount : MonoBehaviour {
 
     [SerializeField]
+    KeyAction _gameManager = null;
+
+    [SerializeField]
     float _drawTime = 4.0f;
 
     float _time;
@@ -25,11 +28,13 @@ public class StartCount : MonoBehaviour {
         {
             image.enabled = false;
         }
-        
-	}
+
+        if (_gameManager == null) { Debug.Log("_gameManager が null です。KeyAction スクリプトが入ってるオブジェクトをいれてください。"); }
+    }
 	
 	void Update ()
     {
+        if (_gameManager == null || !_gameManager.isGameStart) { return; }
         CountDown();
         CountDrawImage();
     }
