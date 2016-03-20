@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 0a5e57b69e175b249a58283601c480a8
-timeCreated: 1458433174
+guid: 57e7e4f340a5f30428d3a6d0ff418fe8
+timeCreated: 1458432977
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Customize_setumei_3_B_0
+    21300000: Customize_kettei_0
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -51,30 +51,33 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: Customize_setumei_3_B_0
+    - name: Customize_kettei_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 347
-        width: 312
-        height: 165
+        x: 3
+        y: 386
+        width: 373
+        height: 125
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 156, y: 29.5}
-        - {x: 143, y: 82.5}
-        - {x: 91, y: 82.5}
-        - {x: -99, y: 42.5}
-        - {x: -131, y: 40.5}
-        - {x: -156, y: 31.5}
-        - {x: -156, y: -41.5}
-        - {x: -148, y: -76.5}
-        - {x: -130, y: -82.5}
-        - {x: -75, y: -82.5}
-        - {x: -6, y: -63.5}
-        - {x: 144, y: -33.5}
-        - {x: 156, y: -20.5}
+      - - {x: 178.5, y: -52.5}
+        - {x: 186.5, y: -41.5}
+        - {x: 186.5, y: 41.5}
+        - {x: 171.5, y: 61.5}
+        - {x: 166.5, y: 62.5}
+        - {x: 134.5, y: 62.5}
+        - {x: 117.5, y: 57.5}
+        - {x: 116.5, y: 56.5}
+        - {x: -170.5, y: 56.5}
+        - {x: -178.5, y: 55.5}
+        - {x: -186.5, y: 45.5}
+        - {x: -186.5, y: -54.5}
+        - {x: -180.5, y: -62.5}
+        - {x: 144.5, y: -62.5}
+        - {x: 154.5, y: -60.5}
+        - {x: 168.5, y: -57.5}
     outline: []
   spritePackingTag: 
   userData: 
