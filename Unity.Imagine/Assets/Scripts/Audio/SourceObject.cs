@@ -106,14 +106,19 @@ public class SourceObject : MonoBehaviour {
 
   /// <summary> 再生中でなくなれば、リソースを解放する </summary>
   public IEnumerator AutoRelease() {
-    Func<GameScene> GetActiveScene = () => SceneManager.GetActiveScene().ToGameScene();
-    Func<GameScene, bool> IsChanged = scene => scene != GetActiveScene();
+    Func<GameScene> GetActiveScene =
+      () => SceneManager.GetActiveScene().ToGameScene();
 
     // TIPS:
     // ループ中などで、再生中のままシーンが変わったときの判定用に
     // 開始時のシーン情報を保持しておく
     var current = GetActiveScene();
-    while (IsPlayingWithLoop()) { if (IsChanged(current)) { break; } yield return null; }
-    Refresh();
+    while (IsPlayingWithLoop()) {
+      if (current != GetActiveScene()) { break; }
+      Refresh();
+      yield return null;
+    }
+
+    AllStop();
   }
 }
