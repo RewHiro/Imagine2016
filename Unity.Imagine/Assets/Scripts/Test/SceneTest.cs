@@ -1,18 +1,28 @@
 ﻿
 using UnityEngine;
+using System.Collections;
+using System.Linq;
 
 public class SceneTest : MonoBehaviour {
 
-  [SerializeField]
-  AudioPlayer[] _players = null;
+  void Start() { StartCoroutine(Test()); }
 
-  bool InputKey(KeyCode code) { return Input.GetKeyDown(code); }
+  IEnumerator Test() {
+    var audio = AudioManager.instance;
+    var source = audio.CreateSource();
 
-  void Update() {
-    if (InputKey(KeyCode.A)) { _players[0].Play(0); }
-    if (InputKey(KeyCode.S)) { _players[1].Play(0); }
-    if (InputKey(KeyCode.D)) { _players[2].Play(0); }
-    if (InputKey(KeyCode.F)) { _players[3].Play(0); }
+    System.Action Log = () => Debug.Log("sources count = " + source.GetSources().Count());
+
+    Log();
+    for (var i = 0; i < 10; ++i) { source.AddSource(); }
+
+    while (source.GetSources().Count() > 0) {
+      Log();
+      source.Refresh();
+      yield return null;
+    }
+
+    Log();
   }
 
   /*

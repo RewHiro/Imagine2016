@@ -57,6 +57,12 @@ public class SourceObject : MonoBehaviour {
     return source;
   }
 
+  /// <summary> 再生中でない <see cref="AudioSource"/> を全て削除 </summary>
+  public void Refresh() {
+    var sources = GetSources().Where(source => !source.isPlaying);
+    foreach (var source in sources) { Destroy(source); }
+  }
+
   /// <summary> <see cref="AudioSource"/> が存在すれば true を返す </summary>
   public bool ExistSource() { return GetSources().Any(); }
 
