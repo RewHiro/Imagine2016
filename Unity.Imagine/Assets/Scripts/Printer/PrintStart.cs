@@ -24,10 +24,16 @@ public class PrintStart : MonoBehaviour {
     private GameObject _confirmationPanel = null;
     [SerializeField]
     private GameObject _captureCanvas = null;
+    [SerializeField]
+    private GameObject _soundController = null;
 
     //参考サイト：http://www.insatsuyasan.com/data/datasize_tool.html
     const int PrintSize = 620;
 
+    
+    void Start()
+    {
+    }
 
     /// <summary>
     /// ボタンを押したらプリントスタート
@@ -40,9 +46,11 @@ public class PrintStart : MonoBehaviour {
         }
         else
         {
-            //StartCoroutine(ScreenShot());
+            StartCoroutine(ScreenShot());
             _confirmationPanel.SetActive(true);
             _captureCanvas.SetActive(false);
+            _soundController.GetComponent<PrintSceneSoundController>().isPlayBGM = 2;
+            _soundController.GetComponent<PrintSceneSoundController>().isPlaySE = 8;
         }
     }
 
