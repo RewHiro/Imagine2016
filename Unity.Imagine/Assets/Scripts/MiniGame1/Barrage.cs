@@ -101,7 +101,11 @@ public class Barrage : ActionManager
     }
 
 
-    public override void Action(){}
+    public override void Action()
+    {
+        transform.LookAt(Enemy.transform);
+        rotation = transform.eulerAngles;
+    }
 
         void Bullet(GameObject bullet)
     {
