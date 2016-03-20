@@ -7,7 +7,7 @@ public class Score : MonoBehaviour {
     private Text _text;
 
     [SerializeField]
-    private Barrage _barrago;
+    private ActiveModel _activeModel;
 
     void Start ()
     {
@@ -16,6 +16,6 @@ public class Score : MonoBehaviour {
 	
 	void Update ()
     {
-        _text.text = "" + _barrago._getKeyCount;
+        _text.text = "" + _activeModel.getBarrage._getKeyCount;
     }
 }
