@@ -113,7 +113,7 @@ public class AudioPlayer : MonoBehaviour {
     source.loop = isLoop;
     source.Play();
 
-    if (_autoRelease) { StartCoroutine(_sourceObject.AutoRelease(UnBind)); }
+    if (_autoRelease) { StartCoroutine(_sourceObject.AutoRelease()); }
   }
 
   /// <summary> 指定した ID の <see cref="AudioClip"/> を使って再生する </summary>
