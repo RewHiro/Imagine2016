@@ -20,9 +20,14 @@ public class PrintStart : MonoBehaviour {
 
     [SerializeField]
     private GameObject _notPrinterConfigPanel = null;
+    [SerializeField]
+    private GameObject _confirmationPanel = null;
+    [SerializeField]
+    private GameObject _captureCanvas = null;
 
     //参考サイト：http://www.insatsuyasan.com/data/datasize_tool.html
     const int PrintSize = 620;
+
 
     /// <summary>
     /// ボタンを押したらプリントスタート
@@ -35,7 +40,9 @@ public class PrintStart : MonoBehaviour {
         }
         else
         {
-            StartCoroutine(ScreenShot());
+            //StartCoroutine(ScreenShot());
+            _confirmationPanel.SetActive(true);
+            _captureCanvas.SetActive(false);
         }
     }
 
