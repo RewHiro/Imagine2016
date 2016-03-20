@@ -6,12 +6,12 @@ public class ConfigPanel : MonoBehaviour {
 
     const string LOAD_SCENE_NAME = "Menu";
 
+    [SerializeField]
     private GameObject _notPrinterConfigPanel = null;
-
-    void Start()
-    {
-        _notPrinterConfigPanel = GameObject.Find("NotPrinterPanel");
-    }
+    [SerializeField]
+    private GameObject _confirmationPanel = null;
+    [SerializeField]
+    private GameObject _captureCanvas = null;
 
     public void ClickButton()
     {
@@ -28,6 +28,12 @@ public class ConfigPanel : MonoBehaviour {
                 () => { GameScene.Menu.ChangeScene(); },
                 new Fade(1.0f)
             );
+    }
+
+    public void ClickNoButton()
+    {
+        _confirmationPanel.SetActive(false);
+        _captureCanvas.SetActive(true);
     }
 	
 }
