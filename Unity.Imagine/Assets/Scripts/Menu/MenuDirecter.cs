@@ -62,6 +62,11 @@ public class MenuDirecter : MonoBehaviour
 
     private NowCameraMode _nowCameraMode = NowCameraMode.NONE;
 
+    [SerializeField]
+    Image _selectGameName = null;
+
+    private List<Sprite> _gameNames = new List<Sprite>();
+
     void Start()
     {
         Register();
@@ -126,6 +131,10 @@ public class MenuDirecter : MonoBehaviour
         {
             FindObjectOfType<ChangeText>().ChangeExplanationText(5);
         });
+
+
+        _gameNames.Add(Resources.Load<Sprite>("Menu/Texture/menu_title"));
+        _gameNames.Add(Resources.Load<Sprite>("Menu/Texture/menu_title1"));
     }
 
     void Update()
@@ -316,6 +325,7 @@ public class MenuDirecter : MonoBehaviour
             FindObjectOfType<ChangeTarget>().ChangeTargetCursor(_nowSelectGameNum);
             FindObjectOfType<ChangeText>().ChangeExplanationText(1 + _nowSelectGameNum);
             ChangeStatusCursor(_nowSelectGameNum);
+            
         }
         else if (nowSelectGameNum_ == 3 && _canMoveCharacter == false)
         {
@@ -325,6 +335,10 @@ public class MenuDirecter : MonoBehaviour
             FindObjectOfType<ChangeText>().ChangeExplanationText(4);
             ChangeStatusCursor(_nowSelectGameNum);
         }
+        if (_nowSelectGameNum == 0)
+            _selectGameName.sprite = _gameNames[1];
+        else
+            _selectGameName.sprite = _gameNames[0];
     }
 
     private void ChangeStatusCursor(int _selectGameNum)
