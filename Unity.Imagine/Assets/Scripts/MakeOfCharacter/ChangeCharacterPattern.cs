@@ -71,30 +71,6 @@ public class ChangeCharacterPattern : MonoBehaviour
         StartCoroutine(Transition());
     }
 
-    //TypeButtonを押したら
-    public void PushButtonOfType()
-    {
-        _panels[0].SetActive(true);
-        _panels[1].SetActive(false);
-        _panels[2].SetActive(false);
-    }
-
-    //CostumeButtonを押したら
-    public void PushButtonOfCostume()
-    {
-        _panels[0].SetActive(false);
-        _panels[1].SetActive(true);
-        _panels[2].SetActive(false);
-    }
-
-    //DecorationButtonを押したら
-    public void PushButtonOfDecoration()
-    {
-        _panels[0].SetActive(false);
-        _panels[1].SetActive(false);
-        _panels[2].SetActive(true);
-    }
-
     //
     public void PushOfBackTitle()
     {
@@ -198,6 +174,8 @@ public class ChangeCharacterPattern : MonoBehaviour
         _characterParamter.modelType = CharacterParameter.ModelType.HUMAN;
         _characterParamter.costumeType = CharacterParameter.CostumeType.A;
         _characterParamter.decorationType = CharacterParameter.DecorationType.NONE;
+
+        FindObjectOfType<AudioPlayer>().Play(1, true);
     }
 
     IEnumerator DecideCorutine()
