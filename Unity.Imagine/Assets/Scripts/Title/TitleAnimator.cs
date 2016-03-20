@@ -132,12 +132,19 @@ public class TitleAnimator : MonoBehaviour
         while (enumerator.MoveNext())
         {
             var current = enumerator.Current;
-            current.layer = LayerMask.NameToLayer("Viewer");
-            var material = current.GetComponent<MeshRenderer>().sharedMaterial;
-            material.mainTexture = _textures[index];
-            material.SetColor("_EmissionColor", color);
-            material.SetFloat("_Mode", 2);
+            current.layer = LayerMask.NameToLayer("Viewer"); ;
         }
+
+        var material = _materials[index];
+        material.mainTexture = _textures[index];
+        material.SetColor("_EmissionColor", color);
+        material.SetFloat("_Mode", 2);
+        material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+        material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+        material.SetInt("_ZWrite", 0);
+        material.DisableKeyword("_ALPHATEST_ON");
+        material.EnableKeyword("_ALPHABLEND_ON");
+        material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
     }
 
     IEnumerator ChangeTexture
@@ -155,9 +162,16 @@ public class TitleAnimator : MonoBehaviour
 
         boxObject.layer = LayerMask.NameToLayer("Viewer"); ;
 
-        var material = boxObject.GetComponent<MeshRenderer>().sharedMaterial;
+        var material = _materials[index];
         material.mainTexture = _textures[index];
         material.SetColor("_EmissionColor", color);
         material.SetFloat("_Mode", 2);
+        material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+        material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+        material.SetInt("_ZWrite", 0);
+        material.DisableKeyword("_ALPHATEST_ON");
+        material.EnableKeyword("_ALPHABLEND_ON");
+        material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+
     }
 }
