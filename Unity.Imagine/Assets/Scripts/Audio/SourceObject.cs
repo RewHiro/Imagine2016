@@ -1,6 +1,7 @@
 ﻿
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -104,15 +105,15 @@ public class SourceObject : MonoBehaviour {
   }
 
   /// <summary> 再生中でなくなれば、リソースを解放する </summary>
-  public IEnumerator AutoRelease(System.Action UnBind) {
-    System.Func<GameScene> GetActiveScene =
-      () => SceneManager.GetActiveScene().ToGameScene();
+  public IEnumerator AutoRelease() {
+    Func<GameScene> GetActiveScene = () => SceneManager.GetActiveScene().ToGameScene();
+    Func<GameScene, bool> IsChanged = scene => scene != GetActiveScene();
 
+    // TIPS:
+    // ループ中などで、再生中のままシーンが変わったときの判定用に
+    // 開始時のシーン情報を保持しておく
     var current = GetActiveScene();
-    while (IsPlayingWithLoop()) {
-      if (current != GetActiveScene()) { break; }
-      yield return null;
-    }
-    UnBind();
+    while (IsPlayingWithLoop()) { if (IsChanged(current)) { break; } yield return null; }
+    Refresh();
   }
 }
