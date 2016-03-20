@@ -72,6 +72,7 @@ public class CharacterViewController : MonoBehaviour
 
     void Rotate()
     {
+        if (TouchController.IsTouchBegan()) return;
         if (!TouchController.IsTouchMoved()) return;
 
         RaycastHit raycastHit;
