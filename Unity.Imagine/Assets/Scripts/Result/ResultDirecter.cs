@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System;
 /*
 3/5
 野本　変更開始
@@ -36,8 +36,12 @@ public class ResultDirecter : MonoBehaviour
     [SerializeField]
     GameObject _rain = null;
 
+    [SerializeField]
+    Light _directionLight = null;
+
     void Start()
     {
+        if (_directionLight == null) throw new NullReferenceException("_directionLightを設定してください");
         //SetResult(_winPlayerNum);
     }
 
@@ -45,6 +49,7 @@ public class ResultDirecter : MonoBehaviour
     {
         SetPanelsActive(true);
         SetCanvas(winPlayerNum_);
+        DirectionLight(winPlayerNum_);
     }
 
     public void SetPanelsActive(bool isActive_)
@@ -97,6 +102,13 @@ public class ResultDirecter : MonoBehaviour
         {
             Debug.Log("Warning! This number isn't PlayerNum");
         }
+    }
+
+    void DirectionLight(int winPlayerNum)
+    {
+        _directionLight.intensity = 0;
+        var light = Resources.Load<GameObject>("Result/Spotlight");
+        light.transform.SetParent(FindObjectOfType<KeyAction>().GetPlayers()[winPlayerNum].transform, false);
     }
 
 
