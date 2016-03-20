@@ -132,14 +132,12 @@ public class TitleAnimator : MonoBehaviour
         while (enumerator.MoveNext())
         {
             var current = enumerator.Current;
-            current.layer = LayerMask.NameToLayer("Viewer"); ;
-            DynamicGI.SetEmissive(current.GetComponent<MeshRenderer>(), color);
+            current.layer = LayerMask.NameToLayer("Viewer");
+            var material = current.GetComponent<MeshRenderer>().sharedMaterial;
+            material.mainTexture = _textures[index];
+            material.SetColor("_EmissionColor", color);
+            material.SetFloat("_Mode", 2);
         }
-
-        var material = _materials[index];
-        material.mainTexture = _textures[index];
-        material.SetColor("_EmissionColor", color);
-        material.SetFloat("_Mode", 2);
     }
 
     IEnumerator ChangeTexture
@@ -157,10 +155,9 @@ public class TitleAnimator : MonoBehaviour
 
         boxObject.layer = LayerMask.NameToLayer("Viewer"); ;
 
-        var material = _materials[index];
+        var material = boxObject.GetComponent<MeshRenderer>().sharedMaterial;
         material.mainTexture = _textures[index];
         material.SetColor("_EmissionColor", color);
         material.SetFloat("_Mode", 2);
-        DynamicGI.SetEmissive(boxObject.GetComponent<MeshRenderer>(), color);
     }
 }
