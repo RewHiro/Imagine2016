@@ -100,8 +100,9 @@ public class AudioPlayer : MonoBehaviour {
   }
 
   /// <summary> 指定した ID の <see cref="AudioClip"/> を使って再生する </summary>
+  /// <param name="volume"> 音量を指定 (0.0 ~ 1.0) </param>
   /// <param name="isLoop"> true = ループ再生を許可 </param>
-  public void Play(int index, bool isLoop) {
+  public void Play(int index, float volume, bool isLoop) {
     if (!audio.sources.Any()) { Bind(); }
 
     AudioSource source = null;
@@ -110,6 +111,7 @@ public class AudioPlayer : MonoBehaviour {
 
     if (source == null) { return; }
     source.clip = audio.GetClip(index);
+    source.volume = Mathf.Clamp01(volume);
     source.loop = isLoop;
     source.Play();
 
@@ -117,7 +119,12 @@ public class AudioPlayer : MonoBehaviour {
   }
 
   /// <summary> 指定した ID の <see cref="AudioClip"/> を使って再生する </summary>
-  public void Play(int index) { Play(index, false); }
+  /// <param name="volume"> 音量を指定 (0.0 ~ 1.0) </param>
+  public void Play(int index, float volume) { Play(index, volume, false); }
+
+  /// <summary> <para> 指定した ID の <see cref="AudioClip"/> を使って再生する
+  /// </para> volume を最大にして再生します </summary>
+  public void Play(int index) { Play(index, 1f, false); }
 
   /// <summary> <see cref="AudioClip"/> が登録済みの
   /// <see cref="AudioSource"/> を全て再生する </summary>
