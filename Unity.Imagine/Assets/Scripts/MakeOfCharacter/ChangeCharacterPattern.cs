@@ -54,6 +54,8 @@ public class ChangeCharacterPattern : MonoBehaviour
     ParameterBar _parameterBar = null;
     CharacterParameterInfo _characterParameterInfo = null;
 
+    AudioPlayer _audioPlayer = null;
+
     static bool _isPush = false;
 
     public CharacterParameter getCharacterParamter
@@ -67,6 +69,8 @@ public class ChangeCharacterPattern : MonoBehaviour
     public void Decide()
     {
         if (ScreenSequencer.instance.isEffectPlaying) return;
+        _audioPlayer.Stop();
+        _audioPlayer.Play(8);
         StartCoroutine(DecideCorutine());
         StartCoroutine(Transition());
     }
@@ -79,6 +83,9 @@ public class ChangeCharacterPattern : MonoBehaviour
         var screenSequencer = ScreenSequencer.instance;
 
         if (screenSequencer.isEffectPlaying) return;
+
+        _audioPlayer.Stop();
+        _audioPlayer.Play(7);
 
         screenSequencer.SequenceStart
         (
@@ -94,6 +101,8 @@ public class ChangeCharacterPattern : MonoBehaviour
         if (_isPush) return;
         _isPush = true;
 
+        _audioPlayer.Play(5);
+
         StartCoroutine(ChangeType(index));
     }
 
@@ -104,6 +113,8 @@ public class ChangeCharacterPattern : MonoBehaviour
         if (_isPush) return;
         _isPush = true;
 
+        _audioPlayer.Play(5);
+
         StartCoroutine(ChangeCostume(index));
     }
 
@@ -113,6 +124,8 @@ public class ChangeCharacterPattern : MonoBehaviour
 
         if (_isPush) return;
         _isPush = true;
+
+        _audioPlayer.Play(5);
 
         StartCoroutine(ChangeDecoration(index));
     }
@@ -175,7 +188,9 @@ public class ChangeCharacterPattern : MonoBehaviour
         _characterParamter.costumeType = CharacterParameter.CostumeType.A;
         _characterParamter.decorationType = CharacterParameter.DecorationType.NONE;
 
-        FindObjectOfType<AudioPlayer>().Play(1, true);
+        _audioPlayer = FindObjectOfType<AudioPlayer>();
+
+        _audioPlayer.Play(1, true);
     }
 
     IEnumerator DecideCorutine()
