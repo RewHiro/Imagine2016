@@ -23,6 +23,9 @@ public class CharacterViewController : MonoBehaviour
     [SerializeField, TooltipAttribute("回転速度の倍率")]
     float SPEED_MAGNIFICATION = 0.5f;
 
+    [SerializeField, TooltipAttribute("スワイプの遊び")]
+    float REACTION_VALUE = 3.0f;
+
     Vector3 POINT = Vector3.zero;
 
     int LAYER_MASK = 0;
@@ -60,19 +63,24 @@ public class CharacterViewController : MonoBehaviour
     {
         while (true)
         {
-            StartCoroutine(Rotate());
-            StartCoroutine(AccelerationRotate());
+            Rotate();
+            AccelerationRotate();
+            StopRotate();
             yield return null;
         }
     }
 
-    IEnumerator Rotate()
+    void Rotate()
     {
-        if (!TouchController.IsTouchMoved()) yield break;
+        if (!TouchController.IsTouchMoved()) return;
+
+        RaycastHit raycastHit;
+        if (!TouchController.IsRaycastHitWithLayer(out raycastHit, LAYER_MASK)) return;
+
+        if (!(-REACTION_VALUE > _mouseUtility.getDeltaPos.x ||
+            REACTION_VALUE < _mouseUtility.getDeltaPos.x)) return;
 
         _count = ACCELERATION_TIME;
-        RaycastHit raycastHit;
-        if (!TouchController.IsRaycastHitWithLayer(out raycastHit, LAYER_MASK)) yield break;
 
         _deltaPosition = TouchController.IsSmartDevice ?
             Input.touches[0].deltaPosition :
@@ -84,9 +92,19 @@ public class CharacterViewController : MonoBehaviour
         //gameObject.transform.RotateAround(POINT, -gameObject.transform.right, _deltaPosition.y);
     }
 
-    IEnumerator AccelerationRotate()
+    void StopRotate()
     {
-        if (_count <= 0.0f) yield break;
+        if (!TouchController.IsTouchBegan()) return;
+
+        RaycastHit raycastHit;
+        if (!TouchController.IsRaycastHitWithLayer(out raycastHit, LAYER_MASK)) return;
+
+        _deltaPosition = Vector2.zero;
+    }
+
+    void AccelerationRotate()
+    {
+        if (_count <= 0.0f) return;
 
         _count += -Time.deltaTime;
         var acceleration = _deltaPosition * _count / ACCELERATION_TIME;
