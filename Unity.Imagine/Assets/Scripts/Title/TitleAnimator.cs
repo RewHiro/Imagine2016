@@ -75,7 +75,6 @@ public class TitleAnimator : MonoBehaviour
             material.EnableKeyword("_Emission");
             material.SetColor("_EmissionColor", Color.black);
 
-            material.EnableKeyword("_Mode");
             material.SetFloat("_Mode", 1);
             material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
             material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
@@ -170,7 +169,7 @@ public class TitleAnimator : MonoBehaviour
             yield return null;
         }
 
-        boxObject.layer = LayerMask.NameToLayer("Viewer"); ;
+        boxObject.layer = LayerMask.NameToLayer("Viewer");
 
         var material = _materials[index];
         material.mainTexture = _textures[index];

@@ -190,7 +190,7 @@ public class ChangeCharacterPattern : MonoBehaviour
 
         _audioPlayer = FindObjectOfType<AudioPlayer>();
 
-        _audioPlayer.Play(1, true);
+        _audioPlayer.Play(1, 1.0f, true);
     }
 
     IEnumerator DecideCorutine()
