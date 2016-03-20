@@ -40,7 +40,7 @@ public class ButterflyMove : MonoBehaviour
             _image.transform.localRotation = Quaternion.Euler(0, 0, 0);
             _image.transform.localPosition =
             new Vector3(_image.transform.localPosition.x,
-                        _image.transform.localPosition.y-3,
+                        0,
                         _image.transform.localPosition.z);
         }
     }
