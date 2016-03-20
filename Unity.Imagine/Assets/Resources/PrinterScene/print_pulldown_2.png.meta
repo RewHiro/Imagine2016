@@ -1,9 +1,10 @@
 fileFormatVersion: 2
-guid: e13ecf8e1fcfb0b4582df69cc8547f7a
-timeCreated: 1457788498
+guid: e3fb1cd43c05d2145b582395fce8ec22
+timeCreated: 1458449991
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: print_pulldown_2_0
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -38,7 +39,7 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -49,7 +50,24 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: print_pulldown_2_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 426
+        width: 95
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -47.5, y: 43}
+        - {x: -47.5, y: -37}
+        - {x: -41.5, y: -43}
+        - {x: 42.5, y: -43}
+        - {x: 47.5, y: -37}
+        - {x: 47.5, y: 43}
     outline: []
   spritePackingTag: 
   userData: 
