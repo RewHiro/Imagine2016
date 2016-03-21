@@ -9,18 +9,20 @@ public class ChangeText : MonoBehaviour
 
     private List<String> _text = new List<string>();
    
+    [SerializeField]
+    
+
     void Start()
     {
-        _text.Add("このがめんでは\nゲームをえらべるよ\n3つのゲームからえらんでね");
-        _text.Add("このゲームはおたがいのぼうしを\nねらってたまをうちあうゲームだよ。\nはやいCuboがとくいだよ\nよかったらOKをおしてね");
+        _text.Add("このがめんではゲームをえらべるよ\n3つのゲームからえらんでね");
+        _text.Add("このゲームはおたがいのぼうしを\nねらってたまをうちあうゲームだよ\nはやいCuboがとくいだよ\nよかったらOKをおしてね");
         _text.Add("このゲームは\nまだあそべないよ");
         _text.Add("このゲームは\nまだあそべないよ");
         _text.Add("ゲームをじどうでえらんでるよ");
-        _text.Add("これはゲームをえらんだときに\nどんなCuboがつよいのかみれるよ。");
+        _text.Add("これはゲームをえらんだときに\nどんなCuboがつよいのかみれるよ");
 
         ChangeExplanationText(0);
     }
-
    
     void Update()
     {
