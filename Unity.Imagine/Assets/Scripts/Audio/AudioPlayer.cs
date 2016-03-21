@@ -1,7 +1,6 @@
 ﻿
 using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections;
 
 //------------------------------------------------------------
 // NOTICE:
@@ -28,20 +27,22 @@ public class AudioPlayer : MonoBehaviour {
 
   /// <summary> <see cref="SourceObject"/> の管理方法の一覧 </summary>
   public enum SourceManageMode {
-    /// <summary> <see cref="AudioManager"/> に全ての管理を任せる </summary>
-    None,
-    /// <summary> <see cref="SourceObject"/> に、
-    /// 再生可能な <see cref="AudioSource"/> がなければ自動で追加する </summary>
+    /// <summary> <see cref="SourceObject"/> の管理を手動で行う </summary>
+    Manual,
+    /// <summary> <see cref="SourceObject"/> に
+    /// 再生可能な <see cref="AudioSource"/> がなければ自動で追加する
+    /// <para> 管理は自動化しない </para></summary>
     Additive,
-    /// <summary> 生成した <see cref="SourceObject"/> を自身で管理する </summary>
-    Control,
-    /// <summary> <see cref="Additive"/>、<see cref="Control"/> の全てを実行 </summary>
-    Full,
+    /// <summary> 生成した <see cref="SourceObject"/> の管理を放棄
+    /// <para> <see cref="AudioSource"/> の自動追加はしない </para></summary>
+    Release,
+    /// <summary> <see cref="Additive"/>、<see cref="Release"/> の全てを実行 </summary>
+    FullAuto,
   }
 
   [SerializeField]
   [Tooltip("SourceObject の管理方法を指定")]
-  SourceManageMode _manageMode = SourceManageMode.None;
+  SourceManageMode _manageMode = SourceManageMode.Manual;
 
   /// <summary> <see cref="SourceObject"/> の管理方法を指定 </summary>
   public SourceManageMode manageMode {
@@ -50,7 +51,7 @@ public class AudioPlayer : MonoBehaviour {
   }
 
   bool isAdditive { get { return ((int)_manageMode % 2) > 0; } }
-  bool isControl { get { return _manageMode > SourceManageMode.Additive; } }
+  bool isRelease { get { return _manageMode > SourceManageMode.Additive; } }
 
   [SerializeField]
   [Tooltip("再生が終了した SourceObject を自動的に開放する")]
@@ -60,82 +61,98 @@ public class AudioPlayer : MonoBehaviour {
   /// <see cref="SourceObject"/> を解放するか指定 </summary>
   public bool autoRelease {
     get { return _autoRelease; }
-    set { _autoRelease = value; }
+    set { _autoRelease = value; AutoRelease(); }
   }
 
-  new AudioManager audio { get { return AudioManager.instance; } }
+  AudioClipTable table { get { return AudioClipTable.instance; } }
 
-  // TIPS: 関連付けられた SourceObject のインスタンス
+  // TIPS: コルーチン動作中のフラグ
+  bool _isAutoRelease = false;
+
+  // TIPS: リンクされた SourceObject のインスタンス
   SourceObject _sourceObject = null;
 
   /// <summary> 自身に関連付けられた <see cref="SourceObject"/> の
   /// 所有権が自身にあれば true を返す </summary>
-  public bool IsOwnership() {
-    return _sourceObject.transform.parent == transform;
+  public bool IsOwnership() { return _sourceObject.transform.parent == transform; }
+
+  // TIPS: Bind() 用、SourceObject 取得メソッド
+  SourceObject GetObject() {
+    var source = table.GetSourceObject();
+    return (source == null) ? SourceObject.Create() : source;
   }
 
-  /// <summary> 自身の関与している <see cref="SourceObject"/> を
-  /// 強制的に自身の管理下に置く </summary>
-  public void BindOwnership() { _sourceObject.transform.SetParent(transform); }
-
-  // TIPS: AudioManager.CreateSource() のラッパー
-  SourceObject CreateSource() {
-    return audio.CreateSource(isControl ? transform : null);
+  /// <summary> <see cref="SourceObject"/> を割り当てる </summary>
+  public void Bind() {
+    if (_sourceObject != null) { UnBind(); }
+    var source = GetObject();
+    source.transform.SetParent(isRelease ? table.transform : transform);
+    _sourceObject = source;
   }
 
-  // TIPS: SourceObject を自身に関連付ける
-  void Bind() {
-    _sourceObject = audio.sources.FirstOrDefault(source => !source.IsPlaying());
-    if (_sourceObject == null) { _sourceObject = CreateSource(); }
-    _sourceObject.AddSource();
+  /// <summary> <see cref="SourceObject"/> を解放する </summary>
+  public void UnBind() {
+    Destroy(_sourceObject.gameObject);
+    _sourceObject = null;
   }
 
-  /// <summary> 自身に関連付けられた <see cref="SourceObject"/> に
-  /// <see cref="AudioSource"/> を追加する </summary>
+  /// <summary> リンクされた <see cref="SourceObject"/> に
+  /// <see cref="AudioSource"/> を追加、取得する </summary>
   public AudioSource AddSource() { return _sourceObject.AddSource(); }
-
-  /// <summary> 再生中の <see cref="AudioSource"/> を全て取得 </summary>
-  public IEnumerable<AudioSource> GetPlayingSources() {
-    return _sourceObject.GetSources().Where(source => source.isPlaying);
-  }
 
   /// <summary> 指定した ID の <see cref="AudioClip"/> を使って再生する </summary>
   /// <param name="volume"> 音量を指定 (0.0 ~ 1.0) </param>
   /// <param name="isLoop"> true = ループ再生を許可 </param>
   public void Play(int index, float volume, bool isLoop) {
-    if (!audio.sources.Any()) { Bind(); }
+    if (_sourceObject == null) { Bind(); }
 
+    // TIPS: AudioSource の取得を試みる
     AudioSource source = null;
     var success = _sourceObject.GetSource(out source);
-    if (!success && isAdditive) { source = _sourceObject.AddSource(); }
+    if (!success && isAdditive) { source = AddSource(); }
 
+    // TIPS: AudioSource が取得できなければスキップ
     if (source == null) { return; }
-    source.clip = audio.GetClip(index);
-    source.volume = Mathf.Clamp01(volume);
+
+    source.clip = table.GetClip(index);
+    source.volume = volume;
     source.loop = isLoop;
     source.Play();
 
-    if (_autoRelease) { StartCoroutine(_sourceObject.AutoRelease()); }
+    AutoRelease();
   }
 
-  /// <summary> 指定した ID の <see cref="AudioClip"/> を使って再生する </summary>
+  /// <summary> 指定した ID の <see cref="AudioClip"/> を使って再生する
+  /// （音量指定可能、ループなし） </summary>
   /// <param name="volume"> 音量を指定 (0.0 ~ 1.0) </param>
   public void Play(int index, float volume) { Play(index, volume, false); }
 
-  /// <summary> <para> 指定した ID の <see cref="AudioClip"/> を使って再生する
-  /// </para> volume を最大にして再生します </summary>
+  /// <summary> 指定した ID の <see cref="AudioClip"/> を使って再生する
+  /// （音量最大、ループ指定可能）</summary>
+  /// <param name="isLoop"> true = ループ再生を許可 </param>
+  public void Play(int index, bool isLoop) { Play(index, 1f, isLoop); }
+
+  /// <summary> 指定した ID の <see cref="AudioClip"/> を使って再生する
+  /// （音量最大、ループなし）</summary>
   public void Play(int index) { Play(index, 1f, false); }
 
-  /// <summary> <see cref="AudioClip"/> が登録済みの
-  /// <see cref="AudioSource"/> を全て再生する </summary>
+  /// <summary> 登録済みの <see cref="AudioClip"/> を使って全て再生する </summary>
   public void AllPlay() { _sourceObject.AllPlay(); }
 
   /// <summary> 再生中の <see cref="AudioSource"/> を全て停止する </summary>
   public void Stop() { _sourceObject.AllStop(); }
 
-  /// <summary> 関連付けられた <see cref="SourceObject"/> を解放する </summary>
-  public void UnBind() {
-    var success = audio.RemoveSource(_sourceObject);
-    if (success) { _sourceObject = null; }
+  void AutoRelease() { if (!_isAutoRelease) StartCoroutine(RefreshSource()); }
+
+  // TIPS: 未使用になった AudioSource を自動的に開放する
+  IEnumerator RefreshSource() {
+    _isAutoRelease = true;
+
+    while (_autoRelease) {
+      if (_sourceObject.ExistStopSource()) { _sourceObject.Refresh(); }
+      yield return null;
+    }
+
+    _isAutoRelease = false;
   }
 }
