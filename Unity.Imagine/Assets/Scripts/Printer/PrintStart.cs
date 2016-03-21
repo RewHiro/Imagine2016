@@ -99,7 +99,7 @@ public class PrintStart : MonoBehaviour {
     private string GetScreenShotPath()
     {
         string path = "";
-        path = Application.dataPath + "/Resources/Craft.png";
+        path = Application.dataPath + "/Resources/PrinterScene/Craft.png";
         return path;
     }
 
