@@ -35,7 +35,8 @@ public static class SceneExtension {
 
   /// <summary> <see cref="Scene"/> を <see cref="GameScene"/> に変換する </summary>
   public static GameScene ToGameScene(this Scene scene) {
-    var result = GetAllGameScenes().First(name => name == scene.name);
-    return (GameScene)System.Enum.Parse(typeof(GameScene), result);
+    var result = GetAllGameScenes().FirstOrDefault(name => name == scene.name);
+    if (result == null) { result = GameScene.None.ToString(); }
+    return result.EnumParse<GameScene>();
   }
 }

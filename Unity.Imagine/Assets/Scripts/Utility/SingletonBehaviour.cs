@@ -20,12 +20,12 @@ public abstract class SingletonBehaviour<T> :
   public static T instance { get { return _instance; } }
 
   protected virtual void Awake() {
-    if (IsExistInstance()) { return; }
+    if (IsSingle()) { return; }
     Debug.LogWarning("Exists other " + typeof(T));
     Debug.Log("removed " + gameObject.name);
   }
 
-  protected bool IsExistInstance() {
+  protected bool IsSingle() {
     if (_instance == null) { _instance = this as T; }
     if (_instance == this) { return true; }
     Destroy(gameObject);
