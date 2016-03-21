@@ -5,7 +5,7 @@ public class ActiveModel : MonoBehaviour {
 
     Barrage[] _barrage;
 
-   public Barrage getBarrage { get { return _barrage[0]; } }
+   //public Barrage getBarrage { get { return _barrage[0]; } }
 
     //ModelParameterInfo _modelParameterInfo;
 
