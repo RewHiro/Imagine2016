@@ -36,7 +36,7 @@ public class ResultEffector : MonoBehaviour
         const string RESULT_PATH = "Result/";
 
         _winEffect = Resources.Load<GameObject>(RESULT_PATH + "PaperParticle");
-        _loseEffect = Resources.Load<GameObject>(RESULT_PATH + "Rain/rain");
+        _loseEffect = Resources.Load<GameObject>(RESULT_PATH + "Rain/raintest");
 
         if (_winEffect == null) throw new NullReferenceException("win effect null");
         if (_loseEffect == null) throw new NullReferenceException("lose effect null");

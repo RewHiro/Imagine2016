@@ -1,9 +1,10 @@
 fileFormatVersion: 2
-guid: 0fe084eeecbeac54eb7b59d19e446e7b
-timeCreated: 1457788495
+guid: 88ef3084be6632a4a8aeb77563e7918f
+timeCreated: 1458465850
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: print_popup_window_dekinakatta_0
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -38,7 +39,7 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -49,7 +50,33 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: print_popup_window_dekinakatta_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 372
+        width: 355
+        height: 140
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 177.5, y: 55}
+        - {x: 175.5, y: 60}
+        - {x: 167.5, y: 68}
+        - {x: 162.5, y: 70}
+        - {x: -164.5, y: 70}
+        - {x: -167.5, y: 69}
+        - {x: -177.5, y: 57}
+        - {x: -177.5, y: -55}
+        - {x: -175.5, y: -60}
+        - {x: -167.5, y: -68}
+        - {x: -162.5, y: -70}
+        - {x: 162.5, y: -70}
+        - {x: 167.5, y: -68}
+        - {x: 175.5, y: -60}
+        - {x: 177.5, y: -55}
     outline: []
   spritePackingTag: 
   userData: 

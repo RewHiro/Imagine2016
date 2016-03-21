@@ -19,9 +19,6 @@ using System.Collections.Generic;
 public class ChangeCharacterPattern : MonoBehaviour
 {
 
-    [SerializeField]
-    GameObject[] _panels = null;
-
     //Typeのモデル
     [SerializeField]
     GameObject[] _typePrefabs = null;
@@ -54,6 +51,8 @@ public class ChangeCharacterPattern : MonoBehaviour
     ParameterBar _parameterBar = null;
     CharacterParameterInfo _characterParameterInfo = null;
 
+    AudioPlayer _audioPlayer = null;
+
     static bool _isPush = false;
 
     public CharacterParameter getCharacterParamter
@@ -67,32 +66,10 @@ public class ChangeCharacterPattern : MonoBehaviour
     public void Decide()
     {
         if (ScreenSequencer.instance.isEffectPlaying) return;
+        _audioPlayer.Stop();
+        _audioPlayer.Play(8);
         StartCoroutine(DecideCorutine());
         StartCoroutine(Transition());
-    }
-
-    //TypeButtonを押したら
-    public void PushButtonOfType()
-    {
-        _panels[0].SetActive(true);
-        _panels[1].SetActive(false);
-        _panels[2].SetActive(false);
-    }
-
-    //CostumeButtonを押したら
-    public void PushButtonOfCostume()
-    {
-        _panels[0].SetActive(false);
-        _panels[1].SetActive(true);
-        _panels[2].SetActive(false);
-    }
-
-    //DecorationButtonを押したら
-    public void PushButtonOfDecoration()
-    {
-        _panels[0].SetActive(false);
-        _panels[1].SetActive(false);
-        _panels[2].SetActive(true);
     }
 
     //
@@ -103,6 +80,9 @@ public class ChangeCharacterPattern : MonoBehaviour
         var screenSequencer = ScreenSequencer.instance;
 
         if (screenSequencer.isEffectPlaying) return;
+
+        _audioPlayer.Stop();
+        _audioPlayer.Play(7);
 
         screenSequencer.SequenceStart
         (
@@ -118,6 +98,8 @@ public class ChangeCharacterPattern : MonoBehaviour
         if (_isPush) return;
         _isPush = true;
 
+        _audioPlayer.Play(5);
+
         StartCoroutine(ChangeType(index));
     }
 
@@ -128,6 +110,8 @@ public class ChangeCharacterPattern : MonoBehaviour
         if (_isPush) return;
         _isPush = true;
 
+        _audioPlayer.Play(5);
+
         StartCoroutine(ChangeCostume(index));
     }
 
@@ -137,6 +121,8 @@ public class ChangeCharacterPattern : MonoBehaviour
 
         if (_isPush) return;
         _isPush = true;
+
+        _audioPlayer.Play(5);
 
         StartCoroutine(ChangeDecoration(index));
     }
@@ -198,6 +184,10 @@ public class ChangeCharacterPattern : MonoBehaviour
         _characterParamter.modelType = CharacterParameter.ModelType.HUMAN;
         _characterParamter.costumeType = CharacterParameter.CostumeType.A;
         _characterParamter.decorationType = CharacterParameter.DecorationType.NONE;
+
+        _audioPlayer = FindObjectOfType<AudioPlayer>();
+
+        _audioPlayer.Play(1, 1.0f, true);
     }
 
     IEnumerator DecideCorutine()

@@ -53,6 +53,8 @@ public class TitleAnimator : MonoBehaviour
     List<Material> _materials = new List<Material>();
     List<Texture> _textures = new List<Texture>();
 
+    AudioPlayer _audioPlayer = null;
+
     void Start()
     {
         _animator = GetComponent<Animator>();
@@ -74,15 +76,26 @@ public class TitleAnimator : MonoBehaviour
             material.mainTexture = new Texture();
             material.EnableKeyword("_Emission");
             material.SetColor("_EmissionColor", Color.black);
-            material.EnableKeyword("_Mode");
+
             material.SetFloat("_Mode", 1);
+            material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+            material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+            material.SetInt("_ZWrite", 1);
+            material.EnableKeyword("_ALPHATEST_ON");
+            material.DisableKeyword("_ALPHABLEND_ON");
+            material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            material.renderQueue = 2450;
+
         }
         _materials[0].mainTexture = _boxOTexture;
 
         _plane.SetActive(false);
         _titleStartedDirector.SetActive(false);
 
+        _audioPlayer = FindObjectOfType<AudioPlayer>();
+
         StartCoroutine(Animation());
+        StartCoroutine(StartSE());
     }
 
     IEnumerator Animation()
@@ -112,6 +125,7 @@ public class TitleAnimator : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
+        _audioPlayer.Play(0, 1.0f, true);
         _titleStartedDirector.SetActive(true);
     }
 
@@ -133,13 +147,19 @@ public class TitleAnimator : MonoBehaviour
         {
             var current = enumerator.Current;
             current.layer = LayerMask.NameToLayer("Viewer"); ;
-            DynamicGI.SetEmissive(current.GetComponent<MeshRenderer>(), color);
         }
 
         var material = _materials[index];
         material.mainTexture = _textures[index];
         material.SetColor("_EmissionColor", color);
         material.SetFloat("_Mode", 2);
+        material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+        material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+        material.SetInt("_ZWrite", 0);
+        material.DisableKeyword("_ALPHATEST_ON");
+        material.EnableKeyword("_ALPHABLEND_ON");
+        material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+        material.renderQueue = 3000;
     }
 
     IEnumerator ChangeTexture
@@ -155,12 +175,31 @@ public class TitleAnimator : MonoBehaviour
             yield return null;
         }
 
-        boxObject.layer = LayerMask.NameToLayer("Viewer"); ;
+        boxObject.layer = LayerMask.NameToLayer("Viewer");
 
         var material = _materials[index];
         material.mainTexture = _textures[index];
         material.SetColor("_EmissionColor", color);
         material.SetFloat("_Mode", 2);
-        DynamicGI.SetEmissive(boxObject.GetComponent<MeshRenderer>(), color);
+        material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+        material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+        material.SetInt("_ZWrite", 0);
+        material.DisableKeyword("_ALPHATEST_ON");
+        material.EnableKeyword("_ALPHABLEND_ON");
+        material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+        material.renderQueue = 3000;
+    }
+
+    IEnumerator StartSE()
+    {
+        float count = 1.05f;
+
+        while (count > 0)
+        {
+            count += -Time.deltaTime;
+            yield return null;
+        }
+
+        _audioPlayer.Play(9);
     }
 }
