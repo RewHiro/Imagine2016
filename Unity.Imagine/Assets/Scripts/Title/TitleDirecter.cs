@@ -7,18 +7,7 @@ public class TitleDirecter : MonoBehaviour
     const string LOAD_SCENE_NAME = "Menu";
 
     [SerializeField]
-    GameObject _logo = null;
-    //Easingで掛ける距離
-    private float _s = 1.70158f * 1.525f;
-    //Eaisngしている合計時間
-    private float _easingTime = 0.0f;
-    //Easing関数
-    private float EasingBackInOut(float time_, float beginPos_, float endPos_)
-    {
-        if ((time_ /= 0.5f) < 1.0f) return (endPos_ - beginPos_) / 2 * (time_ * time_ * ((_s + 1) * time_ - _s)) + beginPos_;
-        time_ -= 2;
-        return (endPos_ - beginPos_) / 2 * (time_ * time_ * ((_s + 1) * time_ + _s) + 2) + beginPos_;
-    }
+    AudioPlayer _player = null;
 
     //移動する雲
     [SerializeField]
@@ -26,27 +15,17 @@ public class TitleDirecter : MonoBehaviour
     //雲の移動速度
     private float _moveCloudSpeed = 60.0f;
 
+
     void Start()
     {
-
+      
     }
 
 
     void Update()
     {
-        //NameLogoのUpdate
-        //UpdateOfNameLogo();
         //雲のUpdate
         UpdateOfClouds();
-    }
-
-    private void UpdateOfNameLogo()
-    {
-        //Easingを40Countで行う
-        if (_easingTime < 1.0f)
-            _easingTime += 1.0f / 40.0f;
-        //local座標の移動
-        _logo.transform.localPosition = new Vector3(-460, EasingBackInOut(_easingTime, 1200, 400), 0);
     }
 
 
@@ -73,6 +52,7 @@ public class TitleDirecter : MonoBehaviour
 
     public void PushStartButton()
     {
+        _player.Play(6, 1.0f, false);
         //StartButtonが押されたら
         var screenSequencer = ScreenSequencer.instance;
 
