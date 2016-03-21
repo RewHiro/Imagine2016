@@ -16,9 +16,10 @@ public class TestShot : MonoBehaviour {
         transform.position += _vectorValue;
 	}
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider collision)
     {
         if(_parent == null) { return; }
+
         if (_parent.transform.name == collision.transform.name)
         {
             Destroy(gameObject);

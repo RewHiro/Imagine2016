@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class StartCount : MonoBehaviour {
+public class EndImageDraw : MonoBehaviour {
 
     [SerializeField]
     KeyAction _gameManager = null;
@@ -10,20 +10,21 @@ public class StartCount : MonoBehaviour {
     [SerializeField]
     float _drawTime = 4.0f;
 
-    float _time;
-
     float _regularInterval;
 
     [SerializeField, TooltipAttribute("表示する順番にImageを入れてください")]
     Image[] _startCountImage = null;
 
     bool _countFinish = false;
-    public bool getCountFinish { get { return _countFinish; }  set { _countFinish = value; }}
+    public bool getCountFinish { get { return _countFinish; } set { _countFinish = value; } }
 
-    void Start ()
+    void Start()
     {
-        //_regularInterval = _drawTime / _startCountImage.Length;
-        _time = _drawTime;
+        if (_timeCount == null)
+        {
+            _timeCount = GameObject.Find("Time").GetComponent<TimeCount>();
+        }
+        
         foreach (var image in _startCountImage)
         {
             image.enabled = false;
@@ -31,51 +32,48 @@ public class StartCount : MonoBehaviour {
 
         if (_gameManager == null) { Debug.Log("_gameManager が null です。KeyAction スクリプトが入ってるオブジェクトをいれてください。"); }
     }
+
+    StartCount _startCount;
+
+    [SerializeField]
+    TimeCount _timeCount;
 	
 	void Update ()
     {
-        if (_gameManager == null || !_gameManager.isGameStart) { return; }
-        CountDown();
-        CountDrawImage();
-    }
+	if(_timeCount._getTime <= _drawTime)
+        {
+            Draw();
+        }
+	}
 
-    void  CountDown()
+    void Draw()
     {
-        if (_time <= 0) return;
-        _time -= Time.deltaTime;
-        
-    }
-
-    void CountDrawImage()
-    {
-        if (_countFinish) return;
-
-        if(_time <= _drawTime && _time >  3)
+        if (_timeCount._getTime <= _drawTime && _timeCount._getTime >  3)
         {
             _startCountImage[0].enabled = true;
         }
         else
-                if (_time <=  3 && _time >  2)
+        if (_timeCount._getTime <=  3 && _timeCount._getTime > 2)
         {
             _startCountImage[0].enabled = false;
             _startCountImage[1].enabled = true;
         }
         else
-        if (_time <=  2 && _time > 1)
+if (_timeCount._getTime <= 2 && _timeCount._getTime > 1)
         {
             _startCountImage[1].enabled = false;
             _startCountImage[2].enabled = true;
         }
         else
-        if ( _time < 1 && _time > 0)
+if (_timeCount._getTime < 1 && _timeCount._getTime > 0)
         {
             _startCountImage[2].enabled = false;
             _startCountImage[3].enabled = true;
         }
         else
-        if (_time <= 0)
+if (_timeCount._getTime <= 0)
         {
-            _time = _drawTime;
+           
             _startCountImage[3].enabled = false;
             _countFinish = true;
         }

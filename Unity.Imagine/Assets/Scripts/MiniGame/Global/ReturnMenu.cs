@@ -20,12 +20,24 @@ public class ReturnMenu : MonoBehaviour {
 
     bool isTurn = false;
     bool isReturn = false;
-	
+    bool isWinner = false;
+    bool isRotationEnd = false;
+
+   public bool getIsRotationEnd { get { return isRotationEnd; } }
+
+    ScoreCompare _scoreCompare;
+
+    void Start()
+    {
+        _scoreCompare = FindObjectOfType<ScoreCompare>();
+    }
+
 	// Update is called once per frame
 	void Update () {
+        Turn();
         // この１文はタイムが０になったら起こるようにしてあるので
         // 必要なかったり、別のところで必要になったら消してください。
-        if (_timeCount._getTime <= 0) { ReturnOn(); }
+        if (_scoreCompare.getDisplayScore == true) { WinnerPlayer(); }
 
 
         Turn();
@@ -36,15 +48,38 @@ public class ReturnMenu : MonoBehaviour {
     {
         if (isTurn)
         {
+            
             _turnAngle -= _turnSpeed;
-            if (_turnAngle < 0.0f)
+            if (_turnAngle <= 0.0f)
             {
                 isTurn = false;
-                isReturn = true;
-                _turnAngle = 0.0f;
+                //isReturn = true;
+                //直す
+                isRotationEnd = true;
+                _turnAngle = 720.0f;
             }
             transform.eulerAngles = new Vector3(0.0f, _turnAngle, 0.0f);
         }
+    }
+
+    void WinnerPlayer()
+    {
+        if (isWinner == true) return;
+        
+        if (_scoreCompare.getWinPlayer == ScoreCompare.WinPlayer.Player1)
+        {
+            isWinner = true;
+            isTurn = true;
+            _text.text = "←";
+        }
+        else
+        if (_scoreCompare.getWinPlayer == ScoreCompare.WinPlayer.Player2)
+        {
+            isWinner = true;
+            isTurn = true;
+            _text.text = "→";
+        }
+
     }
 
     void ReturnMenuUpdate()
@@ -76,5 +111,6 @@ public class ReturnMenu : MonoBehaviour {
     public void ReturnOn()
     {
         isTurn = true;
+        isReturn = true;
     }
 }

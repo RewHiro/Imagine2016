@@ -17,6 +17,11 @@ public class Score : MonoBehaviour {
 
     List<Barrage> _barragelist = new List<Barrage>();
 
+    ScoreCompare _scoreCompare;
+
+    [SerializeField]
+    TimeCount _timeCount;
+
     private enum Player
     {
         Player1,
@@ -28,10 +33,18 @@ public class Score : MonoBehaviour {
 
     void Start ()
     {
-        if(_startCount == null)
+        _scoreCompare = FindObjectOfType<ScoreCompare>();
+
+        if (_startCount == null)
         {
             _startCount = GameObject.Find("StartCount").GetComponent<StartCount>();
         }
+
+        if(_timeCount == null)
+        {
+            _timeCount = GameObject.Find("Time").GetComponent<TimeCount>();
+        }
+
         _actionManager = FindObjectOfType<KeyAction>();
         _text = GetComponent<Text>();
         
@@ -61,6 +74,13 @@ public class Score : MonoBehaviour {
         if (_player == Player.Player1)
         {
             _text.text = "" + _barragelist[0]._getKeyCount;
+
+            if (_scoreCompare.getDisplayScore) return;
+
+         if(_timeCount._getTime <= 4)
+            {
+                _text.text = "???";
+            }   
             //_text.text = "" + _playerList[0].GetComponentInChildren<Barrage>()._getKeyCount;
         }
         else
@@ -68,6 +88,13 @@ public class Score : MonoBehaviour {
         {
              _text.text = "" + _barragelist[1]._getKeyCount;
             //_text.text = "" + _playerList[1].GetComponentInChildren<Barrage>()._getKeyCount;
+
+            if (_scoreCompare.getDisplayScore) return;
+
+            if (_timeCount._getTime <= 4)
+            {
+                _text.text = "???";
+            }
         }
 
     }
