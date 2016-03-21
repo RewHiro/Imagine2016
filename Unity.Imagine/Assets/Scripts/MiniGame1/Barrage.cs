@@ -22,7 +22,7 @@ public class Barrage : ActionManager
     int _probability = 0;
 
     //[SerializeField]
-    ActiveModel _enemyActiveModel;
+    //ActiveModel _enemyActiveModel;
 
     private enum SelectPlayer
     {
@@ -30,8 +30,8 @@ public class Barrage : ActionManager
         Player2
     }
 
-    [SerializeField]
-    private SelectPlayer _selectPlayer;
+    //[SerializeField]
+    //private SelectPlayer _selectPlayer;
 
 
     private GameObject _enemy;
@@ -64,10 +64,10 @@ public class Barrage : ActionManager
     {
 
         
-        _enemy = _selectPlayer == SelectPlayer.Player1 ?
-    GameObject.Find("Player2") : GameObject.Find("Player1");
+    //    _enemy = _selectPlayer == SelectPlayer.Player1 ?
+    //GameObject.Find("Player2") : GameObject.Find("Player1");
 
-        _enemyActiveModel = _enemy.GetComponent<ActiveModel>();
+        //_enemyActiveModel = _enemy.GetComponent<ActiveModel>();
 
         if (_startCount == null)
         {
@@ -84,6 +84,8 @@ public class Barrage : ActionManager
 
         _characterData = GetComponentInChildren<CharacterData>();
 
+        
+        //Debug.Log(_enemy);
     }
 
     void Update()
@@ -134,14 +136,14 @@ public class Barrage : ActionManager
 
         void Bullet(GameObject bullet)
     {
-        Vector3 enemyPosition = Enemy.transform.position;
+        _enemy = Enemy.GetComponentInChildren<CharacterData>().gameObject;
         Vector3 scale = new Vector3(0,0,0);
         var obj = Instantiate(bullet);
         
         obj.transform.position = transform.position;
-        var value = _enemyActiveModel.getBarrage.getCustomGameObject.transform.position - transform.position;
+        var value = _enemy.transform.position/*_enemyActiveModel.getBarrage.getCustomGameObject.transform.position*/ - transform.position;
         obj.GetComponent<TestShot>()._vectorValue = value.normalized;
-        obj.GetComponent<TestShot>()._parent = _enemyActiveModel.getBarrage.getCustomGameObject;
+        obj.GetComponent<TestShot>()._parent = /*_enemyActiveModel.getBarrage.getCustomGameObject*/_enemy;
     }
 
 }
