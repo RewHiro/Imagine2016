@@ -22,7 +22,7 @@ public class Barrage : ActionManager
     int _probability = 0;
 
     [SerializeField]
-    GameObject _custom;
+    ActiveModel _enemyActiveModel;
 
     [SerializeField]
     float _waitTime = 0.1f;
@@ -35,15 +35,38 @@ public class Barrage : ActionManager
 
     public int _getKeyCount { get { return _keyCount; } }
 
+    CharacterParameterInfo _characterParameterInfo;
+
+    public GameObject getCustomGameObject { get { return _characterParameterInfo.gameObject; } }
+
+
+    void Awake()
+    {
+    //    _modelParameterInfo = GetComponentInChildren<ModelParameterInfo>();
+     //   Debug.Log(_modelParameterInfo.name);
+
+    }
+
     void Start()
     {
+        
         if (_startCount == null)
         {
             _startCount = GameObject.Find("StartCount").GetComponent<StartCount>();
         }
+
+        if (_timeCount == null)
+        {
+            _timeCount = GameObject.Find("Time").GetComponent<TimeCount>();
+        }
+
         _time = _waitTime;
         _randomBullet = GetComponent<RandomBullet>();
         //_timeCount = GetComponent<TimeCount>();
+
+        _characterParameterInfo = GetComponentInChildren<CharacterParameterInfo>();
+        //Debug.Log(_characterParameterInfo.gameObject.name);
+
     }
 
     void Update()
@@ -101,7 +124,11 @@ public class Barrage : ActionManager
     }
 
 
-    public override void Action(){}
+    public override void Action()
+    {
+        transform.LookAt(Enemy.transform);
+        rotation = transform.eulerAngles;
+    }
 
         void Bullet(GameObject bullet)
     {
@@ -111,14 +138,14 @@ public class Barrage : ActionManager
         var obj = Instantiate(bullet);
         
         //obj.transform.position += transform.localScale;
-        scale = transform.localScale;
-        scale.z = 0;
-        scale.x = 0;
-        obj.transform.position = transform.position + scale;
-        var value = _custom.transform.position - transform.position;
+        //scale = transform.localScale;
+        //scale.z = 0;
+        //scale.x = 0;
+        obj.transform.position = transform.position;
+        var value = _enemyActiveModel.getBarrage.getCustomGameObject.transform.position - transform.position;
         //        var value = Enemy.transform.position - transform.position;
         obj.GetComponent<TestShot>()._vectorValue = value.normalized;
-        obj.GetComponent<TestShot>()._parent = _custom;
+        obj.GetComponent<TestShot>()._parent = _enemyActiveModel.getBarrage.getCustomGameObject;
     }
 
 }

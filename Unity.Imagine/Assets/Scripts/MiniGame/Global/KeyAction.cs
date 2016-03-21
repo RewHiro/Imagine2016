@@ -34,11 +34,13 @@ public class KeyAction : MonoBehaviour {
 
     void Init()
     {
-        if (initCount != 0) {
-            --initCount;
-            return;
-        }
-        --initCount;
+        if(_actionMgr != null) { return; }
+        //if (initCount != 0)
+        //{
+        //    --initCount;
+        //    return;
+        //}
+        //--initCount;
         _actionMgr = GetComponentsInChildren<ActionManager>();
 
         // 両端のオブジェクトの要素番号を取り出して1P、2P決める処理
@@ -49,6 +51,7 @@ public class KeyAction : MonoBehaviour {
         int min_index = -1;
         for (int i = 0; i < _actionMgr.Length; ++i)
         {
+            if (!_actionMgr[i].isRendered) { continue; }
             if (_actionMgr[i].transform.position.x > max_x)
             {
                 max_x = _actionMgr[i].transform.position.x;
@@ -59,6 +62,12 @@ public class KeyAction : MonoBehaviour {
                 min_x = _actionMgr[i].transform.position.x;
                 min_index = i;
             }
+        }
+
+        // 見つからなかった場合抜ける
+        if(max_index == min_index) {
+            _actionMgr = null;
+            return;
         }
 
         // 両端の要素番号が分かったので _actionMgr を再生成
@@ -75,8 +84,8 @@ public class KeyAction : MonoBehaviour {
         _actionMgr[1].Enemy = _actionMgr[0].transform.gameObject;
 
         // この色変えは確認用です。
-        _actionMgr[0].GetComponent<MeshRenderer>().material.color = Color.red;
-        _actionMgr[1].GetComponent<MeshRenderer>().material.color = Color.blue;
+        //_actionMgr[0].GetComponent<MeshRenderer>().material.color = Color.red;
+        //_actionMgr[1].GetComponent<MeshRenderer>().material.color = Color.blue;
     }
 
     void KeysAction()
