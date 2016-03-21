@@ -192,7 +192,7 @@ public class TitleAnimator : MonoBehaviour
 
     IEnumerator StartSE()
     {
-        float count = 1.15f;
+        float count = 1.05f;
 
         while (count > 0)
         {
