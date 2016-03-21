@@ -53,6 +53,8 @@ public class TitleAnimator : MonoBehaviour
     List<Material> _materials = new List<Material>();
     List<Texture> _textures = new List<Texture>();
 
+    AudioPlayer _audioPlayer = null;
+
     void Start()
     {
         _animator = GetComponent<Animator>();
@@ -90,7 +92,10 @@ public class TitleAnimator : MonoBehaviour
         _plane.SetActive(false);
         _titleStartedDirector.SetActive(false);
 
+        _audioPlayer = FindObjectOfType<AudioPlayer>();
+
         StartCoroutine(Animation());
+        StartCoroutine(StartSE());
     }
 
     IEnumerator Animation()
@@ -120,6 +125,7 @@ public class TitleAnimator : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
+        _audioPlayer.Play(0, 1.0f, true);
         _titleStartedDirector.SetActive(true);
     }
 
@@ -182,6 +188,18 @@ public class TitleAnimator : MonoBehaviour
         material.EnableKeyword("_ALPHABLEND_ON");
         material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
         material.renderQueue = 3000;
+    }
 
+    IEnumerator StartSE()
+    {
+        float count = 1.05f;
+
+        while (count > 0)
+        {
+            count += -Time.deltaTime;
+            yield return null;
+        }
+
+        _audioPlayer.Play(9);
     }
 }

@@ -19,9 +19,6 @@ using System.Collections.Generic;
 public class ChangeCharacterPattern : MonoBehaviour
 {
 
-    [SerializeField]
-    GameObject[] _panels = null;
-
     //Typeのモデル
     [SerializeField]
     GameObject[] _typePrefabs = null;

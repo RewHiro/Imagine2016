@@ -4,6 +4,9 @@ using System.Collections;
 public class CharacterMove : MonoBehaviour
 {
     [SerializeField]
+    AudioPlayer _player = null;
+
+    [SerializeField]
     GameObject _character = null;
 
     [SerializeField]
@@ -82,6 +85,7 @@ public class CharacterMove : MonoBehaviour
         _characterStatus._fallCount = 0.0f;
         _characterStatus._totalFallCount = 0.5f;
         _totalFallDistance = 500.0f;
+        _player.Play(10, 1.0f, false);
     }
 
 
@@ -116,6 +120,7 @@ public class CharacterMove : MonoBehaviour
 
         if (_totalFallDistance < 0)
         {
+            _player.Play(11, 1.0f, false);
             _isEndFalled = true;
             _character.transform.localPosition
             = new Vector3(_character.transform.localPosition.x,
@@ -196,6 +201,7 @@ public class CharacterMove : MonoBehaviour
                 _character.transform.localRotation = new Quaternion(_setRotation.x, _setRotation.y, _setRotation.z, 1);
 
                 _characterStatus._jumpCount = 0.0f;
+                _player.Play(11, 1.0f, false);
             }
         }
     }
