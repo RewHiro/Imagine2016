@@ -15,6 +15,8 @@ public class ActionManager : MonoBehaviour {
 
     const string MAIN_CAMERA_TAG_NAME = "MainCamera";
 
+    Vector3 _offset = new Vector3(0.0f, 0.0f, -90.0f);
+
     void OnWillRenderObject()
     {
         //メインカメラに映った時だけ_isRenderedを有効に 
@@ -23,5 +25,10 @@ public class ActionManager : MonoBehaviour {
             isRendered = true;
         }
         //Debug.Log(isRendered);
+    }
+
+    public void Rotate()
+    {
+        gameObject.transform.eulerAngles = rotation + _offset;
     }
 }
