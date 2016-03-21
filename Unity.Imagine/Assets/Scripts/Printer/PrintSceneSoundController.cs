@@ -17,7 +17,7 @@ public class PrintSceneSoundController : MonoBehaviour {
         set
         {
             _bgmPlayer.Stop();
-            _bgmPlayer.Play(value, 0.5f, true);
+            _bgmPlayer.Play(value, 1.0f, true);
         }
     }
     private AudioPlayer _sePlayer = null;
@@ -38,7 +38,7 @@ public class PrintSceneSoundController : MonoBehaviour {
     {
         _bgmPlayer = _audioPlayer.GetComponent<AudioPlayer>();
         _sePlayer = _audioPlayer.GetComponent<AudioPlayer>();
-        _bgmPlayer.Play(1, 0.5f, true);
+        _bgmPlayer.Play(1, 1.0f, true);
     }
 
 }
