@@ -25,6 +25,7 @@ public class MenuDirecter : MonoBehaviour
 
     //現在のカメラRotation
     private float _nowCameraRotation = 0;
+
     private float _rotationSpeed = 1.5f / 10;
 
     private bool _canSelectGame = true;
@@ -47,15 +48,17 @@ public class MenuDirecter : MonoBehaviour
     private Vector3[] _def = new Vector3[2];
     private Vector3 _defAngle;
 
-    private double _totalReverseAnimationCount = 0.0f;
-    private double _reverseAnimationCount = 0.0f;
-    private bool _isChangedAnimationActive = false;
-
     [SerializeField]
     GameObject _animation = null;
 
+    private double _totalReverseAnimationCount = 0.0f;
+    private double _reverseAnimationCount = 0.0f;
+    private float _waitAnimationCount = 3.0f;
+    private bool _isChangedAnimationActive = false;
+
     [SerializeField]
     GameObject _statusCursor = null;
+
     enum NowCameraMode
     {
         NONE,
@@ -98,7 +101,7 @@ public class MenuDirecter : MonoBehaviour
 
         _ListsOfActionPushButton.Add(() =>
         {
-            if (_canMoveCharacter == true) return;
+            if (_reverseAnimationCount != 0.0f) return;
             _nowCameraMode = NowCameraMode.UP_ANGLE;
             _animationCount = 1.0f;
             _reverseAnimationCount = FindObjectOfType<MenuBoxAnimater>().animationTime;
@@ -219,7 +222,7 @@ public class MenuDirecter : MonoBehaviour
 
     IEnumerator ChangeEndCameraAngle()
     {
-        if (_totalReverseAnimationCount > _reverseAnimationCount + 3.0f)
+        if (_totalReverseAnimationCount > _reverseAnimationCount + _waitAnimationCount)
         {
             while (_nowCameraRotation > 0.0f)
             {
@@ -282,7 +285,7 @@ public class MenuDirecter : MonoBehaviour
 
         _totalReverseAnimationCount += Time.deltaTime;
 
-        if (_totalReverseAnimationCount > _reverseAnimationCount + 3.0f)
+        if (_totalReverseAnimationCount > _reverseAnimationCount + _waitAnimationCount)
         {
             if (_isChangedAnimationActive == false)
             {
@@ -325,6 +328,7 @@ public class MenuDirecter : MonoBehaviour
             _nowCameraMode = NowCameraMode.NONE;
             _canMoveCharacter = false;
             _canSelectGame = true;
+            _reverseAnimationCount = 0.0f;
             yield return null;
         }
     }
@@ -349,9 +353,9 @@ public class MenuDirecter : MonoBehaviour
         }
         else if (nowSelectGameNum_ == 3 && _canMoveCharacter == false)
         {
-            _nowSelectGameNum = UnityEngine.Random.Range(0, 3);
+            _nowSelectGameNum = 1;
             FindObjectOfType<SelectGameStatus>().SelectGameNum = _nowSelectGameNum;
-            FindObjectOfType<ChangeTarget>().ChangeTargetCursor(_nowSelectGameNum);
+            FindObjectOfType<ChangeTarget>().ChangeTargetCursor(3);
             FindObjectOfType<ChangeText>().ChangeExplanationText(4);
             ChangeStatusCursor(_nowSelectGameNum);
         }
