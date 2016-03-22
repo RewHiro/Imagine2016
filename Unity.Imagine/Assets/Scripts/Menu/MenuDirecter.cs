@@ -140,6 +140,7 @@ public class MenuDirecter : MonoBehaviour
             if (_canMoveCharacter == false && _canSelectGame == false)
             {
                 _player.Play(8, 1.0f, false);
+
                 FindObjectOfType<ChangeText>().ChangeExplanationText(6);
             }
         });
