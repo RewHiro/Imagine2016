@@ -7,6 +7,8 @@ public class MenuBoxAnimater : MonoBehaviour
     bool _isPlay;
     [SerializeField]
     bool _isBack;
+    [SerializeField]
+    float _animationSpeed;
 
     Animator _animator = null;
 
@@ -50,7 +52,18 @@ public class MenuBoxAnimater : MonoBehaviour
 
     }
 
-    
+    public float animationSpeed
+    {
+        get
+        {
+            return _animationSpeed;
+        }
+
+        set
+        {
+            _animationSpeed = value;
+        }
+    }
 
     private bool _isStarted = false;
 
