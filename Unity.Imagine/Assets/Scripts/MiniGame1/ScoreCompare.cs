@@ -9,6 +9,8 @@ public class ScoreCompare : MonoBehaviour {
 
     KeyAction _actionManager;
 
+    SuddenDeath _suddenDeath;
+
     List<GameObject> _playerList = new List<GameObject>();
 
     List<Barrage> _barragelist = new List<Barrage>();
@@ -16,6 +18,10 @@ public class ScoreCompare : MonoBehaviour {
     bool _displayScore = false;
 
    public bool getDisplayScore { get { return _displayScore; } }
+
+    bool _isDraw = false;
+
+    public bool getIsDraw { get { return _isDraw; } set { _isDraw = value; } }
 
    public enum WinPlayer{
         Player1,
@@ -28,6 +34,7 @@ public class ScoreCompare : MonoBehaviour {
 
     void Start ()
     {
+        _suddenDeath = FindObjectOfType<SuddenDeath>();
         _timeCount = GameObject.Find("Time").GetComponent<TimeCount>();
         _actionManager = FindObjectOfType<KeyAction>();
         
@@ -78,7 +85,9 @@ public class ScoreCompare : MonoBehaviour {
         else
         if(_barragelist[0]._getKeyCount == _barragelist[1]._getKeyCount)
         {
-           // _timeCount._getTime = 5;
+            _isDraw = true;
+            _suddenDeath.getCountFinish = false;
+
         }
     }
 
