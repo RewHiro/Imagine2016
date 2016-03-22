@@ -129,7 +129,7 @@ public class ReturnMenu : MonoBehaviour
             {
                 if (hit.transform.name == transform.name)
                 {
-                    GameScene.Menu.ChangeScene();
+                    ScreenSequencer.instance.SequenceStart(() => GameScene.Menu.ChangeScene(), new Fade(1f));
                 }
             }
         }

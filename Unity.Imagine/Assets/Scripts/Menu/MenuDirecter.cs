@@ -414,7 +414,7 @@ public class MenuDirecter : MonoBehaviour
 
             screenSequencer.SequenceStart
                 (
-                    () => { GameScene.MiniGames.ChangeScene(); },
+                    () => { GameScene.AR_TEST3.ChangeScene(); },
                     new Fade(1.0f)
                 );
         }
