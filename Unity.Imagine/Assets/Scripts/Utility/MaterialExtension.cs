@@ -34,7 +34,7 @@ public static class MaterialExtension
                 BlendMode.OPAQUE,
                 (Material material) =>
                 {
-                    material.SetOverrideTag("RenderType", "");
+                    material.SetFloat("_Mode", 0);
                     material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                     material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                     material.SetInt("_ZWrite", 1);
@@ -51,7 +51,7 @@ public static class MaterialExtension
                 (Material material) =>
                 {
 
-                    material.SetOverrideTag("RenderType", "TransparentCutout");
+                    material.SetFloat("_Mode", 1);
                     material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                     material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                     material.SetInt("_ZWrite", 1);
@@ -69,7 +69,7 @@ public static class MaterialExtension
                 (Material material) =>
                 {
 
-                    material.SetOverrideTag("RenderType", "Transparent");
+                    material.SetFloat("_Mode", 2);
                     material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
                     material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
                     material.SetInt("_ZWrite", 0);
@@ -86,7 +86,7 @@ public static class MaterialExtension
                 (Material material) =>
                 {
 
-                    material.SetOverrideTag("RenderType", "Transparent");
+                    material.SetFloat("_Mode", 3);
                     material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                     material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
                     material.SetInt("_ZWrite", 0);
