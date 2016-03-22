@@ -16,7 +16,9 @@ using UnityEngine;
 //
 //------------------------------------------------------------
 
-static class TouchController {
+public static class TouchController {
+
+  static TouchController() { approvalDoubleTapTime = 1f; }
 
   public static bool IsAndroid {
     get { return Application.platform == RuntimePlatform.Android; }
@@ -74,6 +76,29 @@ static class TouchController {
   }
 
 
+  static Vector3 _deltaPosition = Vector3.zero;
+  static Vector3 _previousPosition = Vector3.zero;
+
+  // TIPS: マウス位置更新確認
+  static bool IsCompletedUpdate() { return Input.mousePosition == _previousPosition; }
+
+  /// <summary> マウス位置更新用メソッド </summary>
+  public static void UpdateMousePosition() {
+    if (IsCompletedUpdate()) { return; }
+    var current = Input.mousePosition;
+    _deltaPosition = current - _previousPosition;
+    _previousPosition = current;
+  }
+
+  /// <summary> 直前フレームからの移動量を取得
+  /// <para> マウス位置を取得する場合は必ず
+  /// <see cref="UpdateMousePosition()"/> を併用してください </para></summary>
+  public static Vector3 GetDeltaPosition() {
+    return IsSmartDevice ?
+      (Vector3)Input.touches[0].deltaPosition : _deltaPosition;
+  }
+
+
   /// <summary> スクリーンからの Raycast による、オブジェクトとの交差判定 </summary>
   public static bool IsRaycastHit(out RaycastHit hit) {
     var ray = Camera.main.ScreenPointToRay(GetScreenPosition());
@@ -92,6 +117,26 @@ static class TouchController {
     return Physics.Raycast(ray, out hit, Camera.main.farClipPlane, layerMask);
   }
 
+
+  /// <summary> 連続入力を検出する時間の許容間隔 </summary>
+  public static float approvalDoubleTapTime { get; set; }
+  static float _lastFrame = 0f;
+
+  // TIPS: マウス用、ダブルクリックの有効判定
+  static bool UpdateMouseFrame() {
+    if (!Input.GetMouseButtonDown(0)) { return false; }
+    var current = Time.unscaledTime;
+    Debug.Log(current - _lastFrame);
+    var success = (current - _lastFrame) < approvalDoubleTapTime;
+    _lastFrame = success ? 0f : current;
+    return success;
+  }
+
+  /// <summary> 連続で入力されたとき、許容時間内なら true を返す </summary>
+  public static bool IsDoubleTap() {
+    return IsSmartDevice ?
+      Input.touches[0].tapCount > 1 : UpdateMouseFrame();
+  }
 
   /// <summary> タッチされた瞬間 true を返す </summary>
   public static bool IsTouchBegan() {

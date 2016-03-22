@@ -3,14 +3,29 @@ using UnityEngine;
 using System;
 
 class TouchTest : MonoBehaviour {
+
+  [SerializeField]
+  Material _default = null;
+
+  [SerializeField]
+  Material _clicked = null;
+
+  [SerializeField]
+  Renderer _renderer = null;
+
+  int _timeCount = 0;
+  bool activeMaterial { get { return _timeCount > 0; } }
+
   void Update() {
-    if (!TouchController.IsTouchBegan()) { return; }
+    if (activeMaterial) { --_timeCount; }
+    UpdateMaterial();
+  }
 
-    Debug.Log(">>>>> touch test");
-
-    var hit = new RaycastHit();
-    if (!TouchController.IsRaycastHit(out hit)) { return; }
-    Debug.Log("hit: " + hit.transform.name + "/" + hit.transform);
+  void UpdateMaterial() {
+    var success = TouchController.IsDoubleTap();
+    if (success) { _timeCount = 60; }
+    var active = activeMaterial && success;
+    _renderer.material = active ? _clicked : _default;
   }
 
   void TransformScreenPosition() {
