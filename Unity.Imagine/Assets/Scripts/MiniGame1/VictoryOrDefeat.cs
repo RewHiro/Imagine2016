@@ -17,9 +17,11 @@ public class VictoryOrDefeat : MonoBehaviour {
 
     void Start ()
     {
+        
         _resultDirecter = FindObjectOfType<ResultDirecter>();
         _returnMenu = FindObjectOfType<ReturnMenu>();
         _scoreCompare = FindObjectOfType<ScoreCompare>();
+       // _resultDirecter.SetResult(1);
     }
 	
 	void Update ()
@@ -36,22 +38,24 @@ public class VictoryOrDefeat : MonoBehaviour {
 
         if (_scoreCompare.getWinPlayer == ScoreCompare.WinPlayer.Player1)
         {
-            //if (isResult == false)
-            //{
-            //    _resultDirecter.SetResult(1);
-            //}
             _images[0].enabled = true;
             _images[3].enabled = true;
+            if (isResult == false)
+            {
+                _resultDirecter.SetResult(1);
+            }
+            
             isResult = true;
         }else
                 if (_scoreCompare.getWinPlayer == ScoreCompare.WinPlayer.Player2)
         {
-            //if (isResult == false)
-            //{
-            //    _resultDirecter.SetResult(2);
-            //}
             _images[1].enabled = true;
             _images[2].enabled = true;
+            if (isResult == false)
+            {
+                _resultDirecter.SetResult(2);
+            }
+            
             isResult = true;
         }
 

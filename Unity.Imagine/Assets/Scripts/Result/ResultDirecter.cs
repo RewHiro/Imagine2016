@@ -108,7 +108,8 @@ public class ResultDirecter : MonoBehaviour
     {
         _directionLight.intensity = 0;
         var light = Resources.Load<GameObject>("Result/Spotlight");
-        light.transform.SetParent(FindObjectOfType<KeyAction>().GetPlayers()[winPlayerNum].transform, false);
+        GameObject lightObj = Instantiate(light);
+        lightObj.transform.SetParent(FindObjectOfType<KeyAction>().GetPlayers()[winPlayerNum-1].transform, false);
     }
 
 
