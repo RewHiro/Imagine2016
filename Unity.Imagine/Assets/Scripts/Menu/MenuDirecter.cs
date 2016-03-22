@@ -13,25 +13,15 @@ public class MenuDirecter : MonoBehaviour
     [SerializeField]
     Camera _camera = null;
 
-    private bool _isChangeSelectGame = false;
-
     public List<Action> _ListsOfActionPushButton = new List<Action>();
 
     //今どのゲームを選択しているか
     private int _nowSelectGameNum = 0;
 
-    [SerializeField]
-    Image _explanationImage = null;
-
     //現在のカメラRotation
     private float _nowCameraRotation = 0;
 
-    private float _rotationSpeed = 1.5f / 10;
-
     private bool _canSelectGame = true;
-
-    //カメラ移動しているかどうか
-    private bool _isChangingCameraRotation = false;
 
     //Characterの移動アニメーションをしていいかどうか
     private bool _canMoveCharacter = false;
@@ -75,9 +65,6 @@ public class MenuDirecter : MonoBehaviour
     Image _selectGameName = null;
 
     private List<Sprite> _gameNames = new List<Sprite>();
-
-    [SerializeField]
-    GameObject _canon = null;
 
     private bool _isChangeScene = false;
 
@@ -148,6 +135,16 @@ public class MenuDirecter : MonoBehaviour
         {
             FindObjectOfType<ChangeText>().ChangeExplanationText(5);
         });
+        _ListsOfActionPushButton.Add(() =>
+        {
+            if (_canMoveCharacter == false && _canSelectGame == false)
+            {
+                _player.Play(8, 1.0f, false);
+
+                FindObjectOfType<ChangeText>().ChangeExplanationText(6);
+            }
+        });
+
 
 
         _gameNames.Add(Resources.Load<Sprite>("Menu/Texture/menu_title"));
@@ -170,15 +167,13 @@ public class MenuDirecter : MonoBehaviour
 
         if (TouchController.IsTouchBegan() && _canMoveCharacter == false && _canSelectGame == true)
             TouchCharacter();
-        if (TouchController.IsTouchBegan() && _canMoveCharacter == false && _canSelectGame == false)
-            TouchMakingCharacter();
 
-            ChangeMiniGame();
+        ChangeMiniGame();
 
-        if(_isWaitPlayAnimationAudio == true)
+        if (_isWaitPlayAnimationAudio == true)
         {
             _waitPlayAnimationAudioCount += Time.deltaTime;
-            if(_waitPlayAnimationAudioCount > 1.3f)
+            if (_waitPlayAnimationAudioCount > 1.3f)
             {
                 _player.Play(12, 1.0f, false);
                 _isWaitPlayAnimationAudio = false;
@@ -222,18 +217,6 @@ public class MenuDirecter : MonoBehaviour
                         );
                 }
             }
-    }
-
-    private void TouchMakingCharacter()
-    {
-        var hitObject = new RaycastHit();
-        var isHit = TouchController.IsRaycastHit(out hitObject);
-        if (!isHit) return;
-        if (hitObject.transform.name == _characterAnimation[1].name)
-        {
-            _player.Play(8, 1.0f, false);
-            FindObjectOfType<ChangeText>().ChangeExplanationText(6);
-        }
     }
 
     IEnumerator ChangeStartCameraAngle()
@@ -420,3 +403,4 @@ public class MenuDirecter : MonoBehaviour
         }
     }
 }
+
