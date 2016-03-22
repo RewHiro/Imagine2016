@@ -9,6 +9,7 @@ public enum GameScene {
   Create,
   Printer,
   MiniGames,
+  AR_TEST3,
 
   Max, None = -1,
 }
