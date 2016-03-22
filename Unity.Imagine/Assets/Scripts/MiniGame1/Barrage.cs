@@ -4,6 +4,9 @@ using System.Collections;
 public class Barrage : ActionManager
 {
     [SerializeField]
+    AudioPlayer _audioPlayer;
+
+    [SerializeField]
     StartCount _startCount; 
 
     [SerializeField]
@@ -68,6 +71,11 @@ public class Barrage : ActionManager
 
         //_enemyActiveModel = _enemy.GetComponent<ActiveModel>();
 
+        if(_audioPlayer == null)
+        {
+            _audioPlayer = GameObject.Find("AudioPlayer").GetComponent<AudioPlayer>();
+        }
+
         if (_startCount == null)
         {
             _startCount = GameObject.Find("StartCount").GetComponent<StartCount>();
@@ -101,6 +109,7 @@ public class Barrage : ActionManager
         if (_timeCount._getTime <= 0) return 0;
         if (Input.GetKeyDown(key))
         {
+            _audioPlayer.Play(20,false);
              StartCoroutine(BulletCreate( _waitTime));
             return 1;
         }

@@ -12,14 +12,20 @@ public class EndImageDraw : MonoBehaviour {
 
     float _regularInterval;
 
+    [SerializeField]
+    AudioPlayer _audioPlayer;
+
     [SerializeField, TooltipAttribute("表示する順番にImageを入れてください")]
     Image[] _startCountImage = null;
 
     bool _countFinish = false;
     public bool getCountFinish { get { return _countFinish; } set { _countFinish = value; } }
 
+    bool _isSe = false;
+
     void Start()
     {
+        
         if (_timeCount == null)
         {
             _timeCount = GameObject.Find("Time").GetComponent<TimeCount>();
@@ -50,6 +56,11 @@ public class EndImageDraw : MonoBehaviour {
     {
         if (_timeCount._getTime <= _drawTime && _timeCount._getTime >  3)
         {
+            if (_isSe == false)
+            {
+                _isSe = true;
+                _audioPlayer.Play(15, false);
+            }
             _startCountImage[0].enabled = true;
         }
         else
