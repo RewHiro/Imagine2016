@@ -7,10 +7,14 @@ public class SuddenDeath : MonoBehaviour {
     TimeCount _timeCount;
 
     [SerializeField]
+    AudioPlayer _audioPlayer;
+
+    [SerializeField]
     float _drawTime = 4.0f;
 
     float _time;
 
+    bool _isSe = false;
 
     [SerializeField, TooltipAttribute("表示する順番にImageを入れてください")]
     Image[] _startCountImage = null;
@@ -33,11 +37,19 @@ public class SuddenDeath : MonoBehaviour {
 
     void Update()
     {
+        if (_countFinish)
+        {
+            _scoreCompare.getIsDraw = false;
+        }
+
         if (_scoreCompare.getIsDraw ==true)
         {
-            CountDown();
             CountDrawImage();
+            CountDown();
+
         }
+
+        
     }
 
     void CountDown()
@@ -58,6 +70,11 @@ public class SuddenDeath : MonoBehaviour {
         else
                 if (_time <= 4 && _time > 3)
         {
+            if(_isSe == false)
+            {
+                _audioPlayer.Play(14, false);
+                _isSe = true;
+            }
             _startCountImage[0].enabled = false;
             _startCountImage[1].enabled = true;
         }
@@ -82,12 +99,14 @@ public class SuddenDeath : MonoBehaviour {
         else
         if( _time <0)
         {
-            _time = _drawTime;
             _startCountImage[4].enabled = false;
+            _time = _drawTime;
             _countFinish = true;
+            _isSe = false;
             _timeCount._getTime = 6;
-            _scoreCompare.getIsDraw = false;
+            
         }
+
 
     }
 }

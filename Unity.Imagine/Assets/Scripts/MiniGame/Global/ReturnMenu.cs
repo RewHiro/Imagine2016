@@ -11,6 +11,8 @@ public class ReturnMenu : MonoBehaviour
     [SerializeField]
     AudioPlayer _audioPlayer;
 
+    [SerializeField]
+    Image _description;
 
     [SerializeField]
     private LayerMask _mask;
@@ -63,7 +65,7 @@ public class ReturnMenu : MonoBehaviour
     {
         if (_isTurn)
         {
-
+            _description.enabled = false;
             _turnAngle -= _turnSpeed;
             if (_turnAngle <= 0.0f)
             {
@@ -74,6 +76,7 @@ public class ReturnMenu : MonoBehaviour
                 _turnAngle = 720.0f;
                 _audioPlayer.Play(19, false);
                 _isReturnNenu = true;
+                
             }
             transform.eulerAngles = new Vector3(0.0f, _turnAngle, 0.0f);
         }

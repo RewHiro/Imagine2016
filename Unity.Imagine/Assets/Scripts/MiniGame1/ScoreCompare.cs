@@ -85,9 +85,10 @@ public class ScoreCompare : MonoBehaviour {
         else
         if(_barragelist[0]._getKeyCount == _barragelist[1]._getKeyCount)
         {
+          
+            
             _isDraw = true;
             _suddenDeath.getCountFinish = false;
-
         }
     }
 
