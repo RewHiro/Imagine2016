@@ -55,10 +55,6 @@ public class CharacterMove : MonoBehaviour
         public float _totalFallCount;
     }
 
-    //こける処理
-    //1回飛ぶごとにCountを＋１
-    private int _kickCount = 0;
-
     CharacterStatus _characterStatus;
 
     /*

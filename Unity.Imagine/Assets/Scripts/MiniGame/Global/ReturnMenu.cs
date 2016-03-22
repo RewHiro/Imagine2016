@@ -122,7 +122,7 @@ public class ReturnMenu : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
 
-            Ray ray = new Ray(transform.position, transform.forward);
+            //Ray ray = new Ray(transform.position, transform.forward);
 
             RaycastHit hit;
             if (TouchController.IsRaycastHitWithLayer(out hit, _mask))
