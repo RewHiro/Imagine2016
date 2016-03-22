@@ -2,7 +2,15 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class ReturnMenu : MonoBehaviour {
+public class ReturnMenu : MonoBehaviour
+{
+
+    [SerializeField]
+    float _delayTime = 2.0f;
+
+    [SerializeField]
+    AudioPlayer _audioPlayer;
+
 
     [SerializeField]
     private LayerMask _mask;
@@ -18,65 +26,85 @@ public class ReturnMenu : MonoBehaviour {
     [SerializeField]
     float _turnSpeed = 20.0f;
 
-    bool isTurn = false;
-    bool isReturn = false;
-    bool isWinner = false;
-    bool isRotationEnd = false;
-
-   public bool getIsRotationEnd { get { return isRotationEnd; } }
+    bool _isTurn = false;
+    bool _isReturn = false;
+    bool _isWinner = false;
+    bool _isRotationEnd = false;
+    bool _isReturnNenu = false;
+    float time;
+    public bool getIsRotationEnd { get { return _isRotationEnd; } }
 
     ScoreCompare _scoreCompare;
 
     void Start()
     {
+        time = _delayTime;
+        _audioPlayer = FindObjectOfType<AudioPlayer>();
         _scoreCompare = FindObjectOfType<ScoreCompare>();
+        _audioPlayer.Play(3, 0.2f, true);
     }
 
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update()
+    {
+        //Turn();
         Turn();
+        ReturnMenuUpdate();
+        WaitTime();
         // この１文はタイムが０になったら起こるようにしてあるので
         // 必要なかったり、別のところで必要になったら消してください。
         if (_scoreCompare.getDisplayScore == true) { WinnerPlayer(); }
 
 
-        Turn();
-        ReturnMenuUpdate();
+        
     }
 
     void Turn()
     {
-        if (isTurn)
+        if (_isTurn)
         {
-            
+
             _turnAngle -= _turnSpeed;
             if (_turnAngle <= 0.0f)
             {
-                isTurn = false;
+                _isTurn = false;
                 //isReturn = true;
                 //直す
-                isRotationEnd = true;
+                _isRotationEnd = true;
                 _turnAngle = 720.0f;
+                _audioPlayer.Play(19, false);
+                _isReturnNenu = true;
             }
             transform.eulerAngles = new Vector3(0.0f, _turnAngle, 0.0f);
         }
     }
 
+    void WaitTime()
+    {
+        if (time <= 0 || _isReturnNenu == false) return;
+        
+        time -= Time.deltaTime;
+        if(time <= 0)
+        {
+            ReturnOn();
+        }
+    }
+
     void WinnerPlayer()
     {
-        if (isWinner == true) return;
-        
+        if (_isWinner == true) return;
+
         if (_scoreCompare.getWinPlayer == ScoreCompare.WinPlayer.Player1)
         {
-            isWinner = true;
-            isTurn = true;
+            _isWinner = true;
+            _isTurn = true;
             _text.text = "←";
         }
         else
         if (_scoreCompare.getWinPlayer == ScoreCompare.WinPlayer.Player2)
         {
-            isWinner = true;
-            isTurn = true;
+            _isWinner = true;
+            _isTurn = true;
             _text.text = "→";
         }
 
@@ -84,7 +112,7 @@ public class ReturnMenu : MonoBehaviour {
 
     void ReturnMenuUpdate()
     {
-        if (!isReturn) { return; }
+        if (!_isReturn) { return; }
         if (_timeCount._getTime > 0) { return; }
 
         if (_timeCount != null) { Destroy(_timeCount); }
@@ -110,7 +138,7 @@ public class ReturnMenu : MonoBehaviour {
     // これを呼べばメニューに戻る
     public void ReturnOn()
     {
-        isTurn = true;
-        isReturn = true;
+        _isTurn = true;
+        _isReturn = true;
     }
 }
