@@ -40,7 +40,6 @@ public class Barrage : ActionManager
     [SerializeField]
     float _waitTime = 0.1f;
 
-    float _time = 0;
 
     int _count = 0;
 
@@ -79,7 +78,7 @@ public class Barrage : ActionManager
             _timeCount = GameObject.Find("Time").GetComponent<TimeCount>();
         }
 
-        _time = _waitTime;
+       
         _randomBullet = GetComponent<RandomBullet>();
 
         _characterData = GetComponentInChildren<CharacterData>();
@@ -134,14 +133,14 @@ public class Barrage : ActionManager
         transform.eulerAngles = myRotate;
     }
 
-        void Bullet(GameObject bullet)
+      public  void Bullet(GameObject bullet)
     {
         _enemy = Enemy.GetComponentInChildren<CharacterData>().gameObject;
         Vector3 scale = new Vector3(0,0,0);
         var obj = Instantiate(bullet);
-        
+        scale.y = 0.5f;
         obj.transform.position = transform.position;
-        var value = _enemy.transform.position/*_enemyActiveModel.getBarrage.getCustomGameObject.transform.position*/ - transform.position;
+        var value = _enemy.transform.position/*_enemyActiveModel.getBarrage.getCustomGameObject.transform.position*/ - transform.position +scale;
         obj.GetComponent<TestShot>()._vectorValue = value.normalized;
         obj.GetComponent<TestShot>()._parent = /*_enemyActiveModel.getBarrage.getCustomGameObject*/_enemy;
     }

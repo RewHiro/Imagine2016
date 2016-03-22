@@ -65,7 +65,7 @@ public class KeyAction : MonoBehaviour {
         }
 
         // 見つからなかった場合抜ける
-        if(max_index == min_index) {
+        if(max_index == min_index || max_index == -1 || min_index == -1) {
             _actionMgr = null;
             return;
         }
