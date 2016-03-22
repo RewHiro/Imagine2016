@@ -55,9 +55,9 @@ public class StatesChange : MonoBehaviour
         _states = new List<Sprite>();
         if (_type == ModelType.MODEL)
         {
+            _states.Add(Resources.Load<Sprite>("MakeOfCharacter/Texture/Description/Customize_setumei_1_A"));
             _states.Add(Resources.Load<Sprite>("MakeOfCharacter/Texture/Description/Customize_setumei_1_B"));
             _states.Add(Resources.Load<Sprite>("MakeOfCharacter/Texture/Description/Customize_setumei_1_C"));
-            _states.Add(Resources.Load<Sprite>("MakeOfCharacter/Texture/Description/Customize_setumei_1_A"));
         }
         else if (_type == ModelType.COSTUME)
         {

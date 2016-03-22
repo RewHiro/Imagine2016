@@ -4,9 +4,9 @@ public struct CharacterParameter
 {
     public enum ModelType
     {
+        BEAST,
         HUMAN,
         ROBO,
-        BEAST,
         NONE,
     }
 

@@ -181,7 +181,7 @@ public class ChangeCharacterPattern : MonoBehaviour
         _characterParameterInfo = FindObjectOfType<CharacterParameterInfo>();
 
         StartCoroutine(DecideCorutine());
-        _characterParamter.modelType = CharacterParameter.ModelType.HUMAN;
+        _characterParamter.modelType = CharacterParameter.ModelType.BEAST;
         _characterParamter.costumeType = CharacterParameter.CostumeType.A;
         _characterParamter.decorationType = CharacterParameter.DecorationType.NONE;
 
