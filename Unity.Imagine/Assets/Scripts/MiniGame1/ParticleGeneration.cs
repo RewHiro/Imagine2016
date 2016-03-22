@@ -18,7 +18,7 @@ public class ParticleGeneration : MonoBehaviour {
 	
 	}
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider collision)
     {
         if (_shot._parent == null) { return; }
         if (_shot._parent.transform.name == collision.transform.name)

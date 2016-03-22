@@ -8,6 +8,9 @@ using System.Collections;
 public class MenuDirecter : MonoBehaviour
 {
     [SerializeField]
+    AudioPlayer _player = null;
+
+    [SerializeField]
     Camera _camera = null;
 
     private bool _isChangeSelectGame = false;
@@ -85,23 +88,32 @@ public class MenuDirecter : MonoBehaviour
         }
 
         _defAngle = _animationStop[1].transform.localEulerAngles;
+
+        _player.Play(0, 1.0f, true);
     }
 
     private void Register()
     {
+        _player.manageMode = AudioPlayer.SourceManageMode.Additive;
+
         _ListsOfActionPushButton.Add(() =>
         {
-            if (_nowCameraMode != NowCameraMode.NONE) return;
+            if (_canMoveCharacter == true) return;
             _nowCameraMode = NowCameraMode.UP_ANGLE;
             _animationCount = 1.0f;
             _reverseAnimationCount = FindObjectOfType<MenuBoxAnimater>().animationTime;
             _totalReverseAnimationCount = _reverseAnimationCount;
             FindObjectOfType<MenuBoxAnimater>().isBack = true;
+
+            _player.Play(7, 1.0f, false);
+            _player.Play(12, 1.0f, false);
+            Debug.Log("Modosu");
             _isChangedAnimationActive = false;
         });
 
         _ListsOfActionPushButton.Add(() =>
         {
+            _player.Play(6, 1.0f, false);
             //選択のはい
             var screenSequencer = ScreenSequencer.instance;
 
@@ -116,6 +128,7 @@ public class MenuDirecter : MonoBehaviour
 
         _ListsOfActionPushButton.Add(() =>
         {
+            _player.Play(7, 1.0f, false);
             //Titleに移動
             var screenSequencer = ScreenSequencer.instance;
 
@@ -170,10 +183,12 @@ public class MenuDirecter : MonoBehaviour
                     _nowCameraMode = NowCameraMode.DOWN_ANGLE;
                     _animationCount = 0.0f;
                     FindObjectOfType<ChangeText>().ChangeExplanationText(0);
+                    _player.Play(6, 1.0f, false);
                 }
 
                 else if (_characterAnimation[i].name == "Tukuru")
                 {
+                    _player.Play(6, 1.0f, false);
                     //Createに移動
                     var screenSequencer = ScreenSequencer.instance;
 
@@ -247,19 +262,24 @@ public class MenuDirecter : MonoBehaviour
                                   _animationStop[i].transform.localPosition.z);
         }
 
-        //Test
-        _characterAnimation[1].transform.localRotation = Quaternion.Euler(60, 105, 110);
+        if (_canMoveCharacter == true)
+        {
+            _characterAnimation[1].transform.localRotation = Quaternion.Euler(60, 105, 110);
 
-        _nowCameraMode = NowCameraMode.NONE;
-        _animation.SetActive(true);
-        FindObjectOfType<MenuBoxAnimater>().isPlay = true;
-        _characterAnimation[0].SetActive(false);
-        _canMoveCharacter = false;
+            _nowCameraMode = NowCameraMode.NONE;
+            _animation.SetActive(true);
+            FindObjectOfType<MenuBoxAnimater>().isPlay = true;
+            _player.Play(12, 1.0f, false);
+            Debug.Log("play");
+            _characterAnimation[0].SetActive(false);
+            _canMoveCharacter = false;
+        }
         yield return null;
     }
 
     IEnumerator EndDirection()
     {
+
         _totalReverseAnimationCount += Time.deltaTime;
 
         if (_totalReverseAnimationCount > _reverseAnimationCount + 3.0f)
@@ -325,7 +345,7 @@ public class MenuDirecter : MonoBehaviour
             FindObjectOfType<ChangeTarget>().ChangeTargetCursor(_nowSelectGameNum);
             FindObjectOfType<ChangeText>().ChangeExplanationText(1 + _nowSelectGameNum);
             ChangeStatusCursor(_nowSelectGameNum);
-            
+
         }
         else if (nowSelectGameNum_ == 3 && _canMoveCharacter == false)
         {
@@ -339,6 +359,8 @@ public class MenuDirecter : MonoBehaviour
             _selectGameName.sprite = _gameNames[1];
         else
             _selectGameName.sprite = _gameNames[0];
+
+        _player.Play(8, 1.0f, false);
     }
 
     private void ChangeStatusCursor(int _selectGameNum)

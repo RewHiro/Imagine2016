@@ -4,7 +4,7 @@ using System.Collections;
 public class RandomBullet : MonoBehaviour {
 
     [SerializeField]
-    CharacterParameterInfo _characterParameter;
+    CharacterData _characterParameter;
 
     [SerializeField]
     int _randomMax = 11;
@@ -13,7 +13,7 @@ public class RandomBullet : MonoBehaviour {
 	void Start ()
     {
         //_characterParameter = GetComponent<ModelParameterInfo>();
-        _speedStatus = _characterParameter.getCharacterParameter.speed;
+        _speedStatus = _characterParameter.getCharacterData.speed;
     }
 	
 	void Update ()

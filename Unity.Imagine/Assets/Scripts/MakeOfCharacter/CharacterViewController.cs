@@ -34,9 +34,11 @@ public class CharacterViewController : MonoBehaviour
     MouseUtility _mouseUtility = null;
     float _count = 0.0f;
 
+    AudioPlayer _audioPlayer = null;
+
     void Awake()
     {
-        _count = ACCELERATION_TIME;
+        _count = 0.0f;
     }
 
     void Start()
@@ -57,6 +59,8 @@ public class CharacterViewController : MonoBehaviour
             new Vector3(offSet.x, offSet.y, offSet.z);
 
         StartCoroutine(Control());
+
+        _audioPlayer = FindObjectOfType<AudioPlayer>();
     }
 
     IEnumerator Control()
@@ -80,6 +84,8 @@ public class CharacterViewController : MonoBehaviour
 
         if (!(-REACTION_VALUE > _mouseUtility.getDeltaPos.x ||
             REACTION_VALUE < _mouseUtility.getDeltaPos.x)) return;
+
+        _audioPlayer.Play(4);
 
         _count = ACCELERATION_TIME;
 

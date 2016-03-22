@@ -3,11 +3,8 @@ using System;
 
 public class CharacterParameterInfo : MonoBehaviour
 {
-    /// <summary>
-    /// デバッグ用
-    /// </summary>
-    [SerializeField]
-    CharacterParameter _characterParameter;
+
+    static CharacterParameter _characterParameter;
 
     static GameObject _instance = null;
     void Awake()

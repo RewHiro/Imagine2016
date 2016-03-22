@@ -1,8 +1,5 @@
 ﻿
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,9 +25,17 @@ using System.Linq;
 
 public class SourceObject : MonoBehaviour {
 
-  /// <summary> <see cref="AudioSource"/> コンポーネントは存在しないので注意 </summary>
+  /// <summary> 新規の <see cref="SourceObject"/> を生成する </summary>
   public static SourceObject Create() {
     var source = new GameObject("Source").AddComponent<SourceObject>();
+    source.AddSource();
+    return source;
+  }
+
+  /// <summary> 新規の <see cref="AudioSource"/> を追加、取得する </summary>
+  public AudioSource AddSource() {
+    var source = gameObject.AddComponent<AudioSource>();
+    source.playOnAwake = false;
     return source;
   }
 
@@ -51,21 +56,16 @@ public class SourceObject : MonoBehaviour {
     return source != null;
   }
 
-  /// <summary> 新規の <see cref="AudioSource"/> を追加、取得する </summary>
-  public AudioSource AddSource() {
-    var source = gameObject.AddComponent<AudioSource>();
-    source.playOnAwake = false;
-    return source;
-  }
-
   /// <summary> 再生中でない <see cref="AudioSource"/> を全て削除 </summary>
   public void Refresh() {
     var sources = GetSources().Where(source => !source.isPlaying);
     foreach (var source in sources) { Destroy(source); }
   }
 
-  /// <summary> <see cref="AudioSource"/> が存在すれば true を返す </summary>
-  public bool ExistSource() { return GetSources().Any(); }
+  /// <summary> <see cref="AudioSource"/> を全て削除 </summary>
+  public void Release() {
+    foreach (var source in GetSources()) { source.Stop(); Destroy(source); }
+  }
 
   /// <summary> ループ再生中ではない、１つでも再生中の
   /// <see cref="AudioSource"/> があれば true を返す </summary>
@@ -80,10 +80,14 @@ public class SourceObject : MonoBehaviour {
     return GetSources().Any(source => source.isPlaying);
   }
 
+  /// <summary> <see cref="AudioSource"/> が存在すれば true を返す </summary>
+  public bool ExistSource() { return GetSources().Any(); }
+
   /// <summary> ループ設定の <see cref="AudioSource"/> があれば true を返す </summary>
-  public bool ExistLoopSource() {
-    return GetSources().Any(source => source.loop);
-  }
+  public bool ExistLoopSource() { return GetSources().Any(source => source.loop); }
+
+  /// <summary> 再生中でない <see cref="AudioSource"/> があれば true を返す </summary>
+  public bool ExistStopSource() { return GetSources().Any(src => !src.isPlaying); }
 
   /// <summary> ループ設定の <see cref="AudioSource"/> を全て取得 </summary>
   public IEnumerable<AudioSource> GetLoopSources() {
@@ -102,23 +106,5 @@ public class SourceObject : MonoBehaviour {
   public void AllStop() {
     var sources = GetSources().Where(source => source.clip != null);
     foreach (var source in sources) { source.Stop(); }
-  }
-
-  /// <summary> 再生中でなくなれば、リソースを解放する </summary>
-  public IEnumerator AutoRelease() {
-    Func<GameScene> GetActiveScene =
-      () => SceneManager.GetActiveScene().ToGameScene();
-
-    // TIPS:
-    // ループ中などで、再生中のままシーンが変わったときの判定用に
-    // 開始時のシーン情報を保持しておく
-    var current = GetActiveScene();
-    while (IsPlayingWithLoop()) {
-      if (current != GetActiveScene()) { break; }
-      Refresh();
-      yield return null;
-    }
-
-    AllStop();
   }
 }

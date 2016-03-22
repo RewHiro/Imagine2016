@@ -21,13 +21,25 @@ public class Barrage : ActionManager
     [SerializeField]
     int _probability = 0;
 
-    [SerializeField]
-    GameObject _custom;
+    //[SerializeField]
+    //ActiveModel _enemyActiveModel;
+
+    private enum SelectPlayer
+    {
+        Player1,
+        Player2
+    }
+
+    //[SerializeField]
+    //private SelectPlayer _selectPlayer;
+
+
+    private GameObject _enemy;
+
 
     [SerializeField]
     float _waitTime = 0.1f;
 
-    float _time = 0;
 
     int _count = 0;
 
@@ -35,15 +47,44 @@ public class Barrage : ActionManager
 
     public int _getKeyCount { get { return _keyCount; } }
 
+    CharacterData _characterData;
+
+    public GameObject getCustomGameObject { get { return _characterData.gameObject; } }
+
+
+    void Awake()
+    {
+    //    _modelParameterInfo = GetComponentInChildren<ModelParameterInfo>();
+     //   Debug.Log(_modelParameterInfo.name);
+
+    }
+
     void Start()
     {
+
+        
+    //    _enemy = _selectPlayer == SelectPlayer.Player1 ?
+    //GameObject.Find("Player2") : GameObject.Find("Player1");
+
+        //_enemyActiveModel = _enemy.GetComponent<ActiveModel>();
+
         if (_startCount == null)
         {
             _startCount = GameObject.Find("StartCount").GetComponent<StartCount>();
         }
-        _time = _waitTime;
+
+        if (_timeCount == null)
+        {
+            _timeCount = GameObject.Find("Time").GetComponent<TimeCount>();
+        }
+
+       
         _randomBullet = GetComponent<RandomBullet>();
-        //_timeCount = GetComponent<TimeCount>();
+
+        _characterData = GetComponentInChildren<CharacterData>();
+
+        
+        //Debug.Log(_enemy);
     }
 
     void Update()
@@ -53,23 +94,6 @@ public class Barrage : ActionManager
             _keyCount += Barragebutton(keyCode);
         }
     }
-
-    //int Barragebutton(KeyCode key)
-    //{
-    //    if (_timeCount._getTime <= 0) return 0;
-    //    if (Input.GetKeyDown(key))
-    //    {
-    //        _count++;
-    //        if (_probability > _count) return 1;
-    //        if (_randomBullet.StatusRandomBullet() == false) return 1;
-    //        _count = 0;
-
-    //        Bullet();
-    //        return 2;
-    //    }
-
-    //    return 0;
-    //}
 
 
     int Barragebutton(KeyCode key)
@@ -109,22 +133,16 @@ public class Barrage : ActionManager
         transform.eulerAngles = myRotate;
     }
 
-        void Bullet(GameObject bullet)
+      public  void Bullet(GameObject bullet)
     {
-        //Debug.Log(keyCode + " : ゲーム01テスト : " + Enemy.transform.name);s
-        Vector3 enemyPosition = Enemy.transform.position;
+        _enemy = Enemy.GetComponentInChildren<CharacterData>().gameObject;
         Vector3 scale = new Vector3(0,0,0);
         var obj = Instantiate(bullet);
-        
-        //obj.transform.position += transform.localScale;
-        scale = transform.localScale;
-        scale.z = 0;
-        scale.x = 0;
-        obj.transform.position = transform.position + scale;
-        var value = _custom.transform.position - transform.position;
-        //        var value = Enemy.transform.position - transform.position;
+        scale.y = 0.5f;
+        obj.transform.position = transform.position;
+        var value = _enemy.transform.position/*_enemyActiveModel.getBarrage.getCustomGameObject.transform.position*/ - transform.position +scale;
         obj.GetComponent<TestShot>()._vectorValue = value.normalized;
-        obj.GetComponent<TestShot>()._parent = _custom;
+        obj.GetComponent<TestShot>()._parent = /*_enemyActiveModel.getBarrage.getCustomGameObject*/_enemy;
     }
 
 }

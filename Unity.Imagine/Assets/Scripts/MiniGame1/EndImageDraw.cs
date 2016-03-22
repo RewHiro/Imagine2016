@@ -1,0 +1,82 @@
+﻿using UnityEngine;
+using System.Collections;
+using UnityEngine.UI;
+
+public class EndImageDraw : MonoBehaviour {
+
+    [SerializeField]
+    KeyAction _gameManager = null;
+
+    [SerializeField]
+    float _drawTime = 4.0f;
+
+    float _regularInterval;
+
+    [SerializeField, TooltipAttribute("表示する順番にImageを入れてください")]
+    Image[] _startCountImage = null;
+
+    bool _countFinish = false;
+    public bool getCountFinish { get { return _countFinish; } set { _countFinish = value; } }
+
+    void Start()
+    {
+        if (_timeCount == null)
+        {
+            _timeCount = GameObject.Find("Time").GetComponent<TimeCount>();
+        }
+        
+        foreach (var image in _startCountImage)
+        {
+            image.enabled = false;
+        }
+
+        if (_gameManager == null) { Debug.Log("_gameManager が null です。KeyAction スクリプトが入ってるオブジェクトをいれてください。"); }
+    }
+
+    StartCount _startCount;
+
+    [SerializeField]
+    TimeCount _timeCount;
+	
+	void Update ()
+    {
+	if(_timeCount._getTime <= _drawTime)
+        {
+            Draw();
+        }
+	}
+
+    void Draw()
+    {
+        if (_timeCount._getTime <= _drawTime && _timeCount._getTime >  3)
+        {
+            _startCountImage[0].enabled = true;
+        }
+        else
+        if (_timeCount._getTime <=  3 && _timeCount._getTime > 2)
+        {
+            _startCountImage[0].enabled = false;
+            _startCountImage[1].enabled = true;
+        }
+        else
+if (_timeCount._getTime <= 2 && _timeCount._getTime > 1)
+        {
+            _startCountImage[1].enabled = false;
+            _startCountImage[2].enabled = true;
+        }
+        else
+if (_timeCount._getTime < 1 && _timeCount._getTime > 0)
+        {
+            _startCountImage[2].enabled = false;
+            _startCountImage[3].enabled = true;
+        }
+        else
+if (_timeCount._getTime <= 0)
+        {
+           
+            _startCountImage[3].enabled = false;
+            _countFinish = true;
+        }
+
+    }
+}

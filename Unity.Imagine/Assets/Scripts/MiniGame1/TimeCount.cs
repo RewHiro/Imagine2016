@@ -12,12 +12,16 @@ public class TimeCount : MonoBehaviour {
     [SerializeField]
     private int _timeCount = 10;
 
+    ScoreCompare _scoreCompare;
+
     float _time = 0;
 
-   public float  _getTime { get {return _time; }}
+   public float  _getTime { get {return _time; } set { _time = value; } }
 
 	void Start ()
     {
+        _scoreCompare = FindObjectOfType<ScoreCompare>();
+
         if (_startCount == null)
         {
             _startCount = GameObject.Find("StartCount").GetComponent<StartCount>();
@@ -28,7 +32,10 @@ public class TimeCount : MonoBehaviour {
 	
 	void Update ()
     {
-        _text.text = "Time : " + (int)_time;
+        if (_scoreCompare.getDisplayScore == false)
+        {
+            _text.text = "Time : " + (int)_time;
+        }
         if (_startCount.getCountFinish)
         {
             _time = TimeLimit(_time);

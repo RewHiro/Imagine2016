@@ -18,11 +18,11 @@ public class StartCount : MonoBehaviour {
     Image[] _startCountImage = null;
 
     bool _countFinish = false;
-    public bool getCountFinish { get { return _countFinish; } }
+    public bool getCountFinish { get { return _countFinish; }  set { _countFinish = value; }}
 
     void Start ()
     {
-        _regularInterval = _drawTime / _startCountImage.Length;
+        //_regularInterval = _drawTime / _startCountImage.Length;
         _time = _drawTime;
         foreach (var image in _startCountImage)
         {
@@ -48,24 +48,26 @@ public class StartCount : MonoBehaviour {
 
     void CountDrawImage()
     {
-        if(_time <= _drawTime && _time > _regularInterval * 3)
+        if (_countFinish) return;
+
+        if(_time <= _drawTime && _time >  3)
         {
             _startCountImage[0].enabled = true;
         }
         else
-                if (_time <= _regularInterval * 3 && _time > _regularInterval * 2)
+                if (_time <=  3 && _time >  2)
         {
             _startCountImage[0].enabled = false;
             _startCountImage[1].enabled = true;
         }
         else
-        if (_time <= _regularInterval * 2 && _time > _regularInterval)
+        if (_time <=  2 && _time > 1)
         {
             _startCountImage[1].enabled = false;
             _startCountImage[2].enabled = true;
         }
         else
-        if ( _time < _regularInterval && _time > 0)
+        if ( _time < 1 && _time > 0)
         {
             _startCountImage[2].enabled = false;
             _startCountImage[3].enabled = true;
@@ -73,6 +75,7 @@ public class StartCount : MonoBehaviour {
         else
         if (_time <= 0)
         {
+            _time = _drawTime;
             _startCountImage[3].enabled = false;
             _countFinish = true;
         }
