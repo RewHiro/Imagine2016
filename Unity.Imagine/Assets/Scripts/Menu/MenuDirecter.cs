@@ -56,6 +56,9 @@ public class MenuDirecter : MonoBehaviour
     private float _waitAnimationCount = 3.0f;
     private bool _isChangedAnimationActive = false;
 
+    private float _waitPlayAnimationAudioCount = 0.0f;
+    private bool _isWaitPlayAnimationAudio = false;
+
     [SerializeField]
     GameObject _statusCursor = null;
 
@@ -72,6 +75,11 @@ public class MenuDirecter : MonoBehaviour
     Image _selectGameName = null;
 
     private List<Sprite> _gameNames = new List<Sprite>();
+
+    [SerializeField]
+    GameObject _canon = null;
+
+    private bool _isChangeScene = false;
 
     void Start()
     {
@@ -107,26 +115,19 @@ public class MenuDirecter : MonoBehaviour
             _reverseAnimationCount = FindObjectOfType<MenuBoxAnimater>().animationTime;
             _totalReverseAnimationCount = _reverseAnimationCount;
             FindObjectOfType<MenuBoxAnimater>().isBack = true;
+            FindObjectOfType<MenuBoxAnimater>().animationSpeed = -1.0f;
 
             _player.Play(7, 1.0f, false);
-            _player.Play(12, 1.0f, false);
+            _isWaitPlayAnimationAudio = true;
             Debug.Log("Modosu");
             _isChangedAnimationActive = false;
         });
 
         _ListsOfActionPushButton.Add(() =>
         {
+            ////選択のはい
             _player.Play(6, 1.0f, false);
-            //選択のはい
-            var screenSequencer = ScreenSequencer.instance;
-
-            if (screenSequencer.isEffectPlaying) return;
-
-            screenSequencer.SequenceStart
-                (
-                    () => { GameScene.MiniGames.ChangeScene(); },
-                    new Fade(1.0f)
-                );
+            FindObjectOfType<ActionOfCunon>().isStart = true;
         });
 
         _ListsOfActionPushButton.Add(() =>
@@ -169,6 +170,22 @@ public class MenuDirecter : MonoBehaviour
 
         if (TouchController.IsTouchBegan() && _canMoveCharacter == false && _canSelectGame == true)
             TouchCharacter();
+        if (TouchController.IsTouchBegan() && _canMoveCharacter == false && _canSelectGame == false)
+            TouchMakingCharacter();
+
+            ChangeMiniGame();
+
+        if(_isWaitPlayAnimationAudio == true)
+        {
+            _waitPlayAnimationAudioCount += Time.deltaTime;
+            if(_waitPlayAnimationAudioCount > 1.3f)
+            {
+                _player.Play(12, 1.0f, false);
+                _isWaitPlayAnimationAudio = false;
+                _waitPlayAnimationAudioCount = 0.0f;
+            }
+        }
+
     }
 
     private void TouchCharacter()
@@ -176,6 +193,7 @@ public class MenuDirecter : MonoBehaviour
         var hitObject = new RaycastHit();
         var isHit = TouchController.IsRaycastHit(out hitObject);
 
+        if (!isHit) return;
         for (int i = 0; i < 2; ++i)
             if (hitObject.transform.name == _characterAnimation[i].name)
             {
@@ -204,6 +222,18 @@ public class MenuDirecter : MonoBehaviour
                         );
                 }
             }
+    }
+
+    private void TouchMakingCharacter()
+    {
+        var hitObject = new RaycastHit();
+        var isHit = TouchController.IsRaycastHit(out hitObject);
+        if (!isHit) return;
+        if (hitObject.transform.name == _characterAnimation[1].name)
+        {
+            _player.Play(8, 1.0f, false);
+            FindObjectOfType<ChangeText>().ChangeExplanationText(6);
+        }
     }
 
     IEnumerator ChangeStartCameraAngle()
@@ -272,6 +302,7 @@ public class MenuDirecter : MonoBehaviour
             _nowCameraMode = NowCameraMode.NONE;
             _animation.SetActive(true);
             FindObjectOfType<MenuBoxAnimater>().isPlay = true;
+            FindObjectOfType<MenuBoxAnimater>().animationSpeed = 1.0f;
             _player.Play(12, 1.0f, false);
             Debug.Log("play");
             _characterAnimation[0].SetActive(false);
@@ -370,5 +401,22 @@ public class MenuDirecter : MonoBehaviour
     private void ChangeStatusCursor(int _selectGameNum)
     {
         _statusCursor.transform.localRotation = Quaternion.Euler(0, 0, (_selectGameNum * -120) + 240);
+    }
+
+    private void ChangeMiniGame()
+    {
+        if (FindObjectOfType<ActionOfCunon>().isEnd == true && _isChangeScene == false)
+        {
+            _isChangeScene = true;
+            var screenSequencer = ScreenSequencer.instance;
+
+            if (screenSequencer.isEffectPlaying) return;
+
+            screenSequencer.SequenceStart
+                (
+                    () => { GameScene.MiniGames.ChangeScene(); },
+                    new Fade(1.0f)
+                );
+        }
     }
 }

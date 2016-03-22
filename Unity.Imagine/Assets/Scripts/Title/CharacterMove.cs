@@ -176,7 +176,6 @@ public class CharacterMove : MonoBehaviour
         {
             _characterStatus._jumpCount += Time.deltaTime;
 
-            Debug.Log(_characterStatus._jumpCount);
             _character.transform.localPosition
                 = new Vector3(_character.transform.localPosition.x,
                               _character.transform.localPosition.y
