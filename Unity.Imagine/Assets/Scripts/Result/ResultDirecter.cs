@@ -110,6 +110,7 @@ public class ResultDirecter : MonoBehaviour
         var light = Resources.Load<GameObject>("Result/Spotlight");
         GameObject lightObj = Instantiate(light);
         lightObj.transform.SetParent(FindObjectOfType<KeyAction>().GetPlayers()[winPlayerNum-1].transform, false);
+    lightObj.transform.localPosition = Vector3.up * 1000f;
     }
 
 
