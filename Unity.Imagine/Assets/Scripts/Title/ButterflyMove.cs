@@ -3,15 +3,20 @@ using System.Collections;
 
 public class ButterflyMove : MonoBehaviour
 {
-    [SerializeField]
-    GameObject _image;
+    [SerializeField, Tooltip("サイズ変更用")]
+    private float _scale = 1.0f;
 
     private float _sinWaveCount = 0.0f;
 
+    [SerializeField, Tooltip("スピード変更用")]
     private float _moveSpeed = 60.0f;
+
+    [SerializeField, Tooltip("縦の動きの幅")]
+    private int _sinMove = 5;
 
     void Start()
     {
+        transform.localScale = Vector3.one * _scale;
     }
 
     void Update()
@@ -21,27 +26,26 @@ public class ButterflyMove : MonoBehaviour
 
     private void UpdateOfMove()
     {
-        _sinWaveCount += Time.deltaTime * 5;
+        _sinWaveCount += Time.deltaTime * _sinMove;
 
-        _image.transform.localPosition =
-            new Vector3(_image.transform.localPosition.x + _moveSpeed * Time.deltaTime,
-                        _image.transform.localPosition.y + UnityEngine.Mathf.Sin(_sinWaveCount),
-                        _image.transform.localPosition.z);
+        transform.localPosition =
+            new Vector3(transform.localPosition.x + _moveSpeed * Time.deltaTime,
+                        transform.localPosition.y + UnityEngine.Mathf.Sin(_sinWaveCount),
+                        transform.localPosition.z);
 
-        if (_image.transform.localPosition.x < -160)
+        if (transform.localPosition.x < -160)
         {
             _moveSpeed *= -1;
-            _image.transform.localRotation = Quaternion.Euler(0, 0, -90);
+            transform.localRotation = Quaternion.Euler(0, 0, -90);
         }
-        if (_image.transform.localPosition.x > 160)
+        if (transform.localPosition.x > 160)
         {
-            Debug.Log("A");
             _moveSpeed *= -1;
-            _image.transform.localRotation = Quaternion.Euler(0, 0, 0);
-            _image.transform.localPosition =
-            new Vector3(_image.transform.localPosition.x,
-                        0,
-                        _image.transform.localPosition.z);
+            transform.localRotation = Quaternion.Euler(0, 0, 0);
+            //transform.localPosition =
+            //new Vector3(transform.localPosition.x,
+            //            transform.localPosition.y,
+            //            transform.localPosition.z);
         }
     }
 }
