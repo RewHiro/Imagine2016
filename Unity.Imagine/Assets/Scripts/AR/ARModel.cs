@@ -8,9 +8,8 @@ public class ARModel : MonoBehaviour {
   Texture2D _marker = null;
 
   [SerializeField]
-  [Tooltip("起動時に、指定された値でモデルのサイズを初期化する")]
-  [Range(1f, 100f)]
-  float _modelScale = 50f;
+  ActionManager _action = null;
+  public ActionManager action { get { return _action; } }
 
   /// <summary> モデルを表示するマーカー </summary>
   public Texture2D marker { get { return _marker; } }
@@ -18,10 +17,7 @@ public class ARModel : MonoBehaviour {
   /// <summary> マーカーに対応した ID </summary>
   public int id { get; private set; }
 
-  void Start() {
-    id = ARDeviceManager.instance.arSystem.addARMarker(_marker, 16, 25, 80);
-    transform.localScale = Vector3.one * _modelScale;
-
-    ARModelManager.instance.Add(this);
+  public void MarkerSetup(ARDeviceManager device, int ir, int ie, int im) {
+    id = device.arSystem.addARMarker(_marker, ir, ie, im);
   }
 }

@@ -33,6 +33,8 @@ public class ScreenSequencer : SingletonBehaviour<ScreenSequencer> {
   /// <summary> 演出実行中なら true を返す </summary>
   public bool isEffectPlaying { get { return (isEffectExist ? effect.IsPlaying() : false); } }
 
+  void Start() { DontDestroyOnLoad(gameObject); }
+
   /// <summary> 画面遷移を開始 </summary>
   public void SequenceStart(Action action) {
     if (effect.IsPlaying()) { return; }
