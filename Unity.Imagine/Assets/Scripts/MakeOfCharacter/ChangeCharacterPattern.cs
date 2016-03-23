@@ -54,7 +54,7 @@ public class ChangeCharacterPattern : MonoBehaviour
     AudioPlayer _audioPlayer = null;
 
     static bool _isPush = false;
-    static bool _isDecide = false;
+    bool _isDecide = false;
 
     public CharacterParameter getCharacterParamter
     {
