@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class EndImageDraw : MonoBehaviour {
 
-    [SerializeField]
     KeyAction _gameManager = null;
 
     [SerializeField]
@@ -87,6 +86,7 @@ if (_timeCount._getTime <= 0)
            
             _startCountImage[3].enabled = false;
             _countFinish = true;
+            _isSe = false;
         }
 
     }
