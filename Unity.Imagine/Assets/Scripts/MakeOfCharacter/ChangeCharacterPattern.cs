@@ -54,6 +54,7 @@ public class ChangeCharacterPattern : MonoBehaviour
     AudioPlayer _audioPlayer = null;
 
     static bool _isPush = false;
+    static bool _isDecide = false;
 
     public CharacterParameter getCharacterParamter
     {
@@ -66,6 +67,8 @@ public class ChangeCharacterPattern : MonoBehaviour
     public void Decide()
     {
         if (ScreenSequencer.instance.isEffectPlaying) return;
+        if (_isDecide) return;
+        _isDecide = true;
         _audioPlayer.Stop();
         _audioPlayer.Play(8);
         StartCoroutine(DecideCorutine());
@@ -80,6 +83,7 @@ public class ChangeCharacterPattern : MonoBehaviour
         var screenSequencer = ScreenSequencer.instance;
 
         if (screenSequencer.isEffectPlaying) return;
+        if (_isDecide) return;
 
         _audioPlayer.Stop();
         _audioPlayer.Play(7);
@@ -94,6 +98,7 @@ public class ChangeCharacterPattern : MonoBehaviour
     public void SetType(int index)
     {
         if ((uint)index > (int)CharacterParameter.ModelType.NONE) throw new ArgumentException("type is error");
+        if (_isDecide) return;
 
         if (_isPush) return;
         _isPush = true;
@@ -106,6 +111,7 @@ public class ChangeCharacterPattern : MonoBehaviour
     public void SetCostume(int index)
     {
         if ((uint)index > (int)CharacterParameter.CostumeType.NONE) throw new ArgumentException("costume is error");
+        if (_isDecide) return;
 
         if (_isPush) return;
         _isPush = true;
@@ -118,6 +124,7 @@ public class ChangeCharacterPattern : MonoBehaviour
     public void SetDecoration(int index)
     {
         if ((uint)index > (int)CharacterParameter.DecorationType.C) throw new ArgumentException("type is error");
+        if (_isDecide) return;
 
         if (_isPush) return;
         _isPush = true;
