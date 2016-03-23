@@ -68,6 +68,8 @@ public class MenuDirecter : MonoBehaviour
 
     private bool _isChangeScene = false;
 
+    private bool _isEndedChoiseScene = false;
+
     void Start()
     {
         Register();
@@ -96,6 +98,7 @@ public class MenuDirecter : MonoBehaviour
 
         _ListsOfActionPushButton.Add(() =>
         {
+            if (_isEndedChoiseScene == true) return;
             if (_reverseAnimationCount != 0.0f) return;
             _nowCameraMode = NowCameraMode.UP_ANGLE;
             _animationCount = 1.0f;
@@ -113,12 +116,15 @@ public class MenuDirecter : MonoBehaviour
         _ListsOfActionPushButton.Add(() =>
         {
             ////選択のはい
+            if (_isEndedChoiseScene == true) return;
             _player.Play(6, 1.0f, false);
             FindObjectOfType<ActionOfCunon>().isStart = true;
         });
 
         _ListsOfActionPushButton.Add(() =>
         {
+            if (_isEndedChoiseScene == true) return;
+            _isEndedChoiseScene = true;
             _player.Play(7, 1.0f, false);
             //Titleに移動
             var screenSequencer = ScreenSequencer.instance;
@@ -133,10 +139,12 @@ public class MenuDirecter : MonoBehaviour
         });
         _ListsOfActionPushButton.Add(() =>
         {
+            if (_isEndedChoiseScene == true) return;
             FindObjectOfType<ChangeText>().ChangeExplanationText(5);
         });
         _ListsOfActionPushButton.Add(() =>
         {
+            if (_isEndedChoiseScene == true) return;
             if (_canMoveCharacter == false && _canSelectGame == false)
             {
                 _player.Play(8, 1.0f, false);
@@ -149,6 +157,8 @@ public class MenuDirecter : MonoBehaviour
 
         _gameNames.Add(Resources.Load<Sprite>("Menu/Texture/menu_title"));
         _gameNames.Add(Resources.Load<Sprite>("Menu/Texture/menu_title1"));
+
+        _selectGameName.sprite = _gameNames[1];
     }
 
     void Update()
@@ -166,8 +176,10 @@ public class MenuDirecter : MonoBehaviour
         }
 
         if (TouchController.IsTouchBegan() && _canMoveCharacter == false && _canSelectGame == true)
+        {
+            if (_isEndedChoiseScene == true) return;
             TouchCharacter();
-
+        }
         ChangeMiniGame();
 
         if (_isWaitPlayAnimationAudio == true)
@@ -204,6 +216,8 @@ public class MenuDirecter : MonoBehaviour
 
                 else if (_characterAnimation[i].name == "Tukuru")
                 {
+                    if (_isEndedChoiseScene == true) return;
+                    _isEndedChoiseScene = true;
                     _player.Play(6, 1.0f, false);
                     //Createに移動
                     var screenSequencer = ScreenSequencer.instance;
@@ -349,34 +363,36 @@ public class MenuDirecter : MonoBehaviour
 
     public void ActionOfPushButton(int _buttonNum)
     {
+        if (_isEndedChoiseScene == true) return;
         if (_canMoveCharacter == false)
             _ListsOfActionPushButton[_buttonNum]();
     }
 
     public void SelectOfGameNum(int nowSelectGameNum_)
     {
+        if (_isEndedChoiseScene == true) return;
         if (nowSelectGameNum_ >= 0 && nowSelectGameNum_ <= 2 && _canMoveCharacter == false)
         {
             _nowSelectGameNum = nowSelectGameNum_;
-            Debug.Log(_nowSelectGameNum);
+            FindObjectOfType<ChangeText>().ChangeExplanationText(1 + _nowSelectGameNum);
+            if (nowSelectGameNum_ != 0) return;
             FindObjectOfType<SelectGameStatus>().SelectGameNum = _nowSelectGameNum;
             FindObjectOfType<ChangeTarget>().ChangeTargetCursor(_nowSelectGameNum);
-            FindObjectOfType<ChangeText>().ChangeExplanationText(1 + _nowSelectGameNum);
             ChangeStatusCursor(_nowSelectGameNum);
-
         }
         else if (nowSelectGameNum_ == 3 && _canMoveCharacter == false)
         {
-            _nowSelectGameNum = 1;
+            _nowSelectGameNum = 0;
             FindObjectOfType<SelectGameStatus>().SelectGameNum = _nowSelectGameNum;
-            FindObjectOfType<ChangeTarget>().ChangeTargetCursor(3);
+            //FindObjectOfType<ChangeTarget>().ChangeTargetCursor(3);
             FindObjectOfType<ChangeText>().ChangeExplanationText(4);
             ChangeStatusCursor(_nowSelectGameNum);
         }
-        if (_nowSelectGameNum == 0)
-            _selectGameName.sprite = _gameNames[1];
-        else
-            _selectGameName.sprite = _gameNames[0];
+
+        //if (_nowSelectGameNum == 0)
+        //    _selectGameName.sprite = _gameNames[1];
+        //else
+        //    _selectGameName.sprite = _gameNames[0];
 
         _player.Play(8, 1.0f, false);
     }
@@ -388,9 +404,9 @@ public class MenuDirecter : MonoBehaviour
 
     private void ChangeMiniGame()
     {
+        if (_isEndedChoiseScene == true) return;
         if (FindObjectOfType<ActionOfCunon>().isEnd == true && _isChangeScene == false)
         {
-            _isChangeScene = true;
             var screenSequencer = ScreenSequencer.instance;
 
             if (screenSequencer.isEffectPlaying) return;
@@ -400,6 +416,12 @@ public class MenuDirecter : MonoBehaviour
                     () => { GameScene.AR_TEST3.ChangeScene(); },
                     new Fade(1.0f)
                 );
+        }
+
+        if (FindObjectOfType<ActionOfCunon>().isEnd == true && _isChangeScene == false)
+        {
+            _isChangeScene = true;
+            _isEndedChoiseScene = true;
         }
     }
 }

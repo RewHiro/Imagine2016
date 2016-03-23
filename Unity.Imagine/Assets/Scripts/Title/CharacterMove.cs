@@ -226,9 +226,7 @@ public class CharacterMove : MonoBehaviour
         var hitObject = new RaycastHit();
         var isHit = TouchController.IsRaycastHit(out hitObject);
 
-        if (!isHit) { Debug.Log("failure"); return; }
-
-        Debug.Log("object is " + hitObject.transform.name);
+        if (!isHit) return;
 
         if (hitObject.transform.name == _character.name 
             && _characterStatus._isSpin == false && _characterStatus._isJump == false)
