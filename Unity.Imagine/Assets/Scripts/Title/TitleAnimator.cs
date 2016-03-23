@@ -74,15 +74,6 @@ public class TitleAnimator : MonoBehaviour
             material.EnableKeyword("_Emission");
             material.SetColor("_EmissionColor", Color.black);
             material.SetupMaterialWithBlendMode(BlendMode.CUTOUT);
-            //material.SetFloat("_Mode", 1);
-            //material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-            //material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-            //material.SetInt("_ZWrite", 1);
-            //material.EnableKeyword("_ALPHATEST_ON");
-            //material.DisableKeyword("_ALPHABLEND_ON");
-            //material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-            //material.renderQueue = 2450;
-
         }
         _materials[0].mainTexture = _boxOTexture;
 
@@ -150,14 +141,6 @@ public class TitleAnimator : MonoBehaviour
         material.mainTexture = _textures[index];
         material.SetColor("_EmissionColor", color);
         material.SetupMaterialWithBlendMode(BlendMode.FADE);
-        //material.SetFloat("_Mode", 2);
-        //material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-        //material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-        //material.SetInt("_ZWrite", 0);
-        //material.DisableKeyword("_ALPHATEST_ON");
-        //material.EnableKeyword("_ALPHABLEND_ON");
-        //material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-        //material.renderQueue = 3000;
     }
 
     IEnumerator ChangeTexture
@@ -179,14 +162,6 @@ public class TitleAnimator : MonoBehaviour
         material.mainTexture = _textures[index];
         material.SetColor("_EmissionColor", color);
         material.SetupMaterialWithBlendMode(BlendMode.FADE);
-        //material.SetFloat("_Mode", 2);
-        //material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-        //material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-        //material.SetInt("_ZWrite", 0);
-        //material.DisableKeyword("_ALPHATEST_ON");
-        //material.EnableKeyword("_ALPHABLEND_ON");
-        //material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-        //material.renderQueue = 3000;
     }
 
     IEnumerator StartSE()
