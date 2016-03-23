@@ -11,18 +11,14 @@ public class CharacterJump : MonoBehaviour
 
     bool _isJump = false;
 
-    //private float _randomTime = 3.0f;
-
-    //[SerializeField]
-    //private float _minTime = 3.0f;
-    //[SerializeField]
-    //private float _maxTime = 5.0f;
+    AudioPlayer _audioPlayer = null;
 
     void Start()
     {
         string[] hitLayerNames = new string[1];
         hitLayerNames[0] = "TransparentFX";
         LAYER_MASK = LayerMask.GetMask(hitLayerNames);
+        _audioPlayer = FindObjectOfType<AudioPlayer>();
     }
 
     void Update()
@@ -54,6 +50,7 @@ public class CharacterJump : MonoBehaviour
         RaycastHit raycastHit;
         if (!TouchController.IsRaycastHitWithLayer(out raycastHit, LAYER_MASK)) return;
 
+        _audioPlayer.Play(13, 1.0f, false);
         GetComponent<Rigidbody>().AddForce(Vector3.up * _jumpForce);
         GetComponent<Rigidbody>().useGravity = true;
         _isJump = true;

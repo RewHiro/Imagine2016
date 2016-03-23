@@ -163,6 +163,7 @@ public class CharacterMove : MonoBehaviour
             _characterStatus._totalWaitTime = UnityEngine.Random.Range(0.5f, 2.0f);
             _characterStatus._isJump = true;
             _waitTime = 0.0f;
+            _player.Play(13, 1.0f, false);
         }
     }
 
