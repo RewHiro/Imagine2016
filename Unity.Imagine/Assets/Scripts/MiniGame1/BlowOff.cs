@@ -1,40 +1,57 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class BlowOff : MonoBehaviour {
+public class BlowOff : MonoBehaviour
+{
 
+    [SerializeField]
+    GameObject _victoryBullet;
+
+    [SerializeField, Range(1f, 50f)]
+    float _velocity = 15f;
 
     ScoreCompare _scoreCompare;
 
     KeyAction _actionManager;
 
-    void Start () {
+
+    void Start()
+    {
         _scoreCompare = FindObjectOfType<ScoreCompare>();
         _actionManager = FindObjectOfType<KeyAction>();
     }
-	
-	
-	void Update () {
-	
-	}
+
+
+    void Update()
+    {
+
+    }
 
     void OnTriggerEnter(Collider collision)
     {
 
 
-        if (_scoreCompare.getDisplayScore ==true)
+        if (_scoreCompare.getDisplayScore == true)
         {
+
             List<GameObject> _playerList = new List<GameObject>();
             _playerList = _actionManager.GetPlayers();
 
-            if (gameObject.transform.parent.gameObject == _playerList[0])
+            if (_victoryBullet.name == collision.name)
             {
-                gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(-50, 50, 0), ForceMode.VelocityChange);
-            }
-            else
-            if (gameObject.transform.parent.gameObject == _playerList[1])
-            {
-                gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(50, 50, 0), ForceMode.VelocityChange);
+                Debug.Log("homo");
+                var direction = Vector3.up;
+                var force = direction * _velocity;
+
+                if (gameObject.transform.parent.gameObject == _playerList[0])
+                {
+                    gameObject.GetComponent<Rigidbody>().AddForce(force, ForceMode.VelocityChange);
+                }
+                else
+                if (gameObject.transform.parent.gameObject == _playerList[1])
+                {
+                    gameObject.GetComponent<Rigidbody>().AddForce(force, ForceMode.VelocityChange);
+                }
             }
 
         }

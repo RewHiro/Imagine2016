@@ -16,6 +16,8 @@ public class TimeCount : MonoBehaviour {
 
     float _time = 0;
 
+    public float _getTimeCount { get { return _timeCount; } }
+
    public float  _getTime { get {return _time; } set { _time = value; } }
 
 	void Start ()

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class ReturnMenu : MonoBehaviour
 {
 
+
     [SerializeField]
     float _delayTime = 2.0f;
 
@@ -132,6 +133,7 @@ public class ReturnMenu : MonoBehaviour
             {
                 if (hit.transform.name == transform.name)
                 {
+                    _timeCount._getTime = _timeCount._getTimeCount;
                     ScreenSequencer.instance.SequenceStart(() => GameScene.Menu.ChangeScene(), new Fade(1f));
                 }
             }

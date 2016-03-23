@@ -24,6 +24,9 @@ public class Barrage : ActionManager
     [SerializeField]
     int _probability = 0;
 
+    [SerializeField]
+    float _bulletSpeed = 2;
+
     //[SerializeField]
     //ActiveModel _enemyActiveModel;
 
@@ -97,16 +100,13 @@ public class Barrage : ActionManager
 
     void Update()
     {
-        if (_startCount.getCountFinish)
-        {
-            _keyCount += Barragebutton(keyCode);
-        }
+
     }
 
 
     int Barragebutton(KeyCode key)
     {
-        if (_timeCount._getTime <= 0) return 0;
+        if (_timeCount._getTime <= 1) return 0;
         if (Input.GetKeyDown(key))
         {
             _audioPlayer.Play(20,false);
@@ -120,7 +120,7 @@ public class Barrage : ActionManager
 
     IEnumerator BulletCreate(float waitTime)
     {
-        if (_timeCount._getTime <= 0) yield break;
+        if (_timeCount._getTime <= 1) yield break;
         Bullet(_bulletObj);
         _count++;
         if (_probability > _count) yield break;
@@ -140,6 +140,11 @@ public class Barrage : ActionManager
         transform.LookAt(Enemy.transform);
         rotation = transform.eulerAngles;
         transform.eulerAngles = myRotate;
+
+        if (_startCount.getCountFinish)
+        {
+            _keyCount += Barragebutton(keyCode);
+        }
     }
 
       public  void Bullet(GameObject bullet)
@@ -147,10 +152,11 @@ public class Barrage : ActionManager
         _enemy = Enemy.GetComponentInChildren<CharacterData>().gameObject;
         Vector3 scale = new Vector3(0,0,0);
         var obj = Instantiate(bullet);
+        obj.name = bullet.name;
         scale.y = 0.5f;
-        obj.transform.position = transform.position;
-        var value = _enemy.transform.position/*_enemyActiveModel.getBarrage.getCustomGameObject.transform.position*/ - transform.position +scale;
-        obj.GetComponent<TestShot>()._vectorValue = value.normalized;
+        obj.transform.position = transform.position ;
+        var value = _enemy.transform.position/*_enemyActiveModel.getBarrage.getCustomGameObject.transform.position*/ - transform.position ;
+        obj.GetComponent<TestShot>()._vectorValue = value.normalized * _bulletSpeed;
         obj.GetComponent<TestShot>()._parent = /*_enemyActiveModel.getBarrage.getCustomGameObject*/_enemy;
     }
 
