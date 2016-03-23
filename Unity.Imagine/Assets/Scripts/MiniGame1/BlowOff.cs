@@ -43,12 +43,12 @@ public class BlowOff : MonoBehaviour
                 var direction = Vector3.up;
                 var force = direction * _velocity;
 
-                if (gameObject.transform.parent.gameObject == _playerList[0])
+                if (gameObject.transform.parent.gameObject == _playerList[0] && _scoreCompare.getWinPlayer == ScoreCompare.WinPlayer.Player2)
                 {
                     gameObject.GetComponent<Rigidbody>().AddForce(force, ForceMode.VelocityChange);
                 }
                 else
-                if (gameObject.transform.parent.gameObject == _playerList[1])
+                if (gameObject.transform.parent.gameObject == _playerList[1] && _scoreCompare.getWinPlayer == ScoreCompare.WinPlayer.Player1)
                 {
                     gameObject.GetComponent<Rigidbody>().AddForce(force, ForceMode.VelocityChange);
                 }

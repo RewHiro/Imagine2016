@@ -6,11 +6,11 @@ public class ParticleGeneration : MonoBehaviour {
     [SerializeField]
     ParticleSystem _particleSystem;
 
-    TestShot _shot;
+    BulletShot _shot;
 
 	void Start ()
     {
-        _shot = GetComponent<TestShot>();
+        _shot = GetComponent<BulletShot>();
     }
 	
 	void Update ()
