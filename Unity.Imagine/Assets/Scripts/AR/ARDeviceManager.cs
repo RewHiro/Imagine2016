@@ -1,8 +1,6 @@
 ﻿
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using NyAR.MarkerSystem;
 using NyARUnityUtils;
 
@@ -13,7 +11,7 @@ using NyARUnityUtils;
 //
 //------------------------------------------------------------
 
-public class ARDeviceManager : SingletonBehaviour<ARDeviceManager> {
+public class ARDeviceManager : MonoBehaviour {
 
   NyARUnityWebCam _device = null;
   public NyARUnityWebCam device { get { return _device; } }
@@ -21,36 +19,40 @@ public class ARDeviceManager : SingletonBehaviour<ARDeviceManager> {
   NyARUnityMarkerSystem _arSystem = null;
   public NyARUnityMarkerSystem arSystem { get { return _arSystem; } }
 
-  struct Marker {
-    public Marker(int newID) {
-      id = newID;
-      position = Vector3.zero;
-      rotation = Quaternion.identity;
-    }
-    public int id;
-    public Vector3 position;
-    public Quaternion rotation;
-  }
-
   [SerializeField]
   Camera _camera = null;
 
   [SerializeField]
-  [Tooltip("カメラ映像を投影するパネル")]
-  GameObject _panel = null;
+  [Tooltip("カメラ映像を投影するパネルの Renderer コンポーネント")]
+  Renderer _panel = null;
 
   /// <summary> カメラ映像を投影しているパネルオブジェクト </summary>
-  public GameObject cameraScreen { get { return _panel; } }
+  public GameObject cameraScreen { get { return _panel.gameObject; } }
 
-  bool _signal = false;
+  [SerializeField]
+  Vector3 _scale = Vector3.zero;
 
-  protected override void Awake() {
-    base.Awake();
+  [SerializeField, Range(2, 64)]
+  [Tooltip("マーカーの解像度")]
+  int _resolution = 16;
+
+  [SerializeField, Range(10, 50)]
+  [Tooltip("マーカーのエッジ割合")]
+  int _edge = 25;
+
+  [SerializeField, Range(10, 320)]
+  [Tooltip("マーカーサイズ")]
+  int _markerScale = 80;
+
+  /// <summary> 管理下にある <see cref="ARModel"/> を全て取得 </summary>
+  public IEnumerable<ARModel> models { get { return this.GetOnlyChildren<ARModel>(); } }
+
+  void Awake() {
     if (WebCamTexture.devices.Length <= 0) { return; }
 
     var wcTexture = new WebCamTexture(320, 240, 15);
     _device = NyARUnityWebCam.CreateInstance(wcTexture);
-    _panel.GetComponent<Renderer>().material.mainTexture = wcTexture;
+    _panel.material.mainTexture = wcTexture;
 
     var config = new NyARMarkerSystemConfig(_device.width, _device.height);
     _arSystem = new NyARUnityMarkerSystem(config);
@@ -58,51 +60,26 @@ public class ARDeviceManager : SingletonBehaviour<ARDeviceManager> {
     _arSystem.setARCameraProjection(_camera);
   }
 
-  void Start() { StartDevice(); }
-
-  /// <summary> デバイスを停止する </summary>
-  public void StopDevice() { _signal = false; }
-
-  /// <summary> AR カメラを起動する </summary>
-  public void StartDevice() { StartCoroutine(UpdateDevice()); }
-
-  IEnumerator UpdateDevice() {
+  void Start() {
     _device.Start();
-    _signal = true;
-
-    var modelManager = ARModelManager.instance;
-    var markerList = new List<Marker>();
-
-    System.Action ResetList = () => {
-      if (markerList.Count == modelManager.models.Count()) { return; }
-      markerList.Clear();
-      foreach (var model in modelManager.models) { markerList.Add(new Marker(model.id)); }
-    };
-
-    while (_signal) {
-      _device.Update();
-      _arSystem.update(_device);
-      ResetList();
-      foreach (var model in modelManager.models) {
-
-        //Debug.Log(model.id);
-        var marker = markerList.Find(mark => mark.id == model.id);
-        _arSystem.getMarkerTransform(model.id, ref marker.position, ref marker.rotation);
-        //Debug.Log(marker.position);
-        //Debug.Log(marker.rotation);
-
-        if (!_arSystem.isExistMarker(model.id)) { continue; }
-        transform.position = Vector3.zero;
-        arSystem.setMarkerTransform(model.id, model.transform);
-        //transform.Rotate(Vector3.right * 90f);
-        model.gameObject.GetComponentInChildren<ActionManager>().Rotate();
-      }
-
-      //Debug.Log(markerList.Count);
-
-      yield return null;
+    foreach (var model in models) {
+      model.transform.localScale = _scale;
+      model.MarkerSetup(this, _resolution, _edge, _markerScale);
     }
-
-    _device.Stop();
   }
+
+  void FixedUpdate() {
+    _device.Update();
+    _arSystem.update(_device);
+
+    foreach (var model in models) {
+      if (!_arSystem.isExistMarker(model.id)) { continue; }
+
+      model.transform.position = Vector3.zero;
+      arSystem.setMarkerTransform(model.id, model.transform);
+      model.action.Rotate();
+    }
+  }
+
+  public void OnDestroy() { _device.Stop(); }
 }
