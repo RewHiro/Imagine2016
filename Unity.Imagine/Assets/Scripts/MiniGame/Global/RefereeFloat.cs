@@ -21,6 +21,6 @@ public class RefereeFloat : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         Vector3 sin = Vector3.up * Mathf.Sin(++_time * _speed) * Time.deltaTime * _lenght;
-        transform.position = _initPos + sin;
+        transform.position += (_initPos + sin) / 10.0f;
     }
 }
