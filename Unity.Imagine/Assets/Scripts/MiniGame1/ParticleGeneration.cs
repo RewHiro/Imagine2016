@@ -4,7 +4,7 @@ using System.Collections;
 public class ParticleGeneration : MonoBehaviour {
 
     [SerializeField]
-    ParticleSystem _particleSystem;
+    ParticleSystem _particleSystem = null;
 
     BulletShot _shot;
 
