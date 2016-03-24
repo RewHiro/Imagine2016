@@ -33,7 +33,7 @@ public class CloudMove : MonoBehaviour
 
         //範囲の外に出たら左側に戻す
             _cloud.transform.localPosition =
-            new Vector3(_cloud.transform.localPosition.x - 2400,
+            new Vector3(_cloud.transform.localPosition.x - 2800,
                         _cloud.transform.localPosition.y,
                         _cloud.transform.localPosition.z);
     }

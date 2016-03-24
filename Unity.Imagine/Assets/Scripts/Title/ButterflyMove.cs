@@ -12,7 +12,7 @@ public class ButterflyMove : MonoBehaviour
     private float _moveSpeed = 60.0f;
 
     [SerializeField, Tooltip("縦の動きの幅")]
-    private int _sinMove = 5;
+    private float _sinMove = 5.0f;
 
     private float _startPosY = 0.0f;
 
@@ -35,11 +35,11 @@ public class ButterflyMove : MonoBehaviour
 
     private void UpdateOfMove()
     {
-        _sinWaveCount += Time.deltaTime * _sinMove;
+        _sinWaveCount += Time.deltaTime;
 
         transform.localPosition =
             new Vector3(transform.localPosition.x + _moveSpeed * Time.deltaTime,
-                        transform.localPosition.y + UnityEngine.Mathf.Sin(_sinWaveCount),
+                        transform.localPosition.y + UnityEngine.Mathf.Sin(_sinWaveCount) * _sinMove,
                         transform.localPosition.z);
 
         if (transform.localPosition.x < -165)
