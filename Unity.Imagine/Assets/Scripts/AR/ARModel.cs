@@ -17,7 +17,10 @@ public class ARModel : MonoBehaviour {
   /// <summary> マーカーに対応した ID </summary>
   public int id { get; private set; }
 
-  public void MarkerSetup(ARDeviceManager device, int ir, int ie, int im) {
-    id = device.arSystem.addARMarker(_marker, ir, ie, im);
+  public void MarkerSetup(ARDeviceManager device) {
+    id = device.arSystem.addARMarker(_marker,
+                                     device.markerResolution,
+                                     device.markerEdge,
+                                     device.markerScale);
   }
 }
