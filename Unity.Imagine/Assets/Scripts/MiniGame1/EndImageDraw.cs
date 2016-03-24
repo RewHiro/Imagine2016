@@ -79,13 +79,13 @@ if (_timeCount._getTime < 1 && _timeCount._getTime > 0)
         {
             _startCountImage[2].enabled = false;
             _startCountImage[3].enabled = true;
+            _countFinish = true;
         }
         else
 if (_timeCount._getTime <= 0)
         {
            
             _startCountImage[3].enabled = false;
-            _countFinish = true;
             _isSe = false;
         }
 

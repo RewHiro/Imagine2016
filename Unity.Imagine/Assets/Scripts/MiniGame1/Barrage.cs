@@ -22,7 +22,7 @@ public class Barrage : ActionManager
     int _probability = 0;
 
     [SerializeField]
-    float _waitTime = 0.1f;
+    float _waitTime = 0.2f;
 
     private enum SelectPlayer
     {
@@ -93,7 +93,7 @@ public class Barrage : ActionManager
         if (_randomBullet.StatusRandomBullet() == false) yield break;
         _count = 0;
         yield return new WaitForSeconds(waitTime);
-        Debug.Log("来てる");
+        //Debug.Log("来てる");
         Bullet(_specialBulletObj);
         _keyCount++;
         yield return 0;
