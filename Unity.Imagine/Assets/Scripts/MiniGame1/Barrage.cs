@@ -7,16 +7,13 @@ public class Barrage : ActionManager
     AudioPlayer _audioPlayer;
 
     [SerializeField]
-    StartCount _startCount; 
+    StartCount _startCount;
 
     [SerializeField]
     GameObject _bulletObj = null;
 
     [SerializeField]
     GameObject _specialBulletObj = null;
-
-    //[SerializeField]
-    private int _keyCount = 0;
 
     [SerializeField]
     TimeCount _timeCount = null;
@@ -25,10 +22,7 @@ public class Barrage : ActionManager
     int _probability = 0;
 
     [SerializeField]
-    float _bulletSpeed = 2;
-
-    //[SerializeField]
-    //ActiveModel _enemyActiveModel;
+    float _waitTime = 0.2f;
 
     private enum SelectPlayer
     {
@@ -36,16 +30,9 @@ public class Barrage : ActionManager
         Player2
     }
 
-    //[SerializeField]
-    //private SelectPlayer _selectPlayer;
-
-
     private GameObject _enemy;
 
-
-    [SerializeField]
-    float _waitTime = 0.1f;
-
+    private int _keyCount = 0;
 
     int _count = 0;
 
@@ -57,24 +44,11 @@ public class Barrage : ActionManager
 
     public GameObject getCustomGameObject { get { return _characterData.gameObject; } }
 
-
-    void Awake()
-    {
-    //    _modelParameterInfo = GetComponentInChildren<ModelParameterInfo>();
-     //   Debug.Log(_modelParameterInfo.name);
-
-    }
-
     void Start()
     {
 
-        
-    //    _enemy = _selectPlayer == SelectPlayer.Player1 ?
-    //GameObject.Find("Player2") : GameObject.Find("Player1");
 
-        //_enemyActiveModel = _enemy.GetComponent<ActiveModel>();
-
-        if(_audioPlayer == null)
+        if (_audioPlayer == null)
         {
             _audioPlayer = GameObject.Find("AudioPlayer").GetComponent<AudioPlayer>();
         }
@@ -89,34 +63,26 @@ public class Barrage : ActionManager
             _timeCount = GameObject.Find("Time").GetComponent<TimeCount>();
         }
 
-       
         _randomBullet = GetComponent<RandomBullet>();
 
         _characterData = GetComponentInChildren<CharacterData>();
 
-        
-        //Debug.Log(_enemy);
     }
 
-    void Update()
-    {
-
-    }
-
+    void Update(){}
 
     int Barragebutton(KeyCode key)
     {
         if (_timeCount._getTime <= 1) return 0;
         if (Input.GetKeyDown(key))
         {
-            _audioPlayer.Play(20,false);
-             StartCoroutine(BulletCreate( _waitTime));
+            _audioPlayer.Play(20, false);
+            StartCoroutine(BulletCreate(_waitTime));
             return 1;
         }
 
         return 0;
     }
-
 
     IEnumerator BulletCreate(float waitTime)
     {
@@ -127,10 +93,10 @@ public class Barrage : ActionManager
         if (_randomBullet.StatusRandomBullet() == false) yield break;
         _count = 0;
         yield return new WaitForSeconds(waitTime);
+        //Debug.Log("来てる");
         Bullet(_specialBulletObj);
-        //ここを修正する
         _keyCount++;
-        yield break;
+        yield return 0;
     }
 
 
@@ -147,17 +113,15 @@ public class Barrage : ActionManager
         }
     }
 
-      public  void Bullet(GameObject bullet)
+    public void Bullet(GameObject bullet)
     {
         _enemy = Enemy.GetComponentInChildren<CharacterData>().gameObject;
-        Vector3 scale = new Vector3(0,0,0);
         var obj = Instantiate(bullet);
         obj.name = bullet.name;
-        scale.y = 0.5f;
-        obj.transform.position = transform.position ;
-        var value = _enemy.transform.position/*_enemyActiveModel.getBarrage.getCustomGameObject.transform.position*/ - transform.position ;
-        obj.GetComponent<TestShot>()._vectorValue = value.normalized * _bulletSpeed;
-        obj.GetComponent<TestShot>()._parent = /*_enemyActiveModel.getBarrage.getCustomGameObject*/_enemy;
+        obj.transform.position = transform.position;
+        var value = _enemy.transform.position - transform.position;
+        obj.GetComponent<BulletShot>()._vectorValue = value.normalized;
+        obj.GetComponent<BulletShot>()._parent = _enemy;
     }
 
 }

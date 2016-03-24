@@ -13,24 +13,18 @@ public class StartCount : MonoBehaviour {
     [SerializeField]
     float _drawTime = 4.0f;
 
-    [SerializeField]
-    TimeCount _timeCount;
-
     float _time;
-
-    float _regularInterval;
 
     [SerializeField, TooltipAttribute("表示する順番にImageを入れてください")]
     Image[] _startCountImage = null;
 
     bool _countFinish = false;
+    bool _isStartImageDraw = false;
     public bool getCountFinish { get { return _countFinish; }  set { _countFinish = value; }}
 
     void Start ()
     {
         _audioPlayer = FindObjectOfType<AudioPlayer>();
-        _timeCount = FindObjectOfType<TimeCount>();
-        //_regularInterval = _drawTime / _startCountImage.Length;
         _time = _drawTime;
         foreach (var image in _startCountImage)
         {
@@ -45,7 +39,6 @@ public class StartCount : MonoBehaviour {
         if (_gameManager == null || !_gameManager.isGameStart) { return; }
         CountDrawImage();
         CountDown();
-        //_time = _timeCount.TimeLimit(_time);
     }
 
     void  CountDown()
@@ -57,14 +50,14 @@ public class StartCount : MonoBehaviour {
 
     void CountDrawImage()
     {
-        if (_countFinish) return;
+        if (_isStartImageDraw) return;
 
-        if((int)_time <= _drawTime && (int)_time >  3)
+        if(_time <= _drawTime && _time >  3)
         {
-            if (_time >= _drawTime)
+            if (_time == _drawTime)
             {
                 _audioPlayer.Play(14, false);
-            }
+             }
 
             _startCountImage[0].enabled = true;
         }
@@ -88,13 +81,14 @@ public class StartCount : MonoBehaviour {
             
             _startCountImage[2].enabled = false;
             _startCountImage[3].enabled = true;
+            _countFinish = true;
         }
         else
         if (_time <= 0)
         {
+            _isStartImageDraw = true;
             _time = _drawTime;
             _startCountImage[3].enabled = false;
-            _countFinish = true;
         }
 
     }

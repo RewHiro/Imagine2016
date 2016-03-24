@@ -4,13 +4,13 @@ using System.Collections;
 public class ParticleGeneration : MonoBehaviour {
 
     [SerializeField]
-    ParticleSystem _particleSystem;
+    ParticleSystem _particleSystem = null;
 
-    TestShot _shot;
+    BulletShot _shot;
 
 	void Start ()
     {
-        _shot = GetComponent<TestShot>();
+        _shot = GetComponent<BulletShot>();
     }
 	
 	void Update ()

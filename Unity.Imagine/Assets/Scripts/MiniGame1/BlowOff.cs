@@ -21,11 +21,7 @@ public class BlowOff : MonoBehaviour
         _actionManager = FindObjectOfType<KeyAction>();
     }
 
-
-    void Update()
-    {
-
-    }
+    void Update(){}
 
     void OnTriggerEnter(Collider collision)
     {
@@ -39,17 +35,19 @@ public class BlowOff : MonoBehaviour
 
             if (_victoryBullet.name == collision.name)
             {
-                Debug.Log("homo");
+
                 var direction = Vector3.up;
                 var force = direction * _velocity;
 
-                if (gameObject.transform.parent.gameObject == _playerList[0])
+                if (gameObject.transform.parent.gameObject == _playerList[0] && _scoreCompare.getWinPlayer == ScoreCompare.WinPlayer.Player2)
                 {
+
                     gameObject.GetComponent<Rigidbody>().AddForce(force, ForceMode.VelocityChange);
                 }
                 else
-                if (gameObject.transform.parent.gameObject == _playerList[1])
+                if (gameObject.transform.parent.gameObject == _playerList[1] && _scoreCompare.getWinPlayer == ScoreCompare.WinPlayer.Player1)
                 {
+
                     gameObject.GetComponent<Rigidbody>().AddForce(force, ForceMode.VelocityChange);
                 }
             }

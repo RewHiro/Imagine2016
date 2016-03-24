@@ -38,8 +38,8 @@ public class GameTest1 : ActionManager
             var value = Enemy.transform.position - transform.position;
             obj.transform.position = transform.position;
             obj.transform.position += value.normalized;
-            obj.GetComponent<TestShot>()._vectorValue = value.normalized;
-            obj.GetComponent<TestShot>()._parent = gameObject;
+            obj.GetComponent<BulletShot>()._vectorValue = value.normalized;
+            obj.GetComponent<BulletShot>()._parent = gameObject;
         }
         //if (Input.GetKey(keyCode)) {
         //    transform.Rotate(5.0f, 0.0f, 0.0f);
