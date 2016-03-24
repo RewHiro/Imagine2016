@@ -76,6 +76,20 @@ public class AudioPlayer : MonoBehaviour {
   /// 所有権が自身にあれば true を返す </summary>
   public bool IsOwnership() { return _sourceObject.transform.parent == transform; }
 
+  /// <summary> ループ以外で、１つでも再生中の
+  /// <see cref="AudioSource"/> があれば true を返す </summary>
+  public bool IsPlaying() { return _sourceObject.IsPlaying(); }
+
+  /// <summary> ループ中も含めて、１つでも再生中の
+  /// <see cref="AudioSource"/> があれば true を返す </summary>
+  public bool IsPlayingWithLoop() { return _sourceObject.IsPlayingWithLoop(); }
+
+  /// <summary> 再生していない <see cref="AudioSource"/> があれば true を返す </summary>
+  public bool ExistStopSource() { return _sourceObject.ExistStopSource(); }
+
+  /// <summary> ループ設定の <see cref="AudioSource"/> があれば true を返す </summary>
+  public bool ExistLoopSource() { return _sourceObject.ExistLoopSource(); }
+
   // TIPS: Bind() 用、SourceObject 取得メソッド
   SourceObject GetObject() {
     var source = table.GetSourceObject();
