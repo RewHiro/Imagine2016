@@ -8,8 +8,7 @@ public enum GameScene {
   Menu,
   Create,
   Printer,
-  MiniGames,
-  AR_TEST3,
+  Game,
 
   Max, None = -1,
 }
