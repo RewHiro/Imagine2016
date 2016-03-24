@@ -53,6 +53,8 @@ public class ChangeCharacterPattern : MonoBehaviour
 
     AudioPlayer _audioPlayer = null;
 
+    CharacterViewController _characterViewController = null;
+
     static bool _isPush = false;
     bool _isDecide = false;
 
@@ -103,6 +105,7 @@ public class ChangeCharacterPattern : MonoBehaviour
         if (_isPush) return;
         _isPush = true;
 
+        _characterViewController.ResetTransform();
         _audioPlayer.Play(5);
 
         StartCoroutine(ChangeType(index));
@@ -116,6 +119,7 @@ public class ChangeCharacterPattern : MonoBehaviour
         if (_isPush) return;
         _isPush = true;
 
+        //_characterViewController.ResetTransform();
         _audioPlayer.Play(5);
 
         StartCoroutine(ChangeCostume(index));
@@ -129,6 +133,7 @@ public class ChangeCharacterPattern : MonoBehaviour
         if (_isPush) return;
         _isPush = true;
 
+        //_characterViewController.ResetTransform();
         _audioPlayer.Play(5);
 
         StartCoroutine(ChangeDecoration(index));
@@ -193,6 +198,8 @@ public class ChangeCharacterPattern : MonoBehaviour
         _characterParamter.decorationType = CharacterParameter.DecorationType.NONE;
 
         _audioPlayer = FindObjectOfType<AudioPlayer>();
+
+        _characterViewController = FindObjectOfType<CharacterViewController>();
 
         _audioPlayer.Play(1, 1.0f, true);
     }
