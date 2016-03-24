@@ -10,6 +10,9 @@ public class CharacterMove : MonoBehaviour
     GameObject _character = null;
 
     [SerializeField]
+    float _stopPos;
+
+    [SerializeField]
     bool _canJump;
 
     [SerializeField]
@@ -64,8 +67,6 @@ public class CharacterMove : MonoBehaviour
     //落ちる処理が終わってるかどうか
     private bool _isEndFalled = false;
 
-    //落ちる距離
-    private float _totalFallDistance;
 
     //ちょっとバウンドする。
     private bool _isDrop = false;
@@ -80,7 +81,6 @@ public class CharacterMove : MonoBehaviour
         _characterStatus._canSpin = true;
         _characterStatus._fallCount = 0.0f;
         _characterStatus._totalFallCount = 0.5f;
-        _totalFallDistance = 500.0f;
         _player.Play(10, 1.0f, false);
     }
 
@@ -107,20 +107,17 @@ public class CharacterMove : MonoBehaviour
 
         _characterStatus._jumpCount += Time.deltaTime;
 
-        _totalFallDistance += -_gravity * _characterStatus._jumpCount * _characterStatus._jumpCount * 360;
+        _character.transform.Translate(0,
+                                       - _gravity * _characterStatus._jumpCount * _characterStatus._jumpCount * 360,
+                                       0);
 
-        _character.transform.localPosition
-               = new Vector3(_character.transform.localPosition.x,
-                             _characterStatus._tempPosY + _totalFallDistance,
-                             _character.transform.localPosition.z);
-
-        if (_totalFallDistance < 0)
+        if (_character.transform.localPosition.y < _stopPos)
         {
             _player.Play(11, 1.0f, false);
             _isEndFalled = true;
             _character.transform.localPosition
             = new Vector3(_character.transform.localPosition.x,
-                          _characterStatus._tempPosY,
+                          _stopPos,
                           _character.transform.localPosition.z);
             _characterStatus._jumpCount = 0;
         }
@@ -133,18 +130,16 @@ public class CharacterMove : MonoBehaviour
         {
             _characterStatus._jumpCount += Time.deltaTime;
 
-            _character.transform.localPosition
-              = new Vector3(_character.transform.localPosition.x,
-                            _character.transform.localPosition.y
-                            + _jumpPower / 2 - _gravity * _characterStatus._jumpCount * _characterStatus._jumpCount * 360,
-                            _character.transform.localPosition.z);
+            _character.transform.Translate(0,
+                                           + _jumpPower  - _gravity * _characterStatus._jumpCount * _characterStatus._jumpCount * 360,
+                                           0);
 
-            if (_character.transform.localPosition.y < _characterStatus._tempPosY)
+            if (_character.transform.localPosition.y < _stopPos)
             {
                 _isDrop = true;
                 _character.transform.localPosition
                 = new Vector3(_character.transform.localPosition.x,
-                              _characterStatus._tempPosY,
+                              _stopPos,
                               _character.transform.localPosition.z);
                 _characterStatus._jumpCount = 0.0f;
             }
@@ -186,12 +181,12 @@ public class CharacterMove : MonoBehaviour
             }
 
             //初期位置より下にいったら元の位置に戻し、ジャンプ処理の終了
-            if (_character.transform.localPosition.y < _characterStatus._tempPosY)
+            if (_character.transform.localPosition.y < _stopPos)
             {
                 _characterStatus._isJump = false;
                 _character.transform.localPosition
                 = new Vector3(_character.transform.localPosition.x,
-                              _characterStatus._tempPosY,
+                              _stopPos,
                               _character.transform.localPosition.z);
               
                 _character.transform.localRotation = new Quaternion(_setRotation.x, _setRotation.y, _setRotation.z, 1);
