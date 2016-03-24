@@ -45,7 +45,7 @@ public class ARDeviceManager : MonoBehaviour {
   public int markerScale { get { return _markerScale; } }
 
   /// <summary> 管理下にある <see cref="ARModel"/> を全て取得 </summary>
-  public IEnumerable<ARModel> models { get { return this.GetOnlyChildren<ARModel>(); } }
+  public IEnumerable<ARModel> GetModels() { return this.GetOnlyChildren<ARModel>(); }
 
   /// <summary> モデルを表示する数 </summary>
   public readonly int existModelCount = 2;
@@ -68,7 +68,7 @@ public class ARDeviceManager : MonoBehaviour {
 
   void Start() {
     _device.Start();
-    foreach (var model in models) { model.MarkerSetup(this); }
+    foreach (var model in GetModels()) { model.MarkerSetup(this); }
   }
 
   void FixedUpdate() {
@@ -76,9 +76,8 @@ public class ARDeviceManager : MonoBehaviour {
     _arSystem.update(_device);
     _currentModelCount = 0;
 
-    foreach (var model in models) {
-      if (_currentModelCount >= existModelCount) { break; }
-      if (!_arSystem.isExistMarker(model.id)) { continue; }
+    foreach (var model in GetModels()) {
+      if (!EnableUpdate(model)) { ModelReset(model); continue; }
 
       model.transform.position = Vector3.zero;
       arSystem.setMarkerTransform(model.id, model.transform);
@@ -87,5 +86,13 @@ public class ARDeviceManager : MonoBehaviour {
     }
   }
 
-  public void OnDestroy() { _device.Stop(); }
+  void OnDestroy() { _device.Stop(); }
+
+  void ModelReset(ARModel model) { model.transform.position = Vector3.back * 10f; }
+
+  bool EnableUpdate(ARModel model) {
+    var exists = _arSystem.isExistMarker(model.id);
+    var enable = _currentModelCount < existModelCount;
+    return (exists && enable);
+  }
 }
