@@ -41,6 +41,8 @@ public class MenuDirecter : MonoBehaviour
     [SerializeField]
     GameObject _animation = null;
 
+    [SerializeField]
+    GameObject _cunon = null;
     private double _totalReverseAnimationCount = 0.0f;
     private double _reverseAnimationCount = 0.0f;
     private float _waitAnimationCount = 3.0f;
@@ -48,6 +50,8 @@ public class MenuDirecter : MonoBehaviour
 
     private float _waitPlayAnimationAudioCount = 0.0f;
     private bool _isWaitPlayAnimationAudio = false;
+
+    private bool _isBackCamera = false;
 
     [SerializeField]
     GameObject _statusCursor = null;
@@ -100,6 +104,7 @@ public class MenuDirecter : MonoBehaviour
         {
             if (_isEndedChoiseScene == true) return;
             if (_reverseAnimationCount != 0.0f) return;
+            _isBackCamera = true;
             _nowCameraMode = NowCameraMode.UP_ANGLE;
             _animationCount = 1.0f;
             _reverseAnimationCount = FindObjectOfType<MenuBoxAnimater>().animationTime;
@@ -117,7 +122,9 @@ public class MenuDirecter : MonoBehaviour
         {
             ////選択のはい
             if (_isEndedChoiseScene == true) return;
+            if (_isBackCamera) return;
             _player.Play(6, 1.0f, false);
+            _cunon.SetActive(true);
             FindObjectOfType<ActionOfCunon>().isStart = true;
         });
 
@@ -180,7 +187,7 @@ public class MenuDirecter : MonoBehaviour
             if (_isEndedChoiseScene == true) return;
             TouchCharacter();
         }
-        ChangeMiniGame();
+        
 
         if (_isWaitPlayAnimationAudio == true)
         {
@@ -193,6 +200,7 @@ public class MenuDirecter : MonoBehaviour
             }
         }
 
+        ChangeMiniGame();
     }
 
     private void TouchCharacter()
@@ -357,6 +365,7 @@ public class MenuDirecter : MonoBehaviour
             _canMoveCharacter = false;
             _canSelectGame = true;
             _reverseAnimationCount = 0.0f;
+            _isBackCamera = false;
             yield return null;
         }
     }
@@ -405,6 +414,7 @@ public class MenuDirecter : MonoBehaviour
     private void ChangeMiniGame()
     {
         if (_isEndedChoiseScene == true) return;
+        if (_cunon.activeInHierarchy == false) return;
         if (FindObjectOfType<ActionOfCunon>().isEnd == true && _isChangeScene == false)
         {
             var screenSequencer = ScreenSequencer.instance;
