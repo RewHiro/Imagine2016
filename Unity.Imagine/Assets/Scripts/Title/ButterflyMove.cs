@@ -14,9 +14,18 @@ public class ButterflyMove : MonoBehaviour
     [SerializeField, Tooltip("縦の動きの幅")]
     private int _sinMove = 5;
 
+    private float _startPosY = 0.0f;
+
+    [SerializeField, Tooltip("端から出現したときに出てくるY座標を乱数で動かす")]
+    private float _randomPosY = 0.0f;
+
+    private float _randomMoveY = 0.0f;
+
+
     void Start()
     {
         transform.localScale = Vector3.one * _scale;
+        _startPosY = transform.localPosition.y;
     }
 
     void Update()
@@ -33,19 +42,25 @@ public class ButterflyMove : MonoBehaviour
                         transform.localPosition.y + UnityEngine.Mathf.Sin(_sinWaveCount),
                         transform.localPosition.z);
 
-        if (transform.localPosition.x < -160)
+        if (transform.localPosition.x < -165)
         {
+            _randomMoveY = Random.Range(-_randomPosY, _randomPosY);
             _moveSpeed *= -1;
             transform.localRotation = Quaternion.Euler(0, 0, -90);
+            transform.localPosition =
+            new Vector3(-165.0f,
+                        _startPosY + _randomMoveY,
+                        transform.localPosition.z);
         }
-        if (transform.localPosition.x > 160)
+        else if (transform.localPosition.x > 165)
         {
+            _randomMoveY = Random.Range(-_randomPosY, _randomPosY);
             _moveSpeed *= -1;
             transform.localRotation = Quaternion.Euler(0, 0, 0);
-            //transform.localPosition =
-            //new Vector3(transform.localPosition.x,
-            //            transform.localPosition.y,
-            //            transform.localPosition.z);
+            transform.localPosition =
+            new Vector3(165.0f,
+                        _startPosY + _randomMoveY,
+                        transform.localPosition.z);
         }
     }
 }
