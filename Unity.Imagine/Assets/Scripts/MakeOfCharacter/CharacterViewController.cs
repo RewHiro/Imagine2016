@@ -1,12 +1,23 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using System.IO;
 
 /// <summary>
 /// キャラクターを回転する機能
 /// </summary>
 public class CharacterViewController : MonoBehaviour
 {
+
+    [Serializable]
+    struct JsonData
+    {
+        public float SPEED_MAGNIFICATION;
+        public Vector3 OFF_SET;
+        public float NEAR;
+        public float FAR;
+        public float FIELD_OF_VIEW;
+    }
 
     [SerializeField, TooltipAttribute("無視したくないLayerNameを設定")]
     string[] _layerNames = null;
@@ -26,6 +37,9 @@ public class CharacterViewController : MonoBehaviour
     [SerializeField, TooltipAttribute("スワイプの遊び")]
     float REACTION_VALUE = 3.0f;
 
+    [SerializeField]
+    bool DEBUG = false;
+
     Vector3 POINT = Vector3.zero;
 
     int LAYER_MASK = 0;
@@ -36,8 +50,18 @@ public class CharacterViewController : MonoBehaviour
 
     AudioPlayer _audioPlayer = null;
 
+    Vector3 START_POSITON = Vector3.zero;
+
+    public void ResetTransform()
+    {
+        transform.position = START_POSITON;
+        transform.rotation = Quaternion.identity;
+        _count = 0.0f;
+    }
+
     void Awake()
     {
+        START_POSITON = transform.position;
         _count = 0.0f;
     }
 
@@ -48,6 +72,8 @@ public class CharacterViewController : MonoBehaviour
 
         _mouseUtility = FindObjectOfType<MouseUtility>();
         if (_mouseUtility == null) throw new NullReferenceException("MouseUtility is nothing");
+
+        ReadJson();
 
         LAYER_MASK = LayerMask.GetMask(_layerNames);
 
@@ -61,6 +87,28 @@ public class CharacterViewController : MonoBehaviour
         StartCoroutine(Control());
 
         _audioPlayer = FindObjectOfType<AudioPlayer>();
+
+        //gameObject.transform.LookAt(POINT);
+
+    }
+
+    void ReadJson()
+    {
+        if (DEBUG) return;
+        var path = Application.dataPath + "/Json/ModelViewParameter.json";
+        if (!File.Exists(path)) return;
+
+        StreamReader sr = new StreamReader(path);
+        var data = JsonUtility.FromJson<JsonData>(sr.ReadToEnd());
+        sr.Close();
+
+        var camera = GetComponent<Camera>();
+        camera.farClipPlane = data.FAR;
+        camera.nearClipPlane = data.NEAR;
+        camera.fieldOfView = data.FIELD_OF_VIEW;
+
+        OFF_SET = data.OFF_SET;
+        SPEED_MAGNIFICATION = data.SPEED_MAGNIFICATION;
     }
 
     IEnumerator Control()
@@ -85,7 +133,10 @@ public class CharacterViewController : MonoBehaviour
         if (!(-REACTION_VALUE > _mouseUtility.getDeltaPos.x ||
             REACTION_VALUE < _mouseUtility.getDeltaPos.x)) return;
 
-        _audioPlayer.Play(4);
+        if (!_audioPlayer.IsPlaying())
+        {
+            _audioPlayer.Play(4);
+        }
 
         _count = ACCELERATION_TIME;
 
@@ -95,6 +146,7 @@ public class CharacterViewController : MonoBehaviour
 
         _deltaPosition *= SPEED_MAGNIFICATION;
 
+        //gameObject.transform.LookAt(POINT);
         gameObject.transform.RotateAround(POINT, gameObject.transform.up, _deltaPosition.x);
         //gameObject.transform.RotateAround(POINT, -gameObject.transform.right, _deltaPosition.y);
     }
@@ -115,7 +167,10 @@ public class CharacterViewController : MonoBehaviour
 
         _count += -Time.deltaTime;
         var acceleration = _deltaPosition * _count / ACCELERATION_TIME;
+
+        //gameObject.transform.LookAt(POINT);
         gameObject.transform.RotateAround(POINT, gameObject.transform.up, acceleration.x);
         //gameObject.transform.RotateAround(POINT, -gameObject.transform.right, acceleration.y);
     }
+
 }

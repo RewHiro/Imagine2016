@@ -13,13 +13,13 @@ public class ChangeText : MonoBehaviour
 
     void Start()
     {
-        _text.Add("このがめんでは\nゲームをえらべるよ\n3つのゲームからえらんでね");
-        _text.Add("このゲームはおたがいのぼうしを\nねらってたまをうちあうゲームだよ\nはやいCuboがとくいだよ\nよかったらOKをおしてね");
+        _text.Add("ゲームをえらべるよ\n3つのゲームからえらんでね");
+        _text.Add("ひたすらタップ！！\nたまをうちあうゲームだよ\nはやいCuboがとくいだよ!");
         _text.Add("このゲームは\nまだあそべないよ");
         _text.Add("このゲームは\nまだあそべないよ");
         _text.Add("ゲームをじどうでえらぶよ\nでもいまはつかえないよ");
-        _text.Add("これはゲームをえらんだときに\nどんなCuboがつよいのかみれるよ");
-        _text.Add("ほう・・・\nわしをえらぶのか");
+        _text.Add("ゲームをえらんだときに\nどんなCuboが\nつよいのかみれるよ");
+        _text.Add("ごめんね！！\nぼくはえらべないよ");
 
         ChangeExplanationText(0);
     }
