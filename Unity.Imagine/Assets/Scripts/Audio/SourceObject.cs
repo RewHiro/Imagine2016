@@ -83,11 +83,11 @@ public class SourceObject : MonoBehaviour {
   /// <summary> <see cref="AudioSource"/> が存在すれば true を返す </summary>
   public bool ExistSource() { return GetSources().Any(); }
 
-  /// <summary> ループ設定の <see cref="AudioSource"/> があれば true を返す </summary>
-  public bool ExistLoopSource() { return GetSources().Any(source => source.loop); }
-
   /// <summary> 再生中でない <see cref="AudioSource"/> があれば true を返す </summary>
   public bool ExistStopSource() { return GetSources().Any(src => !src.isPlaying); }
+
+  /// <summary> ループ設定の <see cref="AudioSource"/> があれば true を返す </summary>
+  public bool ExistLoopSource() { return GetSources().Any(source => source.loop); }
 
   /// <summary> ループ設定の <see cref="AudioSource"/> を全て取得 </summary>
   public IEnumerable<AudioSource> GetLoopSources() {
