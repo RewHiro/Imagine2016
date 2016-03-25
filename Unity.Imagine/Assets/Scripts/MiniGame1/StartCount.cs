@@ -36,6 +36,11 @@ public class StartCount : MonoBehaviour {
 	
 	void Update ()
     {
+        Renovation();
+    }
+
+    public void Renovation()
+    {
         if (_gameManager == null || !_gameManager.isGameStart) { return; }
         CountDrawImage();
         CountDown();

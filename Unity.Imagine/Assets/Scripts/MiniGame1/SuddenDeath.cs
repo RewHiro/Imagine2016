@@ -37,19 +37,22 @@ public class SuddenDeath : MonoBehaviour {
 
     void Update()
     {
+        Renovation();
+
+    }
+
+    public void Renovation()
+    {
         if (_countFinish)
         {
             _scoreCompare.getIsDraw = false;
         }
 
-        if (_scoreCompare.getIsDraw ==true)
+        if (_scoreCompare.getIsDraw == true)
         {
             CountDrawImage();
             CountDown();
-
         }
-
-        
     }
 
     void CountDown()
