@@ -126,7 +126,7 @@ public class Barrage : ActionManager
 
         if (_startCount.getCountFinish)
         {
-            _keyCount += Barragebutton(keyCode);
+            _keyCount += Barragebutton(model);
         }
     }
 
