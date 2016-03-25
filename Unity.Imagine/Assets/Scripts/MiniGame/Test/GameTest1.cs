@@ -27,7 +27,7 @@ public class GameTest1 : ActionManager
 
     }
 
-    public override void Action()
+    public override void Action(ARModel model)
     {
         transform.LookAt(Enemy.transform);
         if (Input.GetKeyDown(keyCode))

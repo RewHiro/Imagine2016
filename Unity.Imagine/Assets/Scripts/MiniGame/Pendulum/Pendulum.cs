@@ -42,7 +42,7 @@ public class Pendulum : ActionManager
 
 	}
 
-    public override void Action()
+    public override void Action(ARModel model)
     {
         transform.LookAt(Enemy.transform);
         rotation = transform.eulerAngles;
