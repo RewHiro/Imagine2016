@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d2f9f56cbf7459043a630aa1d428f40b
-timeCreated: 1458358427
+guid: dd0fc55e64b035145b2f5f5ce1c75373
+timeCreated: 1458879335
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: menu_modoru_2_0
+    21300000: Customize_modoru_0
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -51,37 +51,33 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: menu_modoru_2_0
+    - name: Customize_modoru_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 259
-        width: 380
-        height: 253
+        x: 2
+        y: 355
+        width: 498
+        height: 157
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 177, y: -83.5}
-        - {x: 178, y: -82.5}
-        - {x: 178, y: -62.5}
-        - {x: 135, y: -45.5}
-        - {x: 146, y: -19.5}
-        - {x: 142, y: -5.5}
-        - {x: 107, y: 46.5}
-        - {x: -99, y: 117.5}
-        - {x: -111, y: 126.5}
-        - {x: -144, y: 126.5}
-        - {x: -177, y: 24.5}
-        - {x: -190, y: -7.5}
-        - {x: -190, y: -37.5}
-        - {x: -136, y: -54.5}
-        - {x: -10, y: -98.5}
-        - {x: 48, y: -118.5}
-        - {x: 53, y: -118.5}
-        - {x: 106, y: -105.5}
-        - {x: 124, y: -90.5}
-        - {x: 128, y: -70.5}
+      - - {x: 31, y: -10.5}
+        - {x: 249, y: -10.5}
+        - {x: 249, y: 5.5}
+        - {x: 33, y: 24.5}
+        - {x: 33, y: 36.5}
+        - {x: 23, y: 48.5}
+        - {x: -18, y: 78.5}
+        - {x: -243, y: 78.5}
+        - {x: -247, y: 76.5}
+        - {x: -249, y: 73.5}
+        - {x: -249, y: -74.5}
+        - {x: -245, y: -78.5}
+        - {x: -17, y: -78.5}
+        - {x: 23, y: -48.5}
+        - {x: 30, y: -42.5}
+        - {x: 33, y: -31.5}
     outline: []
   spritePackingTag: 
   userData: 
