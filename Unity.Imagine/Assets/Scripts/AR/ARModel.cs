@@ -8,6 +8,10 @@ public class ARModel : MonoBehaviour {
   Texture2D _marker = null;
 
   [SerializeField]
+  MeshRenderer _renderer = null;
+  public new MeshRenderer renderer { get { return _renderer; } }
+
+  [SerializeField]
   ActionManager _action = null;
   public ActionManager action { get { return _action; } }
 

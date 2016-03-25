@@ -71,13 +71,17 @@ public class GameManager : MonoBehaviour {
     while (true) {
       _counter.UpdateTimeCount();
       yield return null;
+      break;//test
     }
+    Debug.Log("main loop test");
   }
 
   // TIPS: リザルト表示
   IEnumerator Result() {
     while (true) {
       yield return null;
+      break;//test
     }
+    Debug.Log("result test");
   }
 }

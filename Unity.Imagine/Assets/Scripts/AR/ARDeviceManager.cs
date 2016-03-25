@@ -48,7 +48,11 @@ public class ARDeviceManager : MonoBehaviour {
   /// <summary> 管理下にある <see cref="ARModel"/> を全て取得 </summary>
   public IEnumerable<ARModel> GetModels() { return this.GetOnlyChildren<ARModel>(); }
 
-  ARModel[] _models = new ARModel[2];
+  readonly int _existsCount = 2;
+  List<ARModel> _models = new List<ARModel>();
+
+  /// <summary> ゲーム開始後に使用するモデルの一覧 </summary>
+  public IEnumerable<ARModel> models { get { return _models; } }
   public ARModel player1 { get { return _models[0]; } }
   public ARModel player2 { get { return _models[1]; } }
 
@@ -80,12 +84,9 @@ public class ARDeviceManager : MonoBehaviour {
     model.isVisible = false;
   }
 
-  readonly int _existsCount = 2;
-  int _currentCount = 0;
-
   // TIPS: マーカーを規定数、認識できているかどうか
   bool EnableUpdate(ARModel model) {
-    var enable = (_currentCount < _existsCount);
+    var enable = (_models.Count < _existsCount);
     if (enable) { enable = _arSystem.isExistMarker(model.id); }
     return enable;
   }
@@ -99,15 +100,15 @@ public class ARDeviceManager : MonoBehaviour {
 
   /// <summary> マーカー検出 </summary>
   public bool DetectMarker() {
-    _currentCount = 0;
+    _models.Clear();
 
     foreach (var model in GetModels()) {
       if (!EnableUpdate(model)) { ModelReset(model); continue; }
       _arSystem.setMarkerTransform(model.id, model.transform);
-      _models[_currentCount++] = model;
+      _models.Add(model);
     }
 
-    return _models.All(model => model != null);
+    return (_models.Count == _existsCount);
   }
 
   /// <summary> 認識済みマーカーのみを使って更新する </summary>
