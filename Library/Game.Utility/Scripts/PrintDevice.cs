@@ -29,6 +29,29 @@ namespace Game.Utility
         }
 
         static PrintDocument _printDocument = new PrintDocument();
+        static public bool isFinish
+        {
+            get; private set;
+        }
+
+        static PrintDevice()
+        {
+            if (_printDocument == null) throw new NullReferenceException("print document is null");
+            _printDocument.BeginPrint += new PrintEventHandler(BeginPrint);
+            _printDocument.EndPrint += new PrintEventHandler(EndPrint);
+        }
+
+
+        private static void BeginPrint(object sender,PrintEventArgs e)
+        {
+            isFinish = false;
+        }
+
+        private static void EndPrint(object sender, PrintEventArgs e)
+        {
+            isFinish = true;
+        }
+
 
         public static bool PrintRequest(string path, string printerName, bool color)
         {
