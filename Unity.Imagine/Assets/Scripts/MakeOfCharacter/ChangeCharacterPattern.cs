@@ -31,7 +31,13 @@ public class ChangeCharacterPattern : MonoBehaviour
     GameObject _characterPlace = null;
 
     [SerializeField]
-    Image _description = null;
+    Image _descriptionType = null;
+
+    [SerializeField]
+    Image _descriptionCostume = null;
+
+    [SerializeField]
+    Image _descriptionDecoration = null;
 
     [SerializeField]
     Transform _panelOfChangeType = null;
@@ -41,6 +47,10 @@ public class ChangeCharacterPattern : MonoBehaviour
 
     [SerializeField]
     Transform _panelOfChangeDecoration = null;
+
+    const int OFFSET_INDEX_TYPE = 0;
+    const int OFFSET_INDEX_COSTUME = 3;
+    const int OFFSET_INDEX_DECORATION = 6;
 
     List<Sprite> _descriptionSprites = new List<Sprite>();
     List<Texture> _characterTextures = new List<Texture>();
@@ -55,7 +65,7 @@ public class ChangeCharacterPattern : MonoBehaviour
 
     CharacterViewController _characterViewController = null;
 
-    static bool _isPush = false;
+    bool _isPush = false;
     bool _isDecide = false;
 
     public CharacterParameter getCharacterParamter
@@ -187,7 +197,9 @@ public class ChangeCharacterPattern : MonoBehaviour
 
         _character = _characterPlace.transform.GetChild(0).gameObject;
 
-        _description.sprite = _descriptionSprites[0];
+        _descriptionType.sprite = _descriptionSprites[OFFSET_INDEX_TYPE];
+        _descriptionCostume.sprite = _descriptionSprites[OFFSET_INDEX_COSTUME];
+        _descriptionDecoration.sprite = _descriptionSprites[OFFSET_INDEX_DECORATION];
 
         _parameterBar = FindObjectOfType<ParameterBar>();
         _characterParameterInfo = FindObjectOfType<CharacterParameterInfo>();
@@ -207,7 +219,7 @@ public class ChangeCharacterPattern : MonoBehaviour
     IEnumerator DecideCorutine()
     {
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForEndOfFrame();
 
         _characterParamter.attack = 0;
         _characterParamter.defense = 0;
@@ -228,7 +240,7 @@ public class ChangeCharacterPattern : MonoBehaviour
 
     IEnumerator Transition()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForEndOfFrame();
 
         // 遷移処理
 
@@ -250,7 +262,7 @@ public class ChangeCharacterPattern : MonoBehaviour
 
         StartCoroutine(ChangeDecoration((int)_characterParamter.decorationType));
 
-        _description.sprite = _descriptionSprites[index];
+        _descriptionType.sprite = _descriptionSprites[index + OFFSET_INDEX_TYPE];
 
         _character.transform.GetChild(0).GetComponentInChildren<CharacterAppearance>().enabled =
             false;
@@ -266,7 +278,7 @@ public class ChangeCharacterPattern : MonoBehaviour
         CreateModel((uint)index, _costumePrefabs, place);
 
         _characterParamter.costumeType = (CharacterParameter.CostumeType)index;
-        _description.sprite = _descriptionSprites[index + 3];
+        _descriptionCostume.sprite = _descriptionSprites[index + OFFSET_INDEX_COSTUME];
         yield return StartCoroutine(DecideCorutine());
     }
 
@@ -277,7 +289,7 @@ public class ChangeCharacterPattern : MonoBehaviour
         _characterParamter.decorationType = (CharacterParameter.DecorationType)index;
         var meshRenderer = _character.GetComponent<MeshRenderer>();
         meshRenderer.material.mainTexture = _characterTextures[index + (int)_characterParamter.modelType * 4];
-        _description.sprite = _descriptionSprites[index + 6];
+        _descriptionDecoration.sprite = _descriptionSprites[index + OFFSET_INDEX_DECORATION];
         yield return StartCoroutine(DecideCorutine());
     }
 }
