@@ -21,12 +21,17 @@ public class FireWorksCreate : MonoBehaviour {
 	
 	void Update ()
     {
+        Create();
+	}
+
+    public void Create()
+    {
         if (CresteCoolDown())
         {
-            Create();
+            ParticleCreate();
             _time = _coolDownTime;
         }
-	}
+    }
 
     bool CresteCoolDown()
     {
@@ -38,7 +43,7 @@ public class FireWorksCreate : MonoBehaviour {
 
     }
 
-    void Create()
+    void ParticleCreate()
     {
         GameObject particleObj = Instantiate(_particle);
         particleObj.transform.SetParent(gameObject.transform, false);

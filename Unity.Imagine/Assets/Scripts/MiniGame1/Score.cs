@@ -57,7 +57,7 @@ public class Score : MonoBehaviour
         DrawScore();
     }
 
-    void DrawScore()
+  public  void DrawScore()
     {
 
         if (_playerList.Count == 0 && _startCount.getCountFinish == true)
@@ -71,8 +71,6 @@ public class Score : MonoBehaviour
         }
 
         if (_playerList.Count == 0) return;
-        //player[0].GetComponentInChildren<Barrage>()._getKeyCount; 
-        // _text.text = "" + _activeModel.getBarrage._getKeyCount;
         if (_player == Player.Player1)
         {
             _text.text = "" + _barragelist[0]._getKeyCount;
@@ -83,14 +81,13 @@ public class Score : MonoBehaviour
             {
                 _text.text = "???";
             }
-            //_text.text = "" + _playerList[0].GetComponentInChildren<Barrage>()._getKeyCount;
+         
         }
         else
         if (_player == Player.Player2)
         {
             _text.text = "" + _barragelist[1]._getKeyCount;
-            //_text.text = "" + _playerList[1].GetComponentInChildren<Barrage>()._getKeyCount;
-
+         
             if (_scoreCompare.getDisplayScore || _scoreCompare.getIsDraw) return;
 
             if (_timeCount._getTime <= 4)

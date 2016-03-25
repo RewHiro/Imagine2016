@@ -18,7 +18,7 @@ public class DeleteFireWorks : MonoBehaviour {
         DeleteParticle();
     }
 
-    void DeleteParticle()
+   public void DeleteParticle()
     {
         if (_particleSystem.IsAlive()) return;
         

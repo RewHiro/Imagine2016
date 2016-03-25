@@ -21,13 +21,20 @@ public class BulletShot : MonoBehaviour {
 	
 	void Update ()
     {
+        Renovation();
+    }
+
+    //これを読んでください
+   public void Renovation()
+    {
         _time -= Time.deltaTime;
-        if(_time <= 0)
+        if (_time <= 0)
         {
             Destroy(gameObject);
         }
         transform.position += _vectorValue * _bulletSpeed;
-	}
+    }
+
 
     void OnTriggerEnter(Collider collision)
     {
