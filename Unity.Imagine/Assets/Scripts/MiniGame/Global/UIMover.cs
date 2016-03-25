@@ -4,7 +4,7 @@ using System.Collections;
 public class UIMover : MonoBehaviour {
 
     [SerializeField]
-    GamePlayManager _playMgr;
+    GameMnueTab _gameMnueTab;
 
     [SerializeField]
     Vector3 _targetPos;
@@ -21,7 +21,7 @@ public class UIMover : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (!_playMgr.gamePlayFlag) { return; }
+        if (!_gameMnueTab.isPushPlayButton) { return; }
         rect.anchoredPosition3D -= (rect.anchoredPosition3D - _targetPos) / _speed;
 	}
 }

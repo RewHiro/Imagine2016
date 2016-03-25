@@ -4,7 +4,7 @@ using System.Collections;
 public class ObjectMover : MonoBehaviour {
 
     [SerializeField]
-    GamePlayManager _playMgr;
+    GameMnueTab _gameMnueTab;
 
     [SerializeField]
     Vector3 _targetPos;
@@ -23,7 +23,7 @@ public class ObjectMover : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (!_playMgr.gamePlayFlag) {
+        if (!_gameMnueTab.isPushPlayButton) {
             transform.position = _initPos;
             return;
         }

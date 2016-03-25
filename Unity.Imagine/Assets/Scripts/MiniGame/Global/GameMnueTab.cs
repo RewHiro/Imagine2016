@@ -3,9 +3,6 @@ using System.Collections;
 
 public class GameMnueTab : MonoBehaviour {
 
-    [SerializeField]
-    GamePlayManager _playMgr;
-
   [SerializeField]
   GameManager _manager = null;
 
@@ -41,6 +38,8 @@ public class GameMnueTab : MonoBehaviour {
     GameObject howToPlayImage { get; set; }
 
     bool _isBackMnue = false;
+    bool _isPushPlayButton = false;
+    public bool isPushPlayButton { get { return _isPushPlayButton; } }
 
     // Use this for initialization
     void Start () {
@@ -58,17 +57,7 @@ public class GameMnueTab : MonoBehaviour {
     {
         if (_tabPattern == TabPattern.ARLoad || _tabPattern == TabPattern.Ready)
         {
-            int count = 0;
-            foreach (var model in _models)
-            {
-                if (model.isRendered)
-                {
-                    ++count;
-                    if (count >= 2) { break; }
-                }
-            }
-
-            if (count >= 2)
+            if (_manager.isStart)
             {
                 _tabPattern = TabPattern.Ready;
             }
@@ -81,17 +70,17 @@ public class GameMnueTab : MonoBehaviour {
 
     void SizeAndPosSet()
     {
-        float sizeWidth = Screen.width / 3.0f;
-        float sizeHeight = Screen.height / 10.0f;
+        float sizeWidth = Screen.width * 1.2f;
+        float sizeHeight = Screen.height * 1.2f;
 
         _start.sizeDelta = new Vector2(sizeWidth, sizeHeight);
         _howToPlay.sizeDelta = new Vector2(sizeWidth, sizeHeight);
         _backMnue.sizeDelta = new Vector2(sizeWidth, sizeHeight);
 
-        Vector3 offset = new Vector3(-Screen.width / 2.0f, Screen.height / 2.0f, 0.0f);
-
+        //Vector3 offset = new Vector3(-Screen.width / 2.0f, Screen.height / 2.0f, 0.0f);
+        Vector3 offset = new Vector3(-Screen.width / 2.0f, Screen.height * 1.01f, 0.0f);
         {
-            _startPos[0] = new Vector3(sizeWidth / 2, sizeHeight / 2, 0.0f) + offset;
+            _startPos[0] = new Vector3(Screen.width / 3 - Screen.width / 6, -sizeHeight / 5, 0.0f) + offset;
             _howToPlayPos[0] = new Vector3(Screen.width / 4, -sizeHeight / 2, 0.0f) + offset;
             _backMnuePos[0] = new Vector3(Screen.width / 4 * 3, -sizeHeight / 2, 0.0f) + offset;
         }
@@ -101,13 +90,13 @@ public class GameMnueTab : MonoBehaviour {
             _backMnuePos[1] = new Vector3(Screen.width / 3 * 3 - Screen.width / 6, -sizeHeight / 2, 0.0f) + offset;
         }
         {
-            _startPos[2] = new Vector3(Screen.width / 3 * 2 - Screen.width / 6, sizeHeight / 2, 0.0f) + offset;
-            _howToPlayPos[2] = new Vector3(Screen.width / 3 * 2 - Screen.width / 6, sizeHeight / 2, 0.0f) + offset;
-            _backMnuePos[2] = new Vector3(Screen.width / 3 * 2 - Screen.width / 6, sizeHeight / 2, 0.0f) + offset;
+            _startPos[2] = new Vector3(Screen.width / 3 * 2 - Screen.width / 6, -sizeHeight / 5, 0.0f) + offset;
+            _howToPlayPos[2] = new Vector3(Screen.width / 3 * 2 - Screen.width / 6, -sizeHeight / 5, 0.0f) + offset;
+            _backMnuePos[2] = new Vector3(Screen.width / 3 * 2 - Screen.width / 6, -sizeHeight / 5, 0.0f) + offset;
         }
         {
-            _startPos[3] = new Vector3(Screen.width / 3 - Screen.width / 6, sizeHeight / 2, 0.0f) + offset;
-            _howToPlayPos[3] = new Vector3(Screen.width / 3 * 2 - Screen.width / 6, sizeHeight / 2, 0.0f) + offset;
+            _startPos[3] = new Vector3(Screen.width / 3 - Screen.width / 6, -sizeHeight / 5, 0.0f) + offset;
+            _howToPlayPos[3] = new Vector3(Screen.width / 3 * 2 - Screen.width / 6, -sizeHeight / 5, 0.0f) + offset;
             _backMnuePos[3] = new Vector3(Screen.width / 3 * 2 - Screen.width / 6, -sizeHeight / 2, 0.0f) + offset;
         }
     }
@@ -124,12 +113,13 @@ public class GameMnueTab : MonoBehaviour {
         if (_isBackMnue) { return; }
         if(howToPlayImage != null) { Destroy(howToPlayImage); }
         _tabPattern = TabPattern.Play;
-        _playMgr.GamePlayOn();
+        _manager.OnPlay();
+        _isPushPlayButton = true;
     }
 
     public void howToPlayOn()
     {
-        if(howToPlayImage == null && !_playMgr.gamePlayFlag && !_isBackMnue)
+        if(howToPlayImage == null && !_isPushPlayButton && !_isBackMnue)
         {
             howToPlayImage = Instantiate(Resources.Load("MiniGame/HowToPlay/BarrgeHowToPlay") as GameObject);
         }
@@ -137,7 +127,7 @@ public class GameMnueTab : MonoBehaviour {
 
     public void BackMnueOn()
     {
-        if (howToPlayImage == null && !_playMgr.gamePlayFlag && !_isBackMnue)
+        if (howToPlayImage == null && !_isPushPlayButton && !_isBackMnue)
         {
             _isBackMnue = true;
             ScreenSequencer.instance.SequenceStart(() => GameScene.Menu.ChangeScene(), new Fade(1f));
