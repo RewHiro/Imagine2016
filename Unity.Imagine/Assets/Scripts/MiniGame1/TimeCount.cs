@@ -1,56 +1,28 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿
+using UnityEngine;
 using UnityEngine.UI;
 
 public class TimeCount : MonoBehaviour {
 
-    private Text _text;
+  [SerializeField]
+  Text _board = null;
+  
+  [SerializeField]
+  ScoreCompare _scoreCompare = null;
 
-    [SerializeField]
-    StartCount _startCount;
+  [SerializeField, Range(5f, 15f)]
+  float _timeCount = 10;
+  public float timeCount { get { return _timeCount; } }
 
-    [SerializeField]
-    private int _timeCount = 10;
+  public float time { get; set; }
 
-    ScoreCompare _scoreCompare;
+  void Start() { time = _timeCount; }
 
-    float _time = 0;
+  /// <summary> 残り時間を減らす </summary>
+  public void UpdateTimeCount() { if (time > 0f) time -= Time.deltaTime; }
 
-    public float _getTimeCount { get { return _timeCount; } }
-
-   public float  _getTime { get {return _time; } set { _time = value; } }
-
-	void Start ()
-    {
-        _scoreCompare = FindObjectOfType<ScoreCompare>();
-
-        if (_startCount == null)
-        {
-            _startCount = GameObject.Find("StartCount").GetComponent<StartCount>();
-        }
-        _time = _timeCount;
-        _text = GetComponent<Text>();
-    }
-	
-	void Update ()
-    {
-        if (_scoreCompare.getDisplayScore == false)
-        {
-            _text.text = "Time : " + (int)_time;
-        }
-        if (_startCount.getCountFinish)
-        {
-            _time = TimeLimit(_time);
-        }
-
-    }
-
-    public float  TimeLimit(float count)
-    {
-        if (count <= 0) return 0;
-        count -= Time.deltaTime;
-
-        return count;
-    }
-
+  void Update() {
+    if (_scoreCompare.getDisplayScore) { return; }
+    _board.text = "Time: " + Mathf.RoundToInt(time).ToString();
+  }
 }

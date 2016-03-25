@@ -17,13 +17,13 @@ public class StartCount : MonoBehaviour {
 
     [SerializeField, TooltipAttribute("表示する順番にImageを入れてください")]
     Image[] _startCountImage = null;
-
-    bool _countFinish = false;
+  
     bool _isStartImageDraw = false;
-    public bool getCountFinish { get { return _countFinish; }  set { _countFinish = value; }}
+    public bool countFinish { get; set; }
 
     void Start ()
     {
+    countFinish = false;
         _audioPlayer = FindObjectOfType<AudioPlayer>();
         _time = _drawTime;
         foreach (var image in _startCountImage)
@@ -86,7 +86,7 @@ public class StartCount : MonoBehaviour {
             
             _startCountImage[2].enabled = false;
             _startCountImage[3].enabled = true;
-            _countFinish = true;
+            countFinish = true;
         }
         else
         if (_time <= 0)

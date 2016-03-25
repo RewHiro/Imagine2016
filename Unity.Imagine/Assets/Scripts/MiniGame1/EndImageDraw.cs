@@ -45,7 +45,7 @@ public class EndImageDraw : MonoBehaviour {
 	
 	void Update ()
     {
-	if(_timeCount._getTime <= _drawTime)
+	if(_timeCount.time <= _drawTime)
         {
             Draw();
         }
@@ -53,7 +53,7 @@ public class EndImageDraw : MonoBehaviour {
 
     void Draw()
     {
-        if (_timeCount._getTime <= _drawTime && _timeCount._getTime >  3)
+        if (_timeCount.time <= _drawTime && _timeCount.time >  3)
         {
             if (_isSe == false)
             {
@@ -63,26 +63,26 @@ public class EndImageDraw : MonoBehaviour {
             _startCountImage[0].enabled = true;
         }
         else
-        if (_timeCount._getTime <=  3 && _timeCount._getTime > 2)
+        if (_timeCount.time <=  3 && _timeCount.time > 2)
         {
             _startCountImage[0].enabled = false;
             _startCountImage[1].enabled = true;
         }
         else
-if (_timeCount._getTime <= 2 && _timeCount._getTime > 1)
+if (_timeCount.time <= 2 && _timeCount.time > 1)
         {
             _startCountImage[1].enabled = false;
             _startCountImage[2].enabled = true;
         }
         else
-if (_timeCount._getTime < 1 && _timeCount._getTime > 0)
+if (_timeCount.time < 1 && _timeCount.time > 0)
         {
             _startCountImage[2].enabled = false;
             _startCountImage[3].enabled = true;
             _countFinish = true;
         }
         else
-if (_timeCount._getTime <= 0)
+if (_timeCount.time <= 0)
         {
            
             _startCountImage[3].enabled = false;

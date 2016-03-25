@@ -83,7 +83,7 @@ public class Barrage : ActionManager
 
     int Barragebutton(ARModel model)
     {
-        if (_timeCount._getTime <= 1) return 0;
+        if (_timeCount.time <= 1) return 0;
         if (model.inputKey())
         {
             _audioPlayer.Play(20, false);
@@ -96,7 +96,7 @@ public class Barrage : ActionManager
 
     IEnumerator<WaitForSeconds> BulletCreate(float waitTime)
     {
-        if (_timeCount._getTime <= 1) yield break;
+        if (_timeCount.time <= 1) yield break;
         if (_player[0] == gameObject)
         {
             Bullet(_bulletObj[0]);
@@ -124,7 +124,7 @@ public class Barrage : ActionManager
         rotation = transform.eulerAngles;
         transform.eulerAngles = myRotate;
 
-        if (_startCount.getCountFinish)
+        if (_startCount.countFinish)
         {
             _keyCount += Barragebutton(model);
         }

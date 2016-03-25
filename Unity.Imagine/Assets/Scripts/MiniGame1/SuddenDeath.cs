@@ -106,7 +106,7 @@ public class SuddenDeath : MonoBehaviour {
             _time = _drawTime;
             _countFinish = true;
             _isSe = false;
-            _timeCount._getTime = 6;
+            _timeCount.time = 6;
             
         }
 

@@ -47,8 +47,8 @@ public class ScoreCompare : MonoBehaviour {
 
     void Compare()
     {
-        if (_timeCount._getTime > 0) return;
-        if (_timeCount._getTime  == 0 )
+        if (_timeCount.time > 0) return;
+        if (_timeCount.time  == 0 )
         {
             
 
