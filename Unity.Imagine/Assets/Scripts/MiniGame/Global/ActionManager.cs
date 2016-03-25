@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ActionManager : MonoBehaviour {
+public abstract class ActionManager : MonoBehaviour {
 
     public Vector3 rotation { get; set; }
 
@@ -11,7 +11,8 @@ public class ActionManager : MonoBehaviour {
 
     public bool isRendered { get; set; }
 
-    public virtual void Action() { Debug.Log("仮想メソッドです。継承して使ってください。"); }
+  // TIPS: 派生クラスで必ず実装してください
+  public abstract void Action(ARModel model);
 
     const string MAIN_CAMERA_TAG_NAME = "MainCamera";
 

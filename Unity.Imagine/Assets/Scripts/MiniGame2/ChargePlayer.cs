@@ -80,5 +80,5 @@ public class ChargePlayer : ActionManager
     }
 
     //これを書いとかないとウザイ
-    public override void Action(){}
+    public override void Action(ARModel model){}
 }

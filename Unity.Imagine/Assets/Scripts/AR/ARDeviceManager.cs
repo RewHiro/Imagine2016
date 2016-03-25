@@ -1,6 +1,7 @@
 ﻿
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 using NyAR.MarkerSystem;
 using NyARUnityUtils;
 
@@ -47,11 +48,9 @@ public class ARDeviceManager : MonoBehaviour {
   /// <summary> 管理下にある <see cref="ARModel"/> を全て取得 </summary>
   public IEnumerable<ARModel> GetModels() { return this.GetOnlyChildren<ARModel>(); }
 
-  /// <summary> モデルを表示する数 </summary>
-  public readonly int existModelCount = 2;
-
-  // TIPS: モデルを認識した数のカウンタ
-  int _currentModelCount = 0;
+  ARModel[] _models = new ARModel[2];
+  public ARModel player1 { get { return _models[0]; } }
+  public ARModel player2 { get { return _models[1]; } }
 
   void Awake() {
     if (WebCamTexture.devices.Length <= 0) { return; }
@@ -64,35 +63,64 @@ public class ARDeviceManager : MonoBehaviour {
     _arSystem = new NyARUnityMarkerSystem(config);
     _arSystem.setARBackgroundTransform(_panel.transform);
     _arSystem.setARCameraProjection(_camera);
-  }
 
-  void Start() {
-    _device.Start();
     foreach (var model in GetModels()) { model.MarkerSetup(this); }
-  }
-
-  void FixedUpdate() {
-    _device.Update();
-    _arSystem.update(_device);
-    _currentModelCount = 0;
-
-    foreach (var model in GetModels()) {
-      if (!EnableUpdate(model)) { ModelReset(model); continue; }
-
-      model.transform.position = Vector3.zero;
-      arSystem.setMarkerTransform(model.id, model.transform);
-      model.action.Rotate();
-      ++_currentModelCount;
-    }
+    _device.Start();
   }
 
   void OnDestroy() { _device.Stop(); }
 
-  void ModelReset(ARModel model) { model.transform.position = Vector3.back * 10f; }
+  void FixedUpdate() {
+    _device.Update();
+    _arSystem.update(_device);
+  }
 
+  void ModelReset(ARModel model) {
+    model.transform.position = Vector3.back * 100f;
+    model.isVisible = false;
+  }
+
+  readonly int _existsCount = 2;
+  int _currentCount = 0;
+
+  // TIPS: マーカーを規定数、認識できているかどうか
   bool EnableUpdate(ARModel model) {
-    var exists = _arSystem.isExistMarker(model.id);
-    var enable = _currentModelCount < existModelCount;
-    return (exists && enable);
+    var enable = (_currentCount < _existsCount);
+    if (enable) { enable = _arSystem.isExistMarker(model.id); }
+    return enable;
+  }
+
+  // TIPS: ゲーム続行可能かどうか
+  bool EnableGamePlay() {
+    var exist1 = _arSystem.isExistMarker(player1.id);
+    var exist2 = _arSystem.isExistMarker(player2.id);
+    return exist1 && exist2;
+  }
+
+  /// <summary> マーカー検出 </summary>
+  public bool DetectMarker() {
+    _currentCount = 0;
+
+    foreach (var model in GetModels()) {
+      if (!EnableUpdate(model)) { ModelReset(model); continue; }
+      _arSystem.setMarkerTransform(model.id, model.transform);
+      _models[_currentCount++] = model;
+    }
+
+    return _models.All(model => model != null);
+  }
+
+  /// <summary> 認識済みマーカーのみを使って更新する </summary>
+  public void ModelUpdate() {
+    foreach (var model in _models) {
+      if (!_arSystem.isExistMarker(model.id)) { ModelReset(model); continue; }
+      model.isVisible = true;
+      _arSystem.setMarkerTransform(model.id, model.transform);
+    }
+
+    if (!_models.All(model => model.isVisible)) { return; }
+
+    player1.transform.LookAt(player2.transform);
+    player2.transform.LookAt(player1.transform);
   }
 }

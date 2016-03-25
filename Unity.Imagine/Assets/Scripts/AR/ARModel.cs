@@ -17,10 +17,21 @@ public class ARModel : MonoBehaviour {
   /// <summary> マーカーに対応した ID </summary>
   public int id { get; private set; }
 
+  /// <summary> マーカーを登録、ID を生成する </summary>
   public void MarkerSetup(ARDeviceManager device) {
     id = device.arSystem.addARMarker(_marker,
                                      device.markerResolution,
                                      device.markerEdge,
                                      device.markerScale);
   }
+
+  /// <summary> 対象オブジェクトの方向に、正面を向ける </summary>
+  public void LookAt(Transform target) {
+    var distance = target.position - transform.position;
+    transform.rotation.SetLookRotation(distance);
+  }
+
+  public bool isVisible { get; set; }
+
+  public System.Func<bool> inputKey { get; set; }
 }

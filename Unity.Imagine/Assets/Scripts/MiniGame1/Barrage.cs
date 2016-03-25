@@ -81,10 +81,10 @@ public class Barrage : ActionManager
         }
     }
 
-    int Barragebutton(KeyCode key)
+    int Barragebutton(ARModel model)
     {
         if (_timeCount._getTime <= 1) return 0;
-        if (Input.GetKeyDown(key))
+        if (model.inputKey())
         {
             _audioPlayer.Play(20, false);
             StartCoroutine(BulletCreate(_waitTime));
@@ -117,7 +117,7 @@ public class Barrage : ActionManager
     }
 
 
-    public override void Action()
+    public override void Action(ARModel model)
     {
         Vector3 myRotate = transform.eulerAngles;
         transform.LookAt(Enemy.transform);
