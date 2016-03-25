@@ -10,20 +10,12 @@ public class GameManager : MonoBehaviour {
   [SerializeField]
   GameController _controller = null;
 
-  [SerializeField]
-  [Tooltip("最初に Instantiate する、メイン UI")]
-  GameObject _gameUI = null;
-
-  [SerializeField]
-  GameObject _hintCanvas = null;
-
   bool _isStart = false;
   public bool isStart { get { return _isStart; } }
 
   Coroutine _playThread = null;
 
   void Start() {
-    Instantiate(_gameUI);
     _playThread = StartCoroutine(DetectMarker());
   }
 
@@ -32,9 +24,6 @@ public class GameManager : MonoBehaviour {
     StopCoroutine(_playThread);
     _playThread = StartCoroutine(GameLoop());
   }
-
-  /// <summary> ヒントを表示するボタンが押された </summary>
-  public void OnHint() { Instantiate(_hintCanvas); }
 
   /// <summary> 戻るボタンが押された </summary>
   public void OnBackToMenu() {
@@ -50,9 +39,17 @@ public class GameManager : MonoBehaviour {
 
   // TIPS: マーカー検出
   IEnumerator DetectMarker() {
-    while (!_device.DetectMarker()) { yield return null; }
+    _isStart = false;
+
+    while (!_isStart) {
+      _isStart = _device.DetectMarker();
+      yield return null;
+    }
+
     _device.player1.inputKey = _controller.IsPlayer1KeyDown;
     _device.player2.inputKey = _controller.IsPlayer2KeyDown;
+    _device.player1.transform.LookAt(_device.player2.transform);
+    _device.player2.transform.LookAt(_device.player1.transform);
   }
 
   // TIPS: ゲームルール説明（キー入力でゲーム開始）
