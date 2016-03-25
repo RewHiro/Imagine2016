@@ -6,6 +6,9 @@ public class GameMnueTab : MonoBehaviour {
     [SerializeField]
     GamePlayManager _playMgr;
 
+  [SerializeField]
+  GameManager _manager = null;
+
     [SerializeField]
     GameObject _modelsParent;
     ActionManager[] _models;

@@ -99,10 +99,12 @@ public class KeyAction : MonoBehaviour {
             }
         }
         isGameStart = (isGameStart == false) ? true : false;
+    /*
         foreach (var action in _actionMgr)
         {
             //action.Action();
         }
+    */
     }
 
     public List<GameObject> GetPlayers()

@@ -1,94 +1,78 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿
+using UnityEngine;
 using UnityEngine.UI;
 
 public class ReturnMenu : MonoBehaviour {
-
-
-  [SerializeField]
-  float _delayTime = 2.0f;
 
   [SerializeField]
   AudioPlayer _audioPlayer;
 
   [SerializeField]
-  Image _description;
+  TimeCount _counter = null;
 
   [SerializeField]
-  private LayerMask _mask;
+  ScoreCompare _scoreCompare = null;
 
   [SerializeField]
-  private TimeCount _timeCount = null;
+  [Tooltip("レフェリーのボード")]
+  Text _board = null;
 
   [SerializeField]
-  Text _text = null;
+  LayerMask _mask;
 
-  [SerializeField]
+  [SerializeField, Range(1f, 5f)]
+  float _delayTime = 2.0f;
+
+  [SerializeField, Range(0f, 360f)]
   float _turnAngle = 360.0f;
-  [SerializeField]
-  float _turnSpeed = 20.0f;
 
-  [SerializeField]
-  ResultLight _light = null;
+  [SerializeField, Range(0f, 30f)]
+  float _turnSpeed = 20.0f;
 
   bool _isTurn = false;
   bool _isReturn = false;
   bool _isWinner = false;
   bool _isRotationEnd = false;
   bool _isReturnNenu = false;
-  float time;
+  float _time;
+
   public bool getIsRotationEnd { get { return _isRotationEnd; } }
 
-  ScoreCompare _scoreCompare;
-
   void Start() {
-    time = _delayTime;
-    _audioPlayer = FindObjectOfType<AudioPlayer>();
-    _scoreCompare = FindObjectOfType<ScoreCompare>();
+    _time = _delayTime;
     _audioPlayer.Play(3, 0.2f, true);
   }
 
-  // Update is called once per frame
   void Update() {
-    //Turn();
     Turn();
     ReturnMenuUpdate();
     WaitTime();
+
     // この１文はタイムが０になったら起こるようにしてあるので
     // 必要なかったり、別のところで必要になったら消してください。
-    if (_scoreCompare.getDisplayScore == true) { WinnerPlayer(); }
-
-
-
+    if (_scoreCompare.getDisplayScore) { WinnerPlayer(); }
   }
 
   void Turn() {
-    if (_isTurn) {
-      _description.enabled = false;
-      _turnAngle -= _turnSpeed;
-      if (_turnAngle <= 0.0f) {
-        _isTurn = false;
-        //isReturn = true;
-        //直す
-        _isRotationEnd = true;
-        _turnAngle = 720.0f;
-        _audioPlayer.Play(19, false);
-        _isReturnNenu = true;
+    if (!_isTurn) { return; }
 
-        _light.LightUp();
+    _turnAngle -= _turnSpeed;
 
-      }
-      transform.eulerAngles = new Vector3(0.0f, _turnAngle, 0.0f);
+    if (_turnAngle <= 0.0f) {
+      _isTurn = false;
+
+      _isRotationEnd = true;
+      _turnAngle = 720.0f;
+      _audioPlayer.Play(19, false);
+      _isReturnNenu = true;
     }
+    transform.eulerAngles = new Vector3(0.0f, _turnAngle, 0.0f);
   }
 
   void WaitTime() {
-    if (time <= 0 || _isReturnNenu == false) return;
-
-    time -= Time.deltaTime;
-    if (time <= 0) {
-      ReturnOn();
-    }
+    if (!_isReturnNenu) return;
+    _time -= Time.deltaTime;
+    if (_time <= 0) { ReturnOn(); }
   }
 
   void WinnerPlayer() {
@@ -97,37 +81,33 @@ public class ReturnMenu : MonoBehaviour {
     if (_scoreCompare.getWinPlayer == ScoreCompare.WinPlayer.Player1) {
       _isWinner = true;
       _isTurn = true;
-      _text.text = "←";
+      _board.text = "←";
     }
     else
     if (_scoreCompare.getWinPlayer == ScoreCompare.WinPlayer.Player2) {
       _isWinner = true;
       _isTurn = true;
-      _text.text = "→";
+      _board.text = "→";
     }
 
   }
 
   void ReturnMenuUpdate() {
     if (!_isReturn) { return; }
-    if (_timeCount._getTime > 0) { return; }
+    if (_counter.time > 0) { return; }
 
-    if (_timeCount != null) { Destroy(_timeCount); }
+    if (_counter != null) { Destroy(_counter); _board.text = "メニューに戻る"; }
 
-    _text.text = "メニューに戻る";
+    // クリックされてなければスキップ
+    if (!TouchController.IsTouchBegan()) { return; }
 
-    if (Input.GetMouseButtonDown(0)) {
+    // レイを飛ばして、レフェリーじゃなかったらスキップ
+    RaycastHit hit;
+    if (!TouchController.IsRaycastHitWithLayer(out hit, _mask)) { return; }
+    if (hit.transform != transform) { return; }
 
-      //Ray ray = new Ray(transform.position, transform.forward);
-
-      RaycastHit hit;
-      if (TouchController.IsRaycastHitWithLayer(out hit, _mask)) {
-        if (hit.transform.name == transform.name) {
-          _timeCount._getTime = _timeCount._getTimeCount;
-          ScreenSequencer.instance.SequenceStart(() => GameScene.Menu.ChangeScene(), new Fade(1f));
-        }
-      }
-    }
+    _counter.time = _counter.timeCount;
+    ScreenSequencer.instance.SequenceStart(() => GameScene.Menu.ChangeScene(), new Fade(1f));
   }
 
   // これを呼べばメニューに戻る

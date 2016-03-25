@@ -10,7 +10,12 @@ public class GameManager : MonoBehaviour {
   [SerializeField]
   GameController _controller = null;
 
+  [SerializeField]
+  TimeCount _counter = null;
+
   bool _isStart = false;
+
+  /// <summary> プレイボタンが押せるようになったら true を返す </summary>
   public bool isStart { get { return _isStart; } }
 
   Coroutine _playThread = null;
@@ -59,16 +64,20 @@ public class GameManager : MonoBehaviour {
       _device.ModelUpdate();
       yield return null;
     }
-    Debug.Log("Finish");
   }
 
   // TIPS: ゲームループ
   IEnumerator MainGame() {
-    yield return null;
+    while (true) {
+      _counter.UpdateTimeCount();
+      yield return null;
+    }
   }
 
   // TIPS: リザルト表示
   IEnumerator Result() {
-    yield return null;
+    while (true) {
+      yield return null;
+    }
   }
 }

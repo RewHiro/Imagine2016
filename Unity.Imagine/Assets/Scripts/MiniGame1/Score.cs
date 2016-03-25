@@ -60,7 +60,7 @@ public class Score : MonoBehaviour
   public  void DrawScore()
     {
 
-        if (_playerList.Count == 0 && _startCount.getCountFinish == true)
+        if (_playerList.Count == 0 && _startCount.countFinish == true)
         {
             _playerList = _actionManager.GetPlayers();
             foreach (var selectPlayer in _playerList)
@@ -77,7 +77,7 @@ public class Score : MonoBehaviour
 
             if (_scoreCompare.getDisplayScore || _scoreCompare.getIsDraw) return;
 
-            if (_timeCount._getTime <= 4)
+            if (_timeCount.time <= 4)
             {
                 _text.text = "???";
             }
@@ -90,7 +90,7 @@ public class Score : MonoBehaviour
          
             if (_scoreCompare.getDisplayScore || _scoreCompare.getIsDraw) return;
 
-            if (_timeCount._getTime <= 4)
+            if (_timeCount.time <= 4)
             {
                 _text.text = "???";
             }
