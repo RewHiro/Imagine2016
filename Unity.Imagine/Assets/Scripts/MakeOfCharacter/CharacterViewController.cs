@@ -61,7 +61,9 @@ public class CharacterViewController : MonoBehaviour
 
     void Awake()
     {
-        START_POSITON = transform.position;
+        var offSet = Vector3.zero;
+        offSet.x = OFF_SET.x;
+        START_POSITON = transform.position + offSet;
         _count = 0.0f;
     }
 
