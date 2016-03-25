@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class Barrage : ActionManager
 {
+    [SerializeField]
+    KeyAction _keyAction; 
+
     [SerializeField]
     AudioPlayer _audioPlayer;
 
@@ -10,7 +13,7 @@ public class Barrage : ActionManager
     StartCount _startCount;
 
     [SerializeField]
-    GameObject _bulletObj = null;
+    GameObject[] _bulletObj = null;
 
     [SerializeField]
     GameObject _specialBulletObj = null;
@@ -23,6 +26,8 @@ public class Barrage : ActionManager
 
     [SerializeField]
     float _waitTime = 0.2f;
+
+    List<GameObject> _player = new List<GameObject>();
 
     private enum SelectPlayer
     {
@@ -46,7 +51,7 @@ public class Barrage : ActionManager
 
     void Start()
     {
-
+        _player = _keyAction.GetPlayers();
 
         if (_audioPlayer == null)
         {
@@ -69,7 +74,12 @@ public class Barrage : ActionManager
 
     }
 
-    void Update(){}
+    void Update(){
+        if (_player == null)
+        {
+            _player = _keyAction.GetPlayers();
+        }
+    }
 
     int Barragebutton(KeyCode key)
     {
@@ -84,10 +94,17 @@ public class Barrage : ActionManager
         return 0;
     }
 
-    IEnumerator BulletCreate(float waitTime)
+    IEnumerator<WaitForSeconds> BulletCreate(float waitTime)
     {
         if (_timeCount._getTime <= 1) yield break;
-        Bullet(_bulletObj);
+        if (_player[0] == gameObject)
+        {
+            Bullet(_bulletObj[0]);
+        }else
+        if (_player[1] == gameObject)
+        {
+            Bullet(_bulletObj[1]);
+        }
         _count++;
         if (_probability > _count) yield break;
         if (_randomBullet.StatusRandomBullet() == false) yield break;
@@ -96,7 +113,7 @@ public class Barrage : ActionManager
         //Debug.Log("来てる");
         Bullet(_specialBulletObj);
         _keyCount++;
-        yield return 0;
+        yield return new WaitForSeconds(0);
     }
 
 

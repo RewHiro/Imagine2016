@@ -9,6 +9,9 @@ public class FireWorksCreate : MonoBehaviour {
     float _time;
 
     [SerializeField]
+    Vector3 _changePosition = new Vector3(0,-30,0);
+
+    [SerializeField]
     GameObject _particle;
 
 	void Start ()
@@ -39,6 +42,16 @@ public class FireWorksCreate : MonoBehaviour {
     {
         GameObject particleObj = Instantiate(_particle);
         particleObj.transform.SetParent(gameObject.transform, false);
+        
+        particleObj.transform.localPosition = gameObject.transform.position + RandomPosition() + _changePosition;
+    }
+
+    Vector3 RandomPosition()
+    {
+        Vector3 position = new Vector3(0,0,0);
+        position.x = Random.Range(-50, 51);
+        position.z = Random.Range(-50, 51);
+        return position;
     }
 
 }
