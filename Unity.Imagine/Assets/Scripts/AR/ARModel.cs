@@ -8,8 +8,19 @@ public class ARModel : MonoBehaviour {
   Texture2D _marker = null;
 
   [SerializeField]
-  ActionManager _action = null;
-  public ActionManager action { get { return _action; } }
+  MeshRenderer _renderer = null;
+  public new MeshRenderer renderer { get { return _renderer; } }
+
+  [SerializeField]
+  Rigidbody _rigidBody = null;
+  public Rigidbody rigidBody { get { return _rigidBody; } }
+
+  [SerializeField]
+  CharacterData _data = null;
+  public CharacterData data { get { return _data; } }
+
+  /// <summary> 点数を表示する <see cref="Canvas"/> オブジェクト </summary>
+  public Score scoreBoard { get; set; }
 
   /// <summary> モデルを表示するマーカー </summary>
   public Texture2D marker { get { return _marker; } }
@@ -31,7 +42,9 @@ public class ARModel : MonoBehaviour {
     transform.rotation.SetLookRotation(distance);
   }
 
+  /// <summary> マーカーがカメラに認識されたか </summary>
   public bool isVisible { get; set; }
 
+  /// <summary> ゲームで使用するキーバインド </summary>
   public System.Func<bool> inputKey { get; set; }
 }
