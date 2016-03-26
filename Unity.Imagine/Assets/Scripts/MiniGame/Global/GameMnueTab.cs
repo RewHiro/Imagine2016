@@ -7,6 +7,9 @@ public class GameMnueTab : MonoBehaviour {
   GameManager _manager = null;
 
     [SerializeField]
+    ReadyKey _readyKey = null;
+
+    [SerializeField]
     GameObject _modelsParent;
     ActionManager[] _models;
 
@@ -113,7 +116,8 @@ public class GameMnueTab : MonoBehaviour {
         if (_isBackMnue) { return; }
         if(howToPlayImage != null) { Destroy(howToPlayImage); }
         _tabPattern = TabPattern.Play;
-        _manager.OnPlay();
+        //_manager.OnPlay();
+        _readyKey.DrawReadyImage();
         _isPushPlayButton = true;
     }
 
