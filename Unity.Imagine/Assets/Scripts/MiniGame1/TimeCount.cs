@@ -18,7 +18,9 @@ public class TimeCount : MonoBehaviour {
   /// <summary> ゲームの残り時間 </summary>
   public int timeToInt { get { return Mathf.RoundToInt(time); } }
 
-  void Start() { time = _timeCount; }
+  void Start() { TimeReset(); }
+
+  public void TimeReset() { time = _timeCount; }
 
   /// <summary> 残り時間を減らす </summary>
   public void UpdateTimeCount() { if (time > 0f) time -= Time.deltaTime; }

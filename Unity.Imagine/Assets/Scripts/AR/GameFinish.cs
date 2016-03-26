@@ -33,7 +33,7 @@ public class GameFinish : MonoBehaviour {
     _player2.enabled = true;
 
     _player1.sprite = (result == Result.P1Win ? _victory : _defeat);
-    _player1.sprite = (result == Result.P1Win ? _defeat : _victory);
+    _player2.sprite = (result == Result.P1Win ? _defeat : _victory);
   }
 
   Result GetResult(int p1, int p2) {

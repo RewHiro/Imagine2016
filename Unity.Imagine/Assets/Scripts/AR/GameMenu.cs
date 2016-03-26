@@ -21,6 +21,14 @@ public class GameMenu : MonoBehaviour {
   public CanvasGroup group { get { return _group; } }
 
   [SerializeField]
+  Score _player1 = null;
+  public Score player1 { get { return _player1; } }
+
+  [SerializeField]
+  Score _player2 = null;
+  public Score player2 { get { return _player2; } }
+
+  [SerializeField]
   GameHintCanvas _hintCanvas = null;
 
   public void OnCreateHintCanvas() {
