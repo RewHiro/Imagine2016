@@ -3,5 +3,10 @@ using UnityEngine;
 
 public class GameHintCanvas : MonoBehaviour {
 
-  public void OnDelete() { Destroy(gameObject); }
+  public CanvasGroup menu { private get; set; }
+
+  public void OnDelete() {
+    menu.interactable = true;
+    Destroy(gameObject);
+  }
 }
