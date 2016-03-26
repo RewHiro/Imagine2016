@@ -5,10 +5,16 @@ using UnityEngine.UI;
 public class ReadyKey : MonoBehaviour {
 
     [SerializeField]
+    GameManager _manager = null;
+
+    [SerializeField]
+    GameController _controller = null;
+
+    [SerializeField]
     ImageSizeChanger[] _myImages = null;
 
     [SerializeField]
-    GameController controller = null;
+    Text[] _playerKeyText = null;
 
     [SerializeField]
     UIMover _uiMover = null;
@@ -17,38 +23,54 @@ public class ReadyKey : MonoBehaviour {
     Vector3 _hidePos = new Vector3(0.0f, 1200.0f, 0.0f);
 
     bool _isReady = false;
-    public bool isReady { get { return _isReady; } }
+    //public bool isReady { get { return _isReady; } }
+
+    //[SerializeField]
+    //bool _debugFlag = false;
 
     [SerializeField]
-    bool _debugFlag = false;
+    float _delayPlayTime = 2.0f;
 
     void Update()
     {
         if (!_myImages[0].isDraw)
         {
-            if (Input.GetKey("a"))
+            var P1Key = _controller.player1.GetEnumerator();           
+            if (P1Key.MoveNext()  && Input.GetKeyDown(P1Key.Current))
             {
                 _myImages[0].ChangeSize();
             }
+            _playerKeyText[0].text = P1Key.Current.ToString();
         }
 
         if (!_myImages[1].isDraw)
         {
-            if (Input.GetKey("k"))
+            var P2Key = _controller.player2.GetEnumerator();
+            if (P2Key.MoveNext() && Input.GetKeyDown(P2Key.Current))
             {
                 _myImages[1].ChangeSize();
             }
+            _playerKeyText[1].text = P2Key.Current.ToString();
         }
 
         ReadyCheak();
 
-        if (_debugFlag)
+        //if (_debugFlag)
+        //{
+        //    DrawReadyImage();
+        //}
+        //else
+        //{
+        //    HideReadyImage();
+        //}
+
+        if(_isReady)
         {
-            DrawReadyImage();
-        }
-        else
-        {
-            HideReadyImage();
+            _delayPlayTime -= Time.deltaTime;
+            if(_delayPlayTime <= 0)
+            {
+                HideReadyImage();
+            }
         }
     }
 
@@ -56,7 +78,7 @@ public class ReadyKey : MonoBehaviour {
     {
         foreach (var image in _myImages)
         {
-            if (!image.isDraw) { break; }
+            if (!image.isDraw) { return; }
         }
         _isReady = true;
     }
@@ -71,5 +93,6 @@ public class ReadyKey : MonoBehaviour {
     public void HideReadyImage()
     {
         _uiMover.targetPos = _hidePos;
+        _manager.OnPlay();
     }
 }
