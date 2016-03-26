@@ -36,10 +36,19 @@ public class GameManager : MonoBehaviour {
   ARModelMaterial _materials = null;
 
   [SerializeField]
+  RefereeFloat _referee = null;
+
+  [SerializeField]
   GameObject _shot = null;
 
   [SerializeField]
   GameObject _ruleCanvas = null;
+
+  [SerializeField]
+  Vector3 _refereePosition = Vector3.zero;
+
+  [SerializeField, Range(1f, 5f)]
+  float _refereeVelocity = 1f;
 
   bool _isStart = false;
 
@@ -55,6 +64,7 @@ public class GameManager : MonoBehaviour {
   void Start() {
     _playThread = StartCoroutine(GameLoop());
     _gameUI.alpha = 0f;
+    _referee.enabled = false;
   }
 
   /// <summary> プレイボタンが押された </summary>
@@ -112,6 +122,15 @@ public class GameManager : MonoBehaviour {
       _gameUI.alpha += time;
       yield return null;
     }
+
+    while (true) {
+      var distance = _refereePosition - _referee.transform.position;
+      if (distance.magnitude < 1f) { break; }
+      _referee.transform.position += distance * Time.deltaTime * _refereeVelocity;
+      yield return null;
+    }
+
+    _referee.enabled = true;
   }
 
   // TIPS: ゲームループ
