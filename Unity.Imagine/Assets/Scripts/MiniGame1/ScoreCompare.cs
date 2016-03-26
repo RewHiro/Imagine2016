@@ -5,7 +5,8 @@ public class ScoreCompare : MonoBehaviour {
     [SerializeField]
     GameObject _bullet;
 
-    TimeCount _timeCount;
+    [SerializeField]
+    TimeCount _timeCount = null;
 
     KeyAction _actionManager;
 
@@ -35,7 +36,7 @@ public class ScoreCompare : MonoBehaviour {
     void Start ()
     {
         _suddenDeath = FindObjectOfType<SuddenDeath>();
-        _timeCount = GameObject.Find("Time").GetComponent<TimeCount>();
+        //_timeCount = GameObject.Find("Time").GetComponent<TimeCount>();
         _actionManager = FindObjectOfType<KeyAction>();
         
     }

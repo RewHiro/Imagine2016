@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class Barrage : ActionManager
 {
     [SerializeField]
-    KeyAction _keyAction; 
+    ARDeviceManager _arDevMgr = null; 
 
     [SerializeField]
     AudioPlayer _audioPlayer;
@@ -27,7 +27,7 @@ public class Barrage : ActionManager
     [SerializeField]
     float _waitTime = 0.2f;
 
-    List<GameObject> _player = new List<GameObject>();
+    List<ARModel> _player = new List<ARModel>();
 
     private enum SelectPlayer
     {
@@ -51,7 +51,7 @@ public class Barrage : ActionManager
 
     void Start()
     {
-        _player = _keyAction.GetPlayers();
+        //_player = _keyAction.GetPlayers();
 
         if (_audioPlayer == null)
         {
@@ -75,9 +75,13 @@ public class Barrage : ActionManager
     }
 
     void Update(){
-        if (_player == null)
+        bool isPlayer = (_arDevMgr.player1 == null || _arDevMgr.player2 == null);
+        if (isPlayer)
         {
-            _player = _keyAction.GetPlayers();
+            _player.Clear();
+            _player.Add(_arDevMgr.player1);
+            _player.Add(_arDevMgr.player2);
+            //_player = _keyAction.GetPlayers();
         }
     }
 
@@ -97,11 +101,11 @@ public class Barrage : ActionManager
     IEnumerator<WaitForSeconds> BulletCreate(float waitTime)
     {
         if (_timeCount.time <= 1) yield break;
-        if (_player[0] == gameObject)
+        if (_player[0].gameObject == gameObject)
         {
             Bullet(_bulletObj[0]);
         }else
-        if (_player[1] == gameObject)
+        if (_player[1].gameObject == gameObject)
         {
             Bullet(_bulletObj[1]);
         }
@@ -119,10 +123,11 @@ public class Barrage : ActionManager
 
     public override void Action(ARModel model)
     {
-        Vector3 myRotate = transform.eulerAngles;
-        transform.LookAt(Enemy.transform);
-        rotation = transform.eulerAngles;
-        transform.eulerAngles = myRotate;
+        // もういらない
+        //Vector3 myRotate = transform.eulerAngles;
+        //transform.LookAt(Enemy.transform);
+        //rotation = transform.eulerAngles;
+        //transform.eulerAngles = myRotate;
 
         if (_startCount.countFinish)
         {

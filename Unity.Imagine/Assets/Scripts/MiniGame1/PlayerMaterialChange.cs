@@ -7,19 +7,22 @@ public class PlayerMaterialChange : MonoBehaviour
     [SerializeField]
     Material[] _material;
 
-    List<GameObject> _playerList = new List<GameObject>();
+    List<ARModel> _playerList = new List<ARModel>();
 
     [SerializeField]
-    KeyAction _keyAction;
+    ARDeviceManager _arDevMgr = null;
 
     void Start()
     {
-        _playerList = _keyAction.GetPlayers();
+        _playerList.Add(_arDevMgr.player1);
+        _playerList.Add(_arDevMgr.player2);
+        bool isPlayer = (_arDevMgr.player1 == null || _arDevMgr.player2 == null);
+
         //Debug.Log(_playerList.Count);
         // _material = new Material[4];
-        if (_keyAction == null)
+        if (_arDevMgr == null)
         {
-            _keyAction = FindObjectOfType<KeyAction>();
+            _arDevMgr = FindObjectOfType<ARDeviceManager>();
         }
         //_material[0] = Resources.Load<Material>("Resources/MiniGame/Game1/Material/Clip");
         //_material[1] = Resources.Load<Material>("Resources/MiniGame/Game1/Material/RedCannonMaterial");
@@ -35,21 +38,24 @@ public class PlayerMaterialChange : MonoBehaviour
 
     public void MaterialChange()
     {
-        if (_playerList == null)
+        bool isPlayer = (_arDevMgr.player1 == null || _arDevMgr.player2 == null);
+        if (isPlayer)
         {
-            _playerList = _keyAction.GetPlayers();
+            _playerList.Clear();
+            _playerList.Add(_arDevMgr.player1);
+            _playerList.Add(_arDevMgr.player2);          
             return;
         }
 
 
 
-        if (gameObject.transform.parent.gameObject == _playerList[0])
+        if (gameObject.transform.parent.gameObject == _playerList[0].gameObject)
         {
             gameObject.GetComponent<Renderer>().material = _material[0];
             gameObject.transform.parent.gameObject.GetComponent<Renderer>().material = _material[1];
         }
         else
-    if (gameObject.transform.parent.gameObject == _playerList[1])
+    if (gameObject.transform.parent.gameObject == _playerList[1].gameObject)
         {
             gameObject.GetComponent<Renderer>().material = _material[2];
             gameObject.transform.parent.gameObject.GetComponent<Renderer>().material = _material[3];

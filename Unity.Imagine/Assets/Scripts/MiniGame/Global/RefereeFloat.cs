@@ -9,18 +9,18 @@ public class RefereeFloat : MonoBehaviour {
     [SerializeField]
     float _lenght = 10.0f;
 
-    Vector3 _initPos;
+    //Vector3 _initPos;
 
     float _time = 0.0f;
 
 	// Use this for initialization
 	void Start () {
-        _initPos = transform.position;
+        //_initPos = transform.position;
     }
 	
 	// Update is called once per frame
 	void Update () {
         Vector3 sin = Vector3.up * Mathf.Sin(++_time * _speed) * Time.deltaTime * _lenght;
-        transform.position += (_initPos + sin) / 10.0f;
+        transform.position += (/*_initPos + */sin) / 10.0f;
     }
 }
