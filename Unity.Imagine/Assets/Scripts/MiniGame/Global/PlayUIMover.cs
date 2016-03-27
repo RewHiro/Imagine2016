@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UIMover : MonoBehaviour {
+public class PlayUIMover : MonoBehaviour {
 
     [SerializeField]
     GameMnueTab _gameMnueTab;
 
     [SerializeField]
     Vector3 _targetPos;
+    public Vector3 targetPos { get { return _targetPos; } }
 
     [SerializeField]
     float _speed = 10.0f;

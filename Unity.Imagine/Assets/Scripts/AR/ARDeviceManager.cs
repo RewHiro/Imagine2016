@@ -106,6 +106,7 @@ public class ARDeviceManager : MonoBehaviour {
       if (!EnableUpdate(model)) { ModelReset(model); continue; }
       _arSystem.setMarkerTransform(model.id, model.transform);
       _models.Add(model);
+      model.transform.Rotate(Vector3.right * 90f);
     }
 
     return (_models.Count == _existsCount);
@@ -117,6 +118,7 @@ public class ARDeviceManager : MonoBehaviour {
       if (!_arSystem.isExistMarker(model.id)) { ModelReset(model); continue; }
       model.isVisible = true;
       _arSystem.setMarkerTransform(model.id, model.transform);
+      model.transform.Rotate(Vector3.right * 90f);
     }
 
     if (!_models.All(model => model.isVisible)) { return; }

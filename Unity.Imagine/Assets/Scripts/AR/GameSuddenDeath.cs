@@ -9,5 +9,7 @@ public class GameSuddenDeath : MonoBehaviour {
 
   void Start() { _image.enabled = false; }
 
+  public bool isVisible { get { return _image.enabled; } }
+
   public void Visible() { _image.enabled = !_image.enabled; }
 }

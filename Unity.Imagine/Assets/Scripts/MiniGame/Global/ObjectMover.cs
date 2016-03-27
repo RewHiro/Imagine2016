@@ -8,6 +8,7 @@ public class ObjectMover : MonoBehaviour {
 
     [SerializeField]
     Vector3 _targetPos;
+    public Vector3 targetPos { get { return _targetPos; } }
 
     [SerializeField]
     float _speed = 10.0f;
